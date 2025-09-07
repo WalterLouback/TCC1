@@ -28,5 +28,15 @@ Este documento explora a capacidade de uma ferramenta moderna de inteligência a
 **Palavras-chave:** Geração de Código por IA, Aplicativos Móveis, Flutter, ChatGPT, Avaliação Empírica.
 
 ## 3. Fichamento de Citações 
+"Results show that, up to a certain level of complexity and by using an interactive process of increasingly detailed prompts, the AI tool is capable of generating functional code, that can be the base for the inclusion of a more complex logic or structure." 
 
+"The quality of the generated code may not always be reliable and may require human intervention to correct errors and ensure that the code meets the specified requirements." 
+
+"This process allows students to understand how the tool reacted to different ways of defining requirements." 
+
+"However, when testing the code, it often did not work correctly." 
+
+"It is important to mention that this aspect may be addressed with the use of ChatGPT 4.0, which could potentially have access to more up-to-date information and overcome some of these limitations." 
+
+"Human intervention and expertise are still essential for ensuring the quality and accuracy of the generated code." 
 
