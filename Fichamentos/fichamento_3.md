@@ -27,4 +27,14 @@ Este artigo aborda a avaliação da eficiência do código-fonte gerado por Larg
 **Palavras-chave:** Large Language Models (LLMs), Geração de Código, Eficiência de Código, Avaliação Empírica, LeetCode.
 
 ## 3. Fichamento de Citações 
+"Recommending more efficient code not only enhances program/software performance but also increase the probability of code acceptance by developers, reducing the need for further optimization and boosting development productivity."
+
+"First, the ability to generate correct code is not positively correlated with the ability to generate efficient code." 
+
+"Larger number of parameters does not promise higher performance." 
+
+"Training strategy and data have an impact on the efficiency of the generated code."
+
+"Results show that simple prompts enhance efficiency for basic problems, while complex problems benefit from a chain-of-thought prompt." 
+
 
