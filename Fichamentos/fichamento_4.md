@@ -28,3 +28,13 @@ Este artigo explora o uso de Large Language Models (LLMs) para gerar resumos de 
 
 ## 3. Fichamento de Citações 
 
+"In this paper, we investigate whether large language models (LLMs) can be used to generate more concise, yet understandable summaries."
+
+"[...] we obtained positive feedback on the LLM-generated summaries."
+
+"In a small-scale user study with 11 participants, we obtained positive feedback on the LLM-generated summaries."
+
+"[...] the prompt engineering technique produces richer content, while few-shot prompting provides more concise summaries." 
+
+"[...] LLM-generated summaries outperformed existing tools (TestDescriber and DeepTC-Enhancer), particularly in naturalness, though summary length remains a factor affecting readability." 
+
