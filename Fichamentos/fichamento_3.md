@@ -4,20 +4,6 @@ Changan Niu; Ting Zhang; Chuanyi Li; Bin Luo; Vincent Ng. "On Evaluating the Eff
 
 ## 1. Fichamento de Conteúdo
 
-[Será preenchido após a leitura completa do artigo.]
-
-## 2. Fichamento Bibliográfico 
-
-[Será preenchido após a leitura completa do artigo.]
-
-## 3. Fichamento de Citações 
-
-[Será preenchido após a leitura completa do artigo.]
-
-
-
-## 1. Fichamento de Conteúdo
-
 Este artigo aborda a avaliação da eficiência do código-fonte gerado por Large Language Models (LLMs). Diferente dos trabalhos existentes que se concentram na correção do código gerado por LLMs, este estudo propõe uma avaliação adicional de sua eficiência. Código mais eficiente pode levar a um desempenho superior e maior eficiência de execução de programas e software desenvolvidos com o auxílio de LLMs. Primeiramente, os autores avaliam a eficiência do código gerado por LLMs em dois benchmarks, HumanEval e MBPP. Em seguida, selecionam um conjunto de problemas de programação da plataforma de juízes online LeetCode para realizar uma avaliação mais desafiadora. Finalmente, exploram vários prompts que permitiriam aos LLMs gerar código mais eficiente. O estudo visa fornecer insights sobre como otimizar a eficiência do código gerado por IA, um aspecto crucial para a adoção generalizada dessas ferramentas no desenvolvimento de software.
 
 ## 2. Fichamento Bibliográfico 
@@ -41,7 +27,4 @@ Este artigo aborda a avaliação da eficiência do código-fonte gerado por Larg
 **Palavras-chave:** Large Language Models (LLMs), Geração de Código, Eficiência de Código, Avaliação Empírica, LeetCode.
 
 ## 3. Fichamento de Citações 
-
-[Será preenchido após a leitura completa do artigo.]
-
 
