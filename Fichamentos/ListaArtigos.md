@@ -1,0 +1,1 @@
+* Ponciano, Lesandro; Brasileiro,  Francisco; Simpson, Robert; Smith, Arfon. "Volunteers' Engagement in Human Computation for Astronomy Projects," in Computing in Science & Engineering, vol. 16, no. 6, pp. 52-59, Nov.-Dec. 2014. doi: [10.1109/MCSE.2014.4](https://doi.org/10.1109/MCSE.2014.4)
