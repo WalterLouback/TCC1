@@ -27,3 +27,12 @@ Este artigo explora a interseção entre revisão de código e documentação, i
 **Palavras-chave:** Revisão de Código, Documentação de Código, Comentários de Código, Estudo Empírico, GitHub.
 
 ## 3. Fichamento de Citações 
+"[...] we wonder: do contributors and project maintainers give consideration to documentation during code review, and, if so, how does documentation factor into the review?" (Page 1)
+
+"[...] we provide a first, data-driven exploration at the intersection of these two domains." (Page 1)
+
+"We find that achieving a shared understanding of the code is key: reviewer comments most often focused on clarification, followed by pointing out issues to fix, such as typos and outdated comments." (Page 1, Abstract)
+
+"Curiously, clarifying comments were frequently suggested (often verbatim) by the reviewer, indicating a desire to persist their understanding acquired during code review." (Page 1, Abstract)
+
+"Reviewers frequently consider documentation when reviewing code. They are more likely to comment when contributors updated code comments initially." (Page 4, Finding for RQ1)
