@@ -27,3 +27,15 @@ Este estudo explora como as tecnologias de Inteligência Artificial (IA), inclui
 **Palavras-chave:** Conformidade de Software, AI Act, Documentação Técnica, Ferramentas de IA, ChatGPT, DoXpert, Estudo Empírico.
 
 ## 3. Fichamento de Citações 
+
+"these findings underscore
+the potential of AI to combine with human analysis and alleviate the compliance burden,
+supporting the broader goal of fostering responsible and transparent AI development under
+emerging regulatory frameworks"
+
+"The automation of the review process through AI-based tools, particularly the DoXpert system, demonstrated significant potential. It outperformed other evaluated methods in
+identifying missing information and aligning with expert opinions on compliance, although
+discrepancies remained"
+
+"SMEs and independent AI developers must create AI software and technical
+documentation that meet the AI Act’s requirements"
