@@ -4,20 +4,6 @@ Nikitha Rao; Jason Tsay; Martin Hirzel; Vincent J. Hellendoorn. "Comments on Com
 
 ## 1. Fichamento de Conteúdo
 
-[Será preenchido após a leitura completa do artigo.]
-
-## 2. Fichamento Bibliográfico 
-
-[Será preenchido após a leitura completa do artigo.]
-
-## 3. Fichamento de Citações 
-
-[Será preenchido após a leitura completa do artigo.]
-
-
-
-## 1. Fichamento de Conteúdo
-
 Este artigo explora a interseção entre revisão de código e documentação, investigando como os comentários de revisão de código relacionados à documentação afetam a compreensão das contribuições. Uma função central da revisão de código é aumentar a compreensão, auxiliando os revisores na transferência de conhecimento e na identificação de bugs. Comentários no código servem a um propósito semelhante, ajudando futuros leitores a entender o programa. Os autores analisam aproximadamente 700 mil comentários de revisão em 2.000 projetos (Java e Python) no GitHub, propondo filtros para identificar comentários que provavelmente são em resposta a uma mudança na documentação ou que solicitam tal mudança. Eles identificam 65 mil desses casos e desenvolvem uma taxonomia das intenções dos revisores por trás desses "comentários sobre comentários". Os resultados mostram que alcançar uma compreensão compartilhada do código é fundamental: os comentários dos revisores frequentemente se concentram em esclarecimentos, seguidos por apontar problemas a serem corrigidos, como erros de digitação e comentários desatualizados. Curiosamente, os comentários de esclarecimento foram frequentemente sugeridos (muitas vezes literalmente) pelo revisor, indicando um desejo de persistir sua compreensão adquirida durante a revisão de código. O estudo conclui com uma discussão das implicações de seu conjunto de dados de "comentários sobre comentários" para pesquisas sobre a melhoria da revisão de código, incluindo os potenciais benefícios para a automação da revisão de código.
 
 ## 2. Fichamento Bibliográfico 
@@ -41,7 +27,3 @@ Este artigo explora a interseção entre revisão de código e documentação, i
 **Palavras-chave:** Revisão de Código, Documentação de Código, Comentários de Código, Estudo Empírico, GitHub.
 
 ## 3. Fichamento de Citações 
-
-[Será preenchido após a leitura completa do artigo.]
-
-
