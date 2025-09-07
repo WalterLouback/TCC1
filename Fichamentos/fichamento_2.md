@@ -28,3 +28,11 @@ Este artigo apresenta um estudo empírico sobre a avaliação das sugestões de 
 
 ## 3. Fichamento de Citações 
 
+"Our results show that Java suggestions have the highest correctness score (57%) while JavaScript is the lowest (27%)."
+
+"Overall, we find that Copilot’s suggestions have low cyclomatic and cognitive complexity (median 5 and 6, respectively), and there is no statistically significant difference between these languages." 
+
+"[...] Copilot may generate code that relies on non-existing helper functions or that contains undefined variables, both of which would result in compile or run-time errors, depending on the language." 
+
+"Overall, Copilot will help the developer completely solve their programming task (accepted) or provide them with a useful starting point (partially correct) in 61%-91% of the time, depending on the language." 
+
