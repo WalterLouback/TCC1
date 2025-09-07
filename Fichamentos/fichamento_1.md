@@ -2,19 +2,6 @@
 
 Santiago Aillon; Alejandro Garcia; Nicolas Velandia; Daniel Zarate; Pedro Wightman. "Empirical evaluation of automated code generation for mobile applications by AI tools," 2023 IEEE Colombian Caribbean Conference (C3), 2024. doi: 10.1109/C360580.2023.10436306
 
-## 1. Fichamento de Conteúdo
-
-[Será preenchido após a leitura completa do artigo.]
-
-## 2. Fichamento Bibliográfico 
-
-[Será preenchido após a leitura completa do artigo.]
-
-## 3. Fichamento de Citações 
-
-[Será preenchido após a leitura completa do artigo.]
-
-
 
 ## 1. Fichamento de Conteúdo
 
@@ -41,7 +28,5 @@ Este documento explora a capacidade de uma ferramenta moderna de inteligência a
 **Palavras-chave:** Geração de Código por IA, Aplicativos Móveis, Flutter, ChatGPT, Avaliação Empírica.
 
 ## 3. Fichamento de Citações 
-
-[Será preenchido após a leitura completa do artigo.]
 
 
