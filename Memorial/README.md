@@ -1,3 +1,6 @@
 # Memorial
+Minha trajetória na área de tecnologia começou em 2015, quando iniciei o curso técnico em Redes de Computadores no CEFET-MG. Essa experiência foi fundamental para despertar meu interesse pela área de tecnologia da informação e me preparou para os desafios futuros da graduação em Engenharia de Software na PUC Minas.
 
-Este diretório mantém o memorial do(a) aluno(as) ou os memoriais em caso de trabalho em dupla.
+Desde 2020, atuo profissionalmente como desenvolvedor de software. Ao longo desses anos de experiência prática, uma dificuldade se mostrou constante: a documentação de código. Há cerca de dez anos, quando comecei a programar, percebi que documentar adequadamente o que eu desenvolvia era sempre um desafio. Embora eu compreendesse a lógica do código e conseguisse implementar soluções funcionais, a documentação frequentemente ficava em segundo plano.
+
+Foi exatamente essa dificuldade pessoal que me motivou a escolher o tema do meu TCC: Avaliação Empírica da Qualidade da Documentação de Código Gerada por Ferramentas de Inteligência Artificial. Com o surgimento de ferramentas de IA como GitHub Copilot, ChatGPT e Amazon CodeWhisperer, vi uma oportunidade de investigar se essas tecnologias poderiam auxiliar desenvolvedores a superar esse obstáculo comum. Mais do que isso, busquei avaliar objetivamente se a documentação gerada automaticamente possui qualidade comparável à produzida manualmente.
