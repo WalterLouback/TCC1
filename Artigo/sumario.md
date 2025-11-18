@@ -47,7 +47,6 @@
    - Ferramentas de IA: GitHub Copilot, ChatGPT e Amazon CodeWhisperer
    - Ferramentas de análise estática: SonarQube e ESLint
    - Software para cálculo de métricas: implementações de BLEU, ROUGE, METEOR e CodeBLEU
-   - Documentação manual de referência (ground truth)
    - Ambiente computacional para execução dos experimentos
 
 3. Os métodos empregados neste trabalho são:
