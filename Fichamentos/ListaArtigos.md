@@ -15,12 +15,6 @@ ACM Transactions on Software Engineering and Methodology, 31(4), Article 63
 DOI: 10.1145/3501256
 [Fichamento: ]( fichamento_hu_2022.md)
 
-Ibrahim, A.; Khan, S.; Ali, S. (2025)
-Using NLP and AI to enhance software documentation and code comprehension
-International Journal of Software Engineering and Applications, 14(1), 1-18
-DOI: 10.63163/jpehss.v3i2.292
-[Fichamento: ]( fichamento_ibrahim_2025.md)
-
 Kudriavtseva, A.; Hotak, N. A.; Gadyatskaya, O. (2025)
 My code is less secure with gen ai: Surveying developers' perceptions of the impact of code generation tools on security
 Proceedings of the 40th ACM Symposium on Applied Computing
@@ -93,7 +87,7 @@ arXiv preprint arXiv:2304.05193
 Wang, J.; Yan, H.; Chen, Y.; Liu, X.; Liu, W.; Wang, J. (2023)
 A review on code generation with LLMs: Application and evaluation
 IEEE Software, 40(6), 42-50
-[Fichamento: ]( fichamento_wang_2023.md)
+[Fichamento: ]( fichamento_wang_2024.md)
 
 Wohlin, C.; Runeson, P.; Höst, M.; Ohlsson, M. C.; Regnell, B.; Wesslén, A. (2012)
 Experimentation in Software Engineering
