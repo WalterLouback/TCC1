@@ -5,7 +5,7 @@ import math
 from datetime import datetime, timezone
 from pathlib import Path
 
-GITHUB_TOKEN = "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"  
+GITHUB_TOKEN = os.environ["GITHUB_TOKEN"]
 TOP_N = 5
 MIN_STARS = 500
 PUSHED_AFTER = "2024-01-01"
