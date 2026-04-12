@@ -4,8 +4,12 @@ import json
 import math
 from datetime import datetime, timezone
 from pathlib import Path
+import os
 
 GITHUB_TOKEN = os.environ["GITHUB_TOKEN"]
+TOP_N = 5
+MIN_STARS = 500
+PUSHED_AFTER = "2024-01-01"
 
 SEARCH_GROUPS = [
     "language:JavaScript topic:framework",
