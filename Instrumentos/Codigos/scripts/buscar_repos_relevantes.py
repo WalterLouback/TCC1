@@ -97,9 +97,25 @@ result = sorted(
 )[:TOP_N]
 
 json_path = OUT_DIR / "repos.json"
-
+csv_path = OUT_DIR / "repos.csv"
 
 json_path.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
 
+with csv_path.open("w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(
+        f,
+        fieldnames=[
+            "id", "name", "full_name", "html_url", "description", "language", "owner",
+            "license", "stargazers_count", "forks_count", "open_issues_count",
+            "created_at", "updated_at", "pushed_at", "default_branch", "score", "topics"
+        ]
+    )
+    writer.writeheader()
+    for row in result:
+        row = row.copy()
+        row["topics"] = ",".join(row["topics"])
+        writer.writerow(row)
+
 print(f"{len(result)} repositórios salvos em:")
 print(json_path)
+print(csv_path)
