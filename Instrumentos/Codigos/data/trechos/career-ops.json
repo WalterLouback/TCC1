@@ -1,0 +1,892 @@
+[
+  {
+    "repo": "career-ops",
+    "arquivo": "analyze-patterns.mjs",
+    "tipo": "function",
+    "nome": "normalizeStatus",
+    "linha_inicio": 47,
+    "linha_fim": 51,
+    "loc": 5,
+    "codigo": "function normalizeStatus(raw) {\r\n  const clean = raw.replace(/\\*\\*/g, '').trim().toLowerCase()\r\n    .replace(/\\s+\\d{4}-\\d{2}-\\d{2}.*$/, '').trim();\r\n  return ALIASES[clean] || clean;\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "analyze-patterns.mjs",
+    "tipo": "function",
+    "nome": "classifyOutcome",
+    "linha_inicio": 53,
+    "linha_fim": 59,
+    "loc": 7,
+    "codigo": "function classifyOutcome(status) {\r\n  const s = normalizeStatus(status);\r\n  if (['interview', 'offer', 'responded', 'applied'].includes(s)) return 'positive';\r\n  if (['rejected', 'discarded'].includes(s)) return 'negative';\r\n  if (['skip'].includes(s)) return 'self_filtered';\r\n  return 'pending'; // evaluated\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "analyze-patterns.mjs",
+    "tipo": "function",
+    "nome": "parseTracker",
+    "linha_inicio": 62,
+    "linha_fim": 79,
+    "loc": 18,
+    "codigo": "function parseTracker() {\r\n  if (!existsSync(APPS_FILE)) return [];\r\n  const content = readFileSync(APPS_FILE, 'utf-8');\r\n  const entries = [];\r\n  for (const line of content.split('\\n')) {\r\n    if (!line.startsWith('|')) continue;\r\n    const parts = line.split('|').map(s => s.trim());\r\n    if (parts.length < 9) continue;\r\n    const num = parseInt(parts[1]);\r\n    if (isNaN(num)) continue;\r\n    entries.push({\r\n      num, date: parts[2], company: parts[3], role: parts[4],\r\n      score: parts[5], status: parts[6], pdf: parts[7], report: parts[8],\r\n      notes: parts[9] || '',\r\n    });\r\n  }\r\n  return entries;\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "analyze-patterns.mjs",
+    "tipo": "function",
+    "nome": "parseReport",
+    "linha_inicio": 82,
+    "linha_fim": 169,
+    "loc": 88,
+    "codigo": "function parseReport(reportPath) {\r\n  if (!existsSync(reportPath)) return null;\r\n  const content = readFileSync(reportPath, 'utf-8');\r\n  const report = {\r\n    archetype: null,\r\n    seniority: null,\r\n    remote: null,\r\n    teamSize: null,\r\n    comp: null,\r\n    domain: null,\r\n    scores: {},\r\n    gaps: [],\r\n  };\r\n\r\n  // Strip bold markers for easier matching\r\n  const plain = content.replace(/\\*\\*/g, '');\r\n\r\n  // Extract Block A table (Role Summary) — works with both EN and ES headers\r\n  const blockARegex = /\\|\\s*(?:Archetype|Arquetipo)\\s*\\|\\s*(.*?)\\s*\\|/i;\r\n  const seniorityRegex = /\\|\\s*(?:Seniority|Nivel|Level)\\s*\\|\\s*(.*?)\\s*\\|/i;\r\n  const remoteRegex = /\\|\\s*(?:Remote|Remoto|Location)\\s*\\|\\s*(.*?)\\s*\\|/i;\r\n  const teamRegex = /\\|\\s*(?:Team|Team size|Equipo)\\s*\\|\\s*(.*?)\\s*\\|/i;\r\n  const compRegex = /\\|\\s*(?:Comp|Salary|Salario|Listed salary)\\s*\\|\\s*(.*?)\\s*\\|/i;\r\n  const domainRegex = /\\|\\s*(?:Domain|Dominio|Industry)\\s*\\|\\s*(.*?)\\s*\\|/i;\r\n\r\n  const archMatch = plain.match(blockARegex);\r\n  if (archMatch) report.archetype = archMatch[1].trim();\r\n\r\n  const senMatch = plain.match(seniorityRegex);\r\n  if (senMatch) report.seniority = senMatch[1].trim();\r\n\r\n  const remMatch = plain.match(remoteRegex);\r\n  if (remMatch) report.remote = remMatch[1].trim();\r\n\r\n  const teamMatch = plain.match(teamRegex);\r\n  if (teamMatch) report.teamSize = teamMatch[1].trim();\r\n\r\n  const compMatch = plain.match(compRegex);\r\n  if (compMatch) report.comp = compMatch[1].trim();\r\n\r\n  const domainMatch = plain.match(domainRegex);\r\n  if (domainMatch) report.domain = domainMatch[1].trim();\r\n\r\n  // Extract scoring table — look for table with \"Global\" row (using plain, bold already stripped)\r\n  const scoreRegex = /\\|\\s*(?:CV Match|Match con CV)\\s*\\|\\s*([\\d.]+)\\/5\\s*\\|/i;\r\n  const northStarRegex = /\\|\\s*(?:North Star)\\s*\\|\\s*([\\d.]+)\\/5\\s*\\|/i;\r\n  const compScoreRegex = /\\|\\s*(?:Comp)\\s*\\|\\s*([\\d.]+)\\/5\\s*\\|/i;\r\n  const culturalRegex = /\\|\\s*(?:Cultural signals|Cultural)\\s*\\|\\s*([\\d.]+)\\/5\\s*\\|/i;\r\n  const redFlagsRegex = /\\|\\s*(?:Red flags)\\s*\\|\\s*([-+]?[\\d.]+)\\s*\\|/i;\r\n  const globalRegex = /\\|\\s*(?:Global)\\s*\\|\\s*([\\d.]+)\\/5\\s*\\|/i;\r\n\r\n  const cvScoreMatch = plain.match(scoreRegex);\r\n  if (cvScoreMatch) report.scores.cvMatch = parseFloat(cvScoreMatch[1]);\r\n\r\n  const nsMatch = plain.match(northStarRegex);\r\n  if (nsMatch) report.scores.northStar = parseFloat(nsMatch[1]);\r\n\r\n  const csMatch = plain.match(compScoreRegex);\r\n  if (csMatch) report.scores.comp = parseFloat(csMatch[1]);\r\n\r\n  const culMatch = plain.match(culturalRegex);\r\n  if (culMatch) report.scores.cultural = parseFloat(culMatch[1]);\r\n\r\n  const rfMatch = plain.match(redFlagsRegex);\r\n  if (rfMatch) report.scores.redFlags = parseFloat(rfMatch[1]);\r\n\r\n  const glMatch = plain.match(globalRegex);\r\n  if (glMatch) report.scores.global = parseFloat(glMatch[1]);\r\n\r\n  // Extract gaps table\r\n  const gapTableRegex = /\\|\\s*Gap\\s*\\|\\s*Severity\\s*\\|.*?\\n\\|[-|\\s]+\\n([\\s\\S]*?)(?:\\n\\n|\\n##|\\n\\*\\*|$)/i;\r\n  const gapTableMatch = content.match(gapTableRegex);\r\n  if (gapTableMatch) {\r\n    const gapRows = gapTableMatch[1].split('\\n').filter(r => r.startsWith('|'));\r\n    for (const row of gapRows) {\r\n      const cols = row.split('|').map(s => s.trim()).filter(Boolean);\r\n      if (cols.length >= 2) {\r\n        report.gaps.push({\r\n          description: cols[0],\r\n          severity: cols[1].toLowerCase(),\r\n          mitigation: cols[2] || '',\r\n        });\r\n      }\r\n    }\r\n  }\r\n\r\n  return report;\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "analyze-patterns.mjs",
+    "tipo": "function",
+    "nome": "classifyRemote",
+    "linha_inicio": 172,
+    "linha_fim": 182,
+    "loc": 11,
+    "codigo": "function classifyRemote(raw) {\r\n  if (!raw) return 'unknown';\r\n  const lower = raw.toLowerCase();\r\n  // Order matters: check geo-restricted before general remote\r\n  if (/\\b(us[- ]?only|canada[- ]?only|residents only|usa only|us residents|canada residents)\\b/.test(lower)) return 'geo-restricted';\r\n  if (/\\bargentina\\s+remote\\s+only\\b/.test(lower)) return 'geo-restricted';\r\n  if (/\\b(hybrid|on-?site|office|columbus|cape town|relocat)\\b/.test(lower)) return 'hybrid/onsite';\r\n  if (/\\b(global|anywhere|worldwide|no restrict|70\\+|work from anywhere)\\b/.test(lower)) return 'global remote';\r\n  if (/\\b(remote|latam|americas|brazil|fully remote)\\b/.test(lower)) return 'regional remote';\r\n  return 'unknown';\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "analyze-patterns.mjs",
+    "tipo": "function",
+    "nome": "classifyCompanySize",
+    "linha_inicio": 185,
+    "linha_fim": 199,
+    "loc": 15,
+    "codigo": "function classifyCompanySize(teamSize) {\r\n  if (!teamSize) return 'unknown';\r\n  const lower = teamSize.toLowerCase();\r\n  // Extract numbers\r\n  const nums = lower.match(/[\\d,]+/g);\r\n  if (nums) {\r\n    const max = Math.max(...nums.map(n => parseInt(n.replace(/,/g, ''))));\r\n    if (max <= 50) return 'startup';\r\n    if (max <= 500) return 'scaleup';\r\n    return 'enterprise';\r\n  }\r\n  if (/\\b(small|elite|tiny|founding)\\b/.test(lower)) return 'startup';\r\n  if (/\\b(large|enterprise|global)\\b/.test(lower)) return 'enterprise';\r\n  return 'unknown';\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "analyze-patterns.mjs",
+    "tipo": "function",
+    "nome": "extractBlockerType",
+    "linha_inicio": 202,
+    "linha_fim": 211,
+    "loc": 10,
+    "codigo": "function extractBlockerType(gap) {\r\n  const desc = gap.description.toLowerCase();\r\n  const sev = gap.severity.toLowerCase();\r\n  if (sev.includes('nice') || sev.includes('soft')) return null; // skip soft gaps\r\n  if (/\\b(residency|us[- ]only|canada|location|visa|geo|country|region)\\b/.test(desc)) return 'geo-restriction';\r\n  if (/\\b(javascript|typescript|python|ruby|java|go|rust|node|react|angular|vue|django|flask|rails)\\b/.test(desc)) return 'stack-mismatch';\r\n  if (/\\b(senior|staff|lead|principal|director|manager|head)\\b/.test(desc)) return 'seniority-mismatch';\r\n  if (/\\b(hybrid|on-?site|office|relocat)\\b/.test(desc)) return 'onsite-requirement';\r\n  return 'other';\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "analyze-patterns.mjs",
+    "tipo": "function",
+    "nome": "analyze",
+    "linha_inicio": 214,
+    "linha_fim": 462,
+    "loc": 249,
+    "codigo": "function analyze() {\r\n  const entries = parseTracker();\r\n\r\n  if (entries.length === 0) {\r\n    return { error: 'No applications found in tracker.' };\r\n  }\r\n\r\n  // Enrich entries with report data and classification\r\n  const enriched = entries.map(e => {\r\n    const reportMatch = e.report.match(/\\]\\(([^)]+)\\)/);\r\n    const reportPath = reportMatch ? join(CAREER_OPS, reportMatch[1]) : null;\r\n    const reportData = reportPath ? parseReport(reportPath) : null;\r\n    const outcome = classifyOutcome(e.status);\r\n    const score = parseFloat(e.score) || 0;\r\n\r\n    // Fallback: if report didn't have Remote field, try the notes column\r\n    const remoteSource = reportData?.remote || e.notes || '';\r\n    const teamSource = reportData?.teamSize || '';\r\n\r\n    return {\r\n      ...e,\r\n      normalizedStatus: normalizeStatus(e.status),\r\n      outcome,\r\n      score,\r\n      report: reportData,\r\n      remoteBucket: classifyRemote(remoteSource),\r\n      companySize: classifyCompanySize(teamSource),\r\n    };\r\n  });\r\n\r\n  // Count entries beyond \"Evaluated\"\r\n  const beyondEvaluated = enriched.filter(e => e.normalizedStatus !== 'evaluated');\r\n  if (beyondEvaluated.length < MIN_THRESHOLD) {\r\n    return {\r\n      error: `Not enough data: ${beyondEvaluated.length}/${MIN_THRESHOLD} applications beyond \"Evaluated\". Keep applying and come back later.`,\r\n      current: beyondEvaluated.length,\r\n      threshold: MIN_THRESHOLD,\r\n    };\r\n  }\r\n\r\n  // --- Funnel ---\r\n  const funnel = {};\r\n  for (const e of enriched) {\r\n    const s = e.normalizedStatus;\r\n    funnel[s] = (funnel[s] || 0) + 1;\r\n  }\r\n\r\n  // --- Score comparison by outcome ---\r\n  const scoresByOutcome = { positive: [], negative: [], self_filtered: [], pending: [] };\r\n  for (const e of enriched) {\r\n    if (e.score > 0) scoresByOutcome[e.outcome].push(e.score);\r\n  }\r\n\r\n  const scoreStats = (arr) => {\r\n    if (arr.length === 0) return { avg: 0, min: 0, max: 0, count: 0 };\r\n    const avg = arr.reduce((a, b) => a + b, 0) / arr.length;\r\n    return {\r\n      avg: Math.round(avg * 100) / 100,\r\n      min: Math.min(...arr),\r\n      max: Math.max(...arr),\r\n      count: arr.length,\r\n    };\r\n  };\r\n\r\n  const scoreComparison = {\r\n    positive: scoreStats(scoresByOutcome.positive),\r\n    negative: scoreStats(scoresByOutcome.negative),\r\n    self_filtered: scoreStats(scoresByOutcome.self_filtered),\r\n    pending: scoreStats(scoresByOutcome.pending),\r\n  };\r\n\r\n  // --- Archetype breakdown ---\r\n  const archetypeMap = new Map();\r\n  for (const e of enriched) {\r\n    const arch = e.report?.archetype || 'Unknown';\r\n    if (!archetypeMap.has(arch)) archetypeMap.set(arch, { total: 0, positive: 0, negative: 0, self_filtered: 0, pending: 0 });\r\n    const entry = archetypeMap.get(arch);\r\n    entry.total++;\r\n    entry[e.outcome]++;\r\n  }\r\n  const archetypeBreakdown = [...archetypeMap.entries()].map(([archetype, data]) => ({\r\n    archetype,\r\n    ...data,\r\n    conversionRate: data.total > 0 ? Math.round((data.positive / data.total) * 100) : 0,\r\n  })).sort((a, b) => b.total - a.total);\r\n\r\n  // --- Blocker analysis ---\r\n  const blockerCounts = new Map();\r\n  const totalWithGaps = enriched.filter(e => e.report?.gaps?.length > 0);\r\n  for (const e of enriched) {\r\n    if (!e.report?.gaps) continue;\r\n    for (const gap of e.report.gaps) {\r\n      const type = extractBlockerType(gap);\r\n      if (!type) continue;\r\n      blockerCounts.set(type, (blockerCounts.get(type) || 0) + 1);\r\n    }\r\n  }\r\n  const blockerAnalysis = [...blockerCounts.entries()]\r\n    .map(([blocker, frequency]) => ({\r\n      blocker,\r\n      frequency,\r\n      percentage: Math.round((frequency / enriched.length) * 100),\r\n    }))\r\n    .sort((a, b) => b.frequency - a.frequency);\r\n\r\n  // --- Remote policy breakdown ---\r\n  const remoteMap = new Map();\r\n  for (const e of enriched) {\r\n    const policy = e.remoteBucket;\r\n    if (!remoteMap.has(policy)) remoteMap.set(policy, { total: 0, positive: 0, negative: 0, self_filtered: 0, pending: 0 });\r\n    const entry = remoteMap.get(policy);\r\n    entry.total++;\r\n    entry[e.outcome]++;\r\n  }\r\n  const remotePolicy = [...remoteMap.entries()].map(([policy, data]) => ({\r\n    policy,\r\n    ...data,\r\n    conversionRate: data.total > 0 ? Math.round((data.positive / data.total) * 100) : 0,\r\n  })).sort((a, b) => b.total - a.total);\r\n\r\n  // --- Company size breakdown ---\r\n  const sizeMap = new Map();\r\n  for (const e of enriched) {\r\n    const size = e.companySize;\r\n    if (!sizeMap.has(size)) sizeMap.set(size, { total: 0, positive: 0, negative: 0, self_filtered: 0, pending: 0 });\r\n    const entry = sizeMap.get(size);\r\n    entry.total++;\r\n    entry[e.outcome]++;\r\n  }\r\n  const companySizeBreakdown = [...sizeMap.entries()].map(([size, data]) => ({\r\n    size,\r\n    ...data,\r\n    conversionRate: data.total > 0 ? Math.round((data.positive / data.total) * 100) : 0,\r\n  })).sort((a, b) => b.total - a.total);\r\n\r\n  // --- Score threshold analysis ---\r\n  const positiveScores = scoresByOutcome.positive.filter(s => s > 0);\r\n  const minPositiveScore = positiveScores.length > 0 ? Math.min(...positiveScores) : 0;\r\n  const scoreThreshold = {\r\n    recommended: minPositiveScore > 0 ? Math.floor(minPositiveScore * 10) / 10 : 3.5,\r\n    reasoning: positiveScores.length > 0\r\n      ? `Lowest score among positive outcomes is ${minPositiveScore}. No applications below this score led to progress.`\r\n      : 'Not enough positive outcome data to determine threshold.',\r\n    positiveRange: positiveScores.length > 0\r\n      ? `${Math.min(...positiveScores)} - ${Math.max(...positiveScores)}`\r\n      : 'N/A',\r\n  };\r\n\r\n  // --- Tech stack gaps (from negative + self_filtered outcomes) ---\r\n  const stackGapCounts = new Map();\r\n  for (const e of enriched) {\r\n    if (e.outcome !== 'negative' && e.outcome !== 'self_filtered') continue;\r\n    if (!e.report?.gaps) continue;\r\n    for (const gap of e.report.gaps) {\r\n      // Extract tech keywords from gap descriptions\r\n      const techs = gap.description.match(/\\b(JavaScript|TypeScript|Python|Ruby|Java|Go|Rust|Node\\.?js|React|Angular|Vue\\.?js|Django|Flask|Rails|PHP|Laravel|Symfony|Kotlin|Swift|C\\+\\+|C#|\\.NET|MongoDB|MySQL|PostgreSQL|Redis|GraphQL|REST|AWS|GCP|Azure|Docker|Kubernetes|Terraform|Supabase|Inngest|React Native)\\b/gi);\r\n      if (techs) {\r\n        for (const tech of techs) {\r\n          const normalized = tech.charAt(0).toUpperCase() + tech.slice(1);\r\n          stackGapCounts.set(normalized, (stackGapCounts.get(normalized) || 0) + 1);\r\n        }\r\n      }\r\n    }\r\n  }\r\n  const techStackGaps = [...stackGapCounts.entries()]\r\n    .map(([skill, frequency]) => ({ skill, frequency }))\r\n    .sort((a, b) => b.frequency - a.frequency)\r\n    .slice(0, 15);\r\n\r\n  // --- Generate recommendations ---\r\n  const recommendations = [];\r\n\r\n  // Geo-restriction recommendation\r\n  const geoBlocker = blockerAnalysis.find(b => b.blocker === 'geo-restriction');\r\n  if (geoBlocker && geoBlocker.percentage >= 20) {\r\n    recommendations.push({\r\n      action: `Tighten location filters in portals.yml -- ${geoBlocker.percentage}% of applications hit a geo-restriction blocker`,\r\n      reasoning: `${geoBlocker.frequency} of ${enriched.length} offers are location-restricted (US/Canada-only). These are wasted evaluation effort.`,\r\n      impact: 'high',\r\n    });\r\n  }\r\n\r\n  // Stack mismatch recommendation\r\n  const stackBlocker = blockerAnalysis.find(b => b.blocker === 'stack-mismatch');\r\n  if (stackBlocker && stackBlocker.percentage >= 15) {\r\n    const topGaps = techStackGaps.slice(0, 3).map(g => g.skill).join(', ');\r\n    recommendations.push({\r\n      action: `Filter out roles requiring ${topGaps} as primary stack -- ${stackBlocker.percentage}% hit stack mismatch`,\r\n      reasoning: `Core stack gaps (${topGaps}) are the most common technical blockers in negative outcomes.`,\r\n      impact: 'high',\r\n    });\r\n  }\r\n\r\n  // Score threshold recommendation\r\n  if (minPositiveScore > 3.0) {\r\n    recommendations.push({\r\n      action: `Set minimum score threshold at ${scoreThreshold.recommended}/5 before generating PDFs`,\r\n      reasoning: `No positive outcomes below ${minPositiveScore}/5. Scores below this are wasted effort.`,\r\n      impact: 'medium',\r\n    });\r\n  }\r\n\r\n  // Best archetype recommendation\r\n  const bestArchetype = archetypeBreakdown.filter(a => a.total >= 2).sort((a, b) => b.conversionRate - a.conversionRate)[0];\r\n  if (bestArchetype && bestArchetype.conversionRate > 0) {\r\n    recommendations.push({\r\n      action: `Double down on \"${bestArchetype.archetype}\" roles (${bestArchetype.conversionRate}% conversion rate)`,\r\n      reasoning: `${bestArchetype.positive} of ${bestArchetype.total} applications in this archetype led to positive outcomes.`,\r\n      impact: 'medium',\r\n    });\r\n  }\r\n\r\n  // Remote policy recommendation\r\n  const bestRemote = remotePolicy.filter(r => r.total >= 2).sort((a, b) => b.conversionRate - a.conversionRate)[0];\r\n  const worstRemote = remotePolicy.filter(r => r.total >= 2 && r.conversionRate === 0)[0];\r\n  if (worstRemote) {\r\n    recommendations.push({\r\n      action: `Avoid \"${worstRemote.policy}\" roles (0% conversion across ${worstRemote.total} applications)`,\r\n      reasoning: `None of the ${worstRemote.total} applications with \"${worstRemote.policy}\" policy led to progress.`,\r\n      impact: 'medium',\r\n    });\r\n  }\r\n\r\n  // Date range\r\n  const dates = enriched.map(e => e.date).filter(Boolean).sort();\r\n\r\n  return {\r\n    metadata: {\r\n      total: enriched.length,\r\n      dateRange: { from: dates[0], to: dates[dates.length - 1] },\r\n      analysisDate: new Date().toISOString().split('T')[0],\r\n      byOutcome: {\r\n        positive: enriched.filter(e => e.outcome === 'positive').length,\r\n        negative: enriched.filter(e => e.outcome === 'negative').length,\r\n        self_filtered: enriched.filter(e => e.outcome === 'self_filtered').length,\r\n        pending: enriched.filter(e => e.outcome === 'pending').length,\r\n      },\r\n    },\r\n    funnel,\r\n    scoreComparison,\r\n    archetypeBreakdown,\r\n    blockerAnalysis,\r\n    remotePolicy,\r\n    companySizeBreakdown,\r\n    scoreThreshold,\r\n    techStackGaps,\r\n    recommendations,\r\n  };\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "analyze-patterns.mjs",
+    "tipo": "function",
+    "nome": "scoreStats",
+    "linha_inicio": 267,
+    "linha_fim": 276,
+    "loc": 10,
+    "codigo": "scoreStats = (arr) => {\r\n    if (arr.length === 0) return { avg: 0, min: 0, max: 0, count: 0 };\r\n    const avg = arr.reduce((a, b) => a + b, 0) / arr.length;\r\n    return {\r\n      avg: Math.round(avg * 100) / 100,\r\n      min: Math.min(...arr),\r\n      max: Math.max(...arr),\r\n      count: arr.length,\r\n    };\r\n  }"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "analyze-patterns.mjs",
+    "tipo": "function",
+    "nome": "printSummary",
+    "linha_inicio": 465,
+    "linha_fim": 539,
+    "loc": 75,
+    "codigo": "function printSummary(result) {\r\n  if (result.error) {\r\n    console.log(`\\n${result.error}\\n`);\r\n    return;\r\n  }\r\n\r\n  const { metadata, funnel, scoreComparison, archetypeBreakdown, blockerAnalysis, remotePolicy, scoreThreshold, techStackGaps, recommendations } = result;\r\n\r\n  console.log(`\\n${'='.repeat(60)}`);\r\n  console.log(`  Pattern Analysis — ${metadata.analysisDate}`);\r\n  console.log(`  ${metadata.total} applications (${metadata.dateRange.from} to ${metadata.dateRange.to})`);\r\n  console.log(`${'='.repeat(60)}\\n`);\r\n\r\n  // Funnel\r\n  console.log('CONVERSION FUNNEL');\r\n  console.log('-'.repeat(40));\r\n  const funnelOrder = ['evaluated', 'applied', 'responded', 'interview', 'offer', 'rejected', 'discarded', 'skip'];\r\n  for (const status of funnelOrder) {\r\n    if (funnel[status]) {\r\n      const pct = Math.round((funnel[status] / metadata.total) * 100);\r\n      console.log(`  ${status.padEnd(15)} ${String(funnel[status]).padStart(3)} (${pct}%)`);\r\n    }\r\n  }\r\n\r\n  // Score comparison\r\n  console.log('\\nSCORE BY OUTCOME');\r\n  console.log('-'.repeat(40));\r\n  for (const [group, stats] of Object.entries(scoreComparison)) {\r\n    if (stats.count > 0) {\r\n      console.log(`  ${group.padEnd(15)} avg ${stats.avg}/5  (${stats.count} entries, range ${stats.min}-${stats.max})`);\r\n    }\r\n  }\r\n\r\n  // Blockers\r\n  if (blockerAnalysis.length > 0) {\r\n    console.log('\\nTOP BLOCKERS');\r\n    console.log('-'.repeat(40));\r\n    for (const b of blockerAnalysis) {\r\n      console.log(`  ${b.blocker.padEnd(20)} ${String(b.frequency).padStart(2)}x (${b.percentage}% of all)`);\r\n    }\r\n  }\r\n\r\n  // Remote policy\r\n  console.log('\\nREMOTE POLICY');\r\n  console.log('-'.repeat(40));\r\n  for (const r of remotePolicy) {\r\n    console.log(`  ${r.policy.padEnd(20)} ${String(r.total).padStart(2)} total, ${r.positive} positive (${r.conversionRate}%)`);\r\n  }\r\n\r\n  // Tech gaps\r\n  if (techStackGaps.length > 0) {\r\n    console.log('\\nTOP TECH STACK GAPS (negative outcomes)');\r\n    console.log('-'.repeat(40));\r\n    for (const g of techStackGaps.slice(0, 10)) {\r\n      console.log(`  ${g.skill.padEnd(20)} ${g.frequency}x`);\r\n    }\r\n  }\r\n\r\n  // Score threshold\r\n  console.log(`\\nSCORE THRESHOLD: ${scoreThreshold.recommended}/5`);\r\n  console.log(`  ${scoreThreshold.reasoning}`);\r\n\r\n  // Recommendations\r\n  if (recommendations.length > 0) {\r\n    console.log(`\\nRECOMMENDATIONS`);\r\n    console.log('='.repeat(60));\r\n    for (let i = 0; i < recommendations.length; i++) {\r\n      const r = recommendations[i];\r\n      console.log(`  ${i + 1}. [${r.impact.toUpperCase()}] ${r.action}`);\r\n      console.log(`     ${r.reasoning}`);\r\n    }\r\n  }\r\n\r\n  console.log('');\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "check-liveness.mjs",
+    "tipo": "function",
+    "nome": "checkUrl",
+    "linha_inicio": 21,
+    "linha_fim": 70,
+    "loc": 50,
+    "codigo": "async function checkUrl(page, url) {\r\n  try {\r\n    const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 15000 });\r\n\r\n    const status = response?.status() ?? 0;\r\n\r\n    // Give SPAs (Ashby, Lever, Workday) time to hydrate\r\n    await page.waitForTimeout(2000);\r\n\r\n    const finalUrl = page.url();\r\n    const bodyText = await page.evaluate(() => document.body?.innerText ?? '');\r\n    const applyControls = await page.evaluate(() => {\r\n      const candidates = Array.from(\r\n        document.querySelectorAll('a, button, input[type=\"submit\"], input[type=\"button\"], [role=\"button\"]')\r\n      );\r\n\r\n      return candidates\r\n        .filter((element) => {\r\n          if (element.closest('nav, header, footer')) return false;\r\n          if (element.closest('[aria-hidden=\"true\"]')) return false;\r\n\r\n          const style = window.getComputedStyle(element);\r\n          if (style.display === 'none' || style.visibility === 'hidden') return false;\r\n          if (!element.getClientRects().length) return false;\r\n\r\n          return Array.from(element.getClientRects()).some((rect) => rect.width > 0 && rect.height > 0);\r\n        })\r\n        .map((element) => {\r\n          const label = [\r\n            element.innerText,\r\n            element.value,\r\n            element.getAttribute('aria-label'),\r\n            element.getAttribute('title'),\r\n          ]\r\n            .filter(Boolean)\r\n            .join(' ')\r\n            .replace(/\\s+/g, ' ')\r\n            .trim();\r\n\r\n          return label;\r\n        })\r\n        .filter(Boolean);\r\n    });\r\n\r\n    return classifyLiveness({ status, finalUrl, bodyText, applyControls });\r\n\r\n  } catch (err) {\r\n    return { result: 'expired', reason: `navigation error: ${err.message.split('\\n')[0]}` };\r\n  }\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "check-liveness.mjs",
+    "tipo": "function",
+    "nome": "main",
+    "linha_inicio": 72,
+    "linha_fim": 111,
+    "loc": 40,
+    "codigo": "async function main() {\r\n  const args = process.argv.slice(2);\r\n\r\n  if (args.length === 0) {\r\n    console.error('Usage: node check-liveness.mjs <url1> [url2] ...');\r\n    console.error('       node check-liveness.mjs --file urls.txt');\r\n    process.exit(1);\r\n  }\r\n\r\n  let urls;\r\n  if (args[0] === '--file') {\r\n    const text = await readFile(args[1], 'utf-8');\r\n    urls = text.split('\\n').map(l => l.trim()).filter(l => l && !l.startsWith('#'));\r\n  } else {\r\n    urls = args;\r\n  }\r\n\r\n  console.log(`Checking ${urls.length} URL(s)...\\n`);\r\n\r\n  const browser = await chromium.launch({ headless: true });\r\n  const page = await browser.newPage();\r\n\r\n  let active = 0, expired = 0, uncertain = 0;\r\n\r\n  // Sequential — project rule: never Playwright in parallel\r\n  for (const url of urls) {\r\n    const { result, reason } = await checkUrl(page, url);\r\n    const icon = { active: '✅', expired: '❌', uncertain: '⚠️' }[result];\r\n    console.log(`${icon} ${result.padEnd(10)} ${url}`);\r\n    if (result !== 'active') console.log(`           ${reason}`);\r\n    if (result === 'active') active++;\r\n    else if (result === 'expired') expired++;\r\n    else uncertain++;\r\n  }\r\n\r\n  await browser.close();\r\n\r\n  console.log(`\\nResults: ${active} active  ${expired} expired  ${uncertain} uncertain`);\r\n  if (expired > 0 || uncertain > 0) process.exit(1);\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "dedup-tracker.mjs",
+    "tipo": "function",
+    "nome": "normalizeCompany",
+    "linha_inicio": 49,
+    "linha_fim": 55,
+    "loc": 7,
+    "codigo": "function normalizeCompany(name) {\r\n  return name.toLowerCase()\r\n    .replace(/[()]/g, '')\r\n    .replace(/\\s+/g, ' ')\r\n    .replace(/[^a-z0-9 ]/g, '')\r\n    .trim();\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "dedup-tracker.mjs",
+    "tipo": "function",
+    "nome": "normalizeRole",
+    "linha_inicio": 57,
+    "linha_fim": 63,
+    "loc": 7,
+    "codigo": "function normalizeRole(role) {\r\n  return role.toLowerCase()\r\n    .replace(/[()]/g, ' ')\r\n    .replace(/\\s+/g, ' ')\r\n    .replace(/[^a-z0-9 /]/g, '')\r\n    .trim();\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "dedup-tracker.mjs",
+    "tipo": "function",
+    "nome": "roleMatch",
+    "linha_inicio": 65,
+    "linha_fim": 70,
+    "loc": 6,
+    "codigo": "function roleMatch(a, b) {\r\n  const wordsA = normalizeRole(a).split(/\\s+/).filter(w => w.length > 3);\r\n  const wordsB = normalizeRole(b).split(/\\s+/).filter(w => w.length > 3);\r\n  const overlap = wordsA.filter(w => wordsB.some(wb => wb.includes(w) || w.includes(wb)));\r\n  return overlap.length >= 2;\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "dedup-tracker.mjs",
+    "tipo": "function",
+    "nome": "parseScore",
+    "linha_inicio": 72,
+    "linha_fim": 75,
+    "loc": 4,
+    "codigo": "function parseScore(s) {\r\n  const m = s.replace(/\\*\\*/g, '').match(/([\\d.]+)/);\r\n  return m ? parseFloat(m[1]) : 0;\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "dedup-tracker.mjs",
+    "tipo": "function",
+    "nome": "parseAppLine",
+    "linha_inicio": 77,
+    "linha_fim": 94,
+    "loc": 18,
+    "codigo": "function parseAppLine(line) {\r\n  const parts = line.split('|').map(s => s.trim());\r\n  if (parts.length < 9) return null;\r\n  const num = parseInt(parts[1]);\r\n  if (isNaN(num)) return null;\r\n  return {\r\n    num,\r\n    date: parts[2],\r\n    company: parts[3],\r\n    role: parts[4],\r\n    score: parts[5],\r\n    status: parts[6],\r\n    pdf: parts[7],\r\n    report: parts[8],\r\n    notes: parts[9] || '',\r\n    raw: line,\r\n  };\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "doctor.mjs",
+    "tipo": "function",
+    "nome": "green",
+    "linha_inicio": 17,
+    "linha_fim": 17,
+    "loc": 1,
+    "codigo": "green = (s) => isTTY ? `\\x1b[32m${s}\\x1b[0m` : s"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "doctor.mjs",
+    "tipo": "function",
+    "nome": "red",
+    "linha_inicio": 18,
+    "linha_fim": 18,
+    "loc": 1,
+    "codigo": "red = (s) => isTTY ? `\\x1b[31m${s}\\x1b[0m` : s"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "doctor.mjs",
+    "tipo": "function",
+    "nome": "dim",
+    "linha_inicio": 19,
+    "linha_fim": 19,
+    "loc": 1,
+    "codigo": "dim = (s) => isTTY ? `\\x1b[2m${s}\\x1b[0m` : s"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "doctor.mjs",
+    "tipo": "function",
+    "nome": "checkNodeVersion",
+    "linha_inicio": 21,
+    "linha_fim": 31,
+    "loc": 11,
+    "codigo": "function checkNodeVersion() {\r\n  const major = parseInt(process.versions.node.split('.')[0]);\r\n  if (major >= 18) {\r\n    return { pass: true, label: `Node.js >= 18 (v${process.versions.node})` };\r\n  }\r\n  return {\r\n    pass: false,\r\n    label: `Node.js >= 18 (found v${process.versions.node})`,\r\n    fix: 'Install Node.js 18 or later from https://nodejs.org',\r\n  };\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "doctor.mjs",
+    "tipo": "function",
+    "nome": "checkDependencies",
+    "linha_inicio": 33,
+    "linha_fim": 42,
+    "loc": 10,
+    "codigo": "function checkDependencies() {\r\n  if (existsSync(join(projectRoot, 'node_modules'))) {\r\n    return { pass: true, label: 'Dependencies installed' };\r\n  }\r\n  return {\r\n    pass: false,\r\n    label: 'Dependencies not installed',\r\n    fix: 'Run: npm install',\r\n  };\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "doctor.mjs",
+    "tipo": "function",
+    "nome": "checkPlaywright",
+    "linha_inicio": 44,
+    "linha_fim": 63,
+    "loc": 20,
+    "codigo": "async function checkPlaywright() {\r\n  try {\r\n    const { chromium } = await import('playwright');\r\n    const execPath = chromium.executablePath();\r\n    if (existsSync(execPath)) {\r\n      return { pass: true, label: 'Playwright chromium installed' };\r\n    }\r\n    return {\r\n      pass: false,\r\n      label: 'Playwright chromium not installed',\r\n      fix: 'Run: npx playwright install chromium',\r\n    };\r\n  } catch {\r\n    return {\r\n      pass: false,\r\n      label: 'Playwright chromium not installed',\r\n      fix: 'Run: npx playwright install chromium',\r\n    };\r\n  }\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "doctor.mjs",
+    "tipo": "function",
+    "nome": "checkCv",
+    "linha_inicio": 65,
+    "linha_fim": 77,
+    "loc": 13,
+    "codigo": "function checkCv() {\r\n  if (existsSync(join(projectRoot, 'cv.md'))) {\r\n    return { pass: true, label: 'cv.md found' };\r\n  }\r\n  return {\r\n    pass: false,\r\n    label: 'cv.md not found',\r\n    fix: [\r\n      'Create cv.md in the project root with your CV in markdown',\r\n      'See examples/ for reference CVs',\r\n    ],\r\n  };\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "doctor.mjs",
+    "tipo": "function",
+    "nome": "checkProfile",
+    "linha_inicio": 79,
+    "linha_fim": 91,
+    "loc": 13,
+    "codigo": "function checkProfile() {\r\n  if (existsSync(join(projectRoot, 'config', 'profile.yml'))) {\r\n    return { pass: true, label: 'config/profile.yml found' };\r\n  }\r\n  return {\r\n    pass: false,\r\n    label: 'config/profile.yml not found',\r\n    fix: [\r\n      'Run: cp config/profile.example.yml config/profile.yml',\r\n      'Then edit it with your details',\r\n    ],\r\n  };\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "doctor.mjs",
+    "tipo": "function",
+    "nome": "checkPortals",
+    "linha_inicio": 93,
+    "linha_fim": 105,
+    "loc": 13,
+    "codigo": "function checkPortals() {\r\n  if (existsSync(join(projectRoot, 'portals.yml'))) {\r\n    return { pass: true, label: 'portals.yml found' };\r\n  }\r\n  return {\r\n    pass: false,\r\n    label: 'portals.yml not found',\r\n    fix: [\r\n      'Run: cp templates/portals.example.yml portals.yml',\r\n      'Then customize with your target companies',\r\n    ],\r\n  };\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "doctor.mjs",
+    "tipo": "function",
+    "nome": "checkFonts",
+    "linha_inicio": 107,
+    "linha_fim": 133,
+    "loc": 27,
+    "codigo": "function checkFonts() {\r\n  const fontsDir = join(projectRoot, 'fonts');\r\n  if (!existsSync(fontsDir)) {\r\n    return {\r\n      pass: false,\r\n      label: 'fonts/ directory not found',\r\n      fix: 'The fonts/ directory is required for PDF generation',\r\n    };\r\n  }\r\n  try {\r\n    const files = readdirSync(fontsDir);\r\n    if (files.length === 0) {\r\n      return {\r\n        pass: false,\r\n        label: 'fonts/ directory is empty',\r\n        fix: 'The fonts/ directory must contain font files for PDF generation',\r\n      };\r\n    }\r\n  } catch {\r\n    return {\r\n      pass: false,\r\n      label: 'fonts/ directory not readable',\r\n      fix: 'Check permissions on the fonts/ directory',\r\n    };\r\n  }\r\n  return { pass: true, label: 'Fonts directory ready' };\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "doctor.mjs",
+    "tipo": "function",
+    "nome": "checkAutoDir",
+    "linha_inicio": 135,
+    "linha_fim": 150,
+    "loc": 16,
+    "codigo": "function checkAutoDir(name) {\r\n  const dirPath = join(projectRoot, name);\r\n  if (existsSync(dirPath)) {\r\n    return { pass: true, label: `${name}/ directory ready` };\r\n  }\r\n  try {\r\n    mkdirSync(dirPath, { recursive: true });\r\n    return { pass: true, label: `${name}/ directory ready (auto-created)` };\r\n  } catch {\r\n    return {\r\n      pass: false,\r\n      label: `${name}/ directory could not be created`,\r\n      fix: `Run: mkdir ${name}`,\r\n    };\r\n  }\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "doctor.mjs",
+    "tipo": "function",
+    "nome": "main",
+    "linha_inicio": 152,
+    "linha_fim": 194,
+    "loc": 43,
+    "codigo": "async function main() {\r\n  console.log('\\ncareer-ops doctor');\r\n  console.log('================\\n');\r\n\r\n  const checks = [\r\n    checkNodeVersion(),\r\n    checkDependencies(),\r\n    await checkPlaywright(),\r\n    checkCv(),\r\n    checkProfile(),\r\n    checkPortals(),\r\n    checkFonts(),\r\n    checkAutoDir('data'),\r\n    checkAutoDir('output'),\r\n    checkAutoDir('reports'),\r\n  ];\r\n\r\n  let failures = 0;\r\n\r\n  for (const result of checks) {\r\n    if (result.pass) {\r\n      console.log(`${green('✓')} ${result.label}`);\r\n    } else {\r\n      failures++;\r\n      console.log(`${red('✗')} ${result.label}`);\r\n      const fixes = Array.isArray(result.fix) ? result.fix : [result.fix];\r\n      for (const hint of fixes) {\r\n        console.log(`  ${dim('→ ' + hint)}`);\r\n      }\r\n    }\r\n  }\r\n\r\n  console.log('');\r\n  if (failures > 0) {\r\n    console.log(`Result: ${failures} issue${failures === 1 ? '' : 's'} found. Fix them and run \\`npm run doctor\\` again.`);\r\n    process.exit(1);\r\n  } else {\r\n    console.log('Result: All checks passed. You\\'re ready to go! Run `claude` to start.');\r\n    console.log('');\r\n    console.log('Join the community: https://discord.gg/8pRpHETxa4');\r\n    process.exit(0);\r\n  }\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "followup-cadence.mjs",
+    "tipo": "function",
+    "nome": "normalizeStatus",
+    "linha_inicio": 59,
+    "linha_fim": 63,
+    "loc": 5,
+    "codigo": "function normalizeStatus(raw) {\r\n  const clean = raw.replace(/\\*\\*/g, '').trim().toLowerCase()\r\n    .replace(/\\s+\\d{4}-\\d{2}-\\d{2}.*$/, '').trim();\r\n  return ALIASES[clean] || clean;\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "followup-cadence.mjs",
+    "tipo": "function",
+    "nome": "today",
+    "linha_inicio": 66,
+    "linha_fim": 68,
+    "loc": 3,
+    "codigo": "function today() {\r\n  return new Date(new Date().toISOString().split('T')[0]);\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "followup-cadence.mjs",
+    "tipo": "function",
+    "nome": "parseDate",
+    "linha_inicio": 70,
+    "linha_fim": 73,
+    "loc": 4,
+    "codigo": "function parseDate(dateStr) {\r\n  if (!dateStr || !/^\\d{4}-\\d{2}-\\d{2}$/.test(dateStr.trim())) return null;\r\n  return new Date(dateStr.trim());\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "followup-cadence.mjs",
+    "tipo": "function",
+    "nome": "daysBetween",
+    "linha_inicio": 75,
+    "linha_fim": 77,
+    "loc": 3,
+    "codigo": "function daysBetween(d1, d2) {\r\n  return Math.floor((d2 - d1) / (1000 * 60 * 60 * 24));\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "followup-cadence.mjs",
+    "tipo": "function",
+    "nome": "addDays",
+    "linha_inicio": 79,
+    "linha_fim": 83,
+    "loc": 5,
+    "codigo": "function addDays(date, days) {\r\n  const result = new Date(date);\r\n  result.setUTCDate(result.getUTCDate() + days);\r\n  return result.toISOString().split('T')[0];\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "followup-cadence.mjs",
+    "tipo": "function",
+    "nome": "parseTracker",
+    "linha_inicio": 86,
+    "linha_fim": 103,
+    "loc": 18,
+    "codigo": "function parseTracker() {\r\n  if (!existsSync(APPS_FILE)) return [];\r\n  const content = readFileSync(APPS_FILE, 'utf-8');\r\n  const entries = [];\r\n  for (const line of content.split('\\n')) {\r\n    if (!line.startsWith('|')) continue;\r\n    const parts = line.split('|').map(s => s.trim());\r\n    if (parts.length < 9) continue;\r\n    const num = parseInt(parts[1]);\r\n    if (isNaN(num)) continue;\r\n    entries.push({\r\n      num, date: parts[2], company: parts[3], role: parts[4],\r\n      score: parts[5], status: parts[6], pdf: parts[7], report: parts[8],\r\n      notes: parts[9] || '',\r\n    });\r\n  }\r\n  return entries;\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "followup-cadence.mjs",
+    "tipo": "function",
+    "nome": "parseFollowups",
+    "linha_inicio": 106,
+    "linha_fim": 128,
+    "loc": 23,
+    "codigo": "function parseFollowups() {\r\n  if (!existsSync(FOLLOWUPS_FILE)) return [];\r\n  const content = readFileSync(FOLLOWUPS_FILE, 'utf-8');\r\n  const entries = [];\r\n  for (const line of content.split('\\n')) {\r\n    if (!line.startsWith('|')) continue;\r\n    const parts = line.split('|').map(s => s.trim());\r\n    if (parts.length < 8) continue;\r\n    const num = parseInt(parts[1]);\r\n    if (isNaN(num)) continue;\r\n    entries.push({\r\n      num,\r\n      appNum: parseInt(parts[2]),\r\n      date: parts[3],\r\n      company: parts[4],\r\n      role: parts[5],\r\n      channel: parts[6],\r\n      contact: parts[7],\r\n      notes: parts[8] || '',\r\n    });\r\n  }\r\n  return entries;\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "followup-cadence.mjs",
+    "tipo": "function",
+    "nome": "extractContacts",
+    "linha_inicio": 131,
+    "linha_fim": 145,
+    "loc": 15,
+    "codigo": "function extractContacts(notes) {\r\n  if (!notes) return [];\r\n  const contacts = [];\r\n  const emailRegex = /[\\w.-]+@[\\w.-]+\\.\\w+/g;\r\n  const emails = notes.match(emailRegex) || [];\r\n  for (const email of emails) {\r\n    // Try to extract name before email: \"Emailed Name at\" or \"contact: Name\"\r\n    let name = null;\r\n    const beforeEmail = notes.substring(0, notes.indexOf(email));\r\n    const nameMatch = beforeEmail.match(/(?:Emailed|emailed|contact[:\\s]+|to\\s+)([A-Z][a-z]+ ?[A-Z]?[a-z]*)\\s*(?:at|@|$)/i);\r\n    if (nameMatch) name = nameMatch[1].trim();\r\n    contacts.push({ email, name });\r\n  }\r\n  return contacts;\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "followup-cadence.mjs",
+    "tipo": "function",
+    "nome": "resolveReportPath",
+    "linha_inicio": 148,
+    "linha_fim": 153,
+    "loc": 6,
+    "codigo": "function resolveReportPath(reportField) {\r\n  const match = reportField.match(/\\]\\(([^)]+)\\)/);\r\n  if (!match) return null;\r\n  const fullPath = join(CAREER_OPS, match[1]);\r\n  return existsSync(fullPath) ? match[1] : null;\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "followup-cadence.mjs",
+    "tipo": "function",
+    "nome": "computeUrgency",
+    "linha_inicio": 156,
+    "linha_fim": 173,
+    "loc": 18,
+    "codigo": "function computeUrgency(status, daysSinceApp, daysSinceLastFollowup, followupCount) {\r\n  if (status === 'applied') {\r\n    if (followupCount >= CADENCE.applied_max_followups) return 'cold';\r\n    if (followupCount === 0 && daysSinceApp >= CADENCE.applied_first) return 'overdue';\r\n    if (followupCount > 0 && daysSinceLastFollowup !== null && daysSinceLastFollowup >= CADENCE.applied_subsequent) return 'overdue';\r\n    return 'waiting';\r\n  }\r\n  if (status === 'responded') {\r\n    if (daysSinceApp < CADENCE.responded_initial) return 'urgent';\r\n    if (daysSinceApp >= CADENCE.responded_subsequent) return 'overdue';\r\n    return 'waiting';\r\n  }\r\n  if (status === 'interview') {\r\n    if (daysSinceApp >= CADENCE.interview_thankyou) return 'overdue';\r\n    return 'waiting';\r\n  }\r\n  return 'waiting';\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "followup-cadence.mjs",
+    "tipo": "function",
+    "nome": "computeNextFollowupDate",
+    "linha_inicio": 176,
+    "linha_fim": 191,
+    "loc": 16,
+    "codigo": "function computeNextFollowupDate(status, appDate, lastFollowupDate, followupCount) {\r\n  if (status === 'applied') {\r\n    if (followupCount >= CADENCE.applied_max_followups) return null; // cold\r\n    if (followupCount === 0) return addDays(parseDate(appDate), CADENCE.applied_first);\r\n    if (lastFollowupDate) return addDays(parseDate(lastFollowupDate), CADENCE.applied_subsequent);\r\n    return addDays(parseDate(appDate), CADENCE.applied_first);\r\n  }\r\n  if (status === 'responded') {\r\n    if (lastFollowupDate) return addDays(parseDate(lastFollowupDate), CADENCE.responded_subsequent);\r\n    return addDays(parseDate(appDate), CADENCE.responded_subsequent);\r\n  }\r\n  if (status === 'interview') {\r\n    return addDays(parseDate(appDate), CADENCE.interview_thankyou);\r\n  }\r\n  return null;\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "followup-cadence.mjs",
+    "tipo": "function",
+    "nome": "analyze",
+    "linha_inicio": 194,
+    "linha_fim": 281,
+    "loc": 88,
+    "codigo": "function analyze() {\r\n  const apps = parseTracker();\r\n  if (apps.length === 0) {\r\n    return { error: 'No applications found in tracker.' };\r\n  }\r\n\r\n  const followups = parseFollowups();\r\n\r\n  // Group follow-ups by app number\r\n  const followupsByApp = new Map();\r\n  for (const fu of followups) {\r\n    if (!followupsByApp.has(fu.appNum)) followupsByApp.set(fu.appNum, []);\r\n    followupsByApp.get(fu.appNum).push(fu);\r\n  }\r\n\r\n  const now = today();\r\n  const entries = [];\r\n\r\n  for (const app of apps) {\r\n    const normalized = normalizeStatus(app.status);\r\n    if (!ACTIONABLE_STATUSES.includes(normalized)) continue;\r\n\r\n    const appDate = parseDate(app.date);\r\n    if (!appDate) continue;\r\n\r\n    const daysSinceApp = daysBetween(appDate, now);\r\n    const appFollowups = followupsByApp.get(app.num) || [];\r\n    const followupCount = appFollowups.length;\r\n\r\n    // Find most recent follow-up\r\n    let lastFollowupDate = null;\r\n    let daysSinceLastFollowup = null;\r\n    if (appFollowups.length > 0) {\r\n      const sorted = appFollowups.sort((a, b) => (a.date > b.date ? -1 : 1));\r\n      lastFollowupDate = sorted[0].date;\r\n      const lastDate = parseDate(lastFollowupDate);\r\n      if (lastDate) daysSinceLastFollowup = daysBetween(lastDate, now);\r\n    }\r\n\r\n    const urgency = computeUrgency(normalized, daysSinceApp, daysSinceLastFollowup, followupCount);\r\n    const nextFollowupDate = computeNextFollowupDate(normalized, app.date, lastFollowupDate, followupCount);\r\n    const nextDate = nextFollowupDate ? parseDate(nextFollowupDate) : null;\r\n    const daysUntilNext = nextDate ? daysBetween(now, nextDate) : null;\r\n\r\n    const contacts = extractContacts(app.notes);\r\n    const reportPath = resolveReportPath(app.report);\r\n\r\n    entries.push({\r\n      num: app.num,\r\n      date: app.date,\r\n      company: app.company,\r\n      role: app.role,\r\n      status: normalized,\r\n      score: app.score,\r\n      notes: app.notes,\r\n      reportPath,\r\n      contacts,\r\n      daysSinceApplication: daysSinceApp,\r\n      daysSinceLastFollowup,\r\n      followupCount,\r\n      urgency,\r\n      nextFollowupDate,\r\n      daysUntilNext,\r\n    });\r\n  }\r\n\r\n  // Sort by urgency priority: urgent > overdue > waiting > cold\r\n  const urgencyOrder = { urgent: 0, overdue: 1, waiting: 2, cold: 3 };\r\n  entries.sort((a, b) => (urgencyOrder[a.urgency] ?? 9) - (urgencyOrder[b.urgency] ?? 9));\r\n\r\n  const filtered = overdueOnly\r\n    ? entries.filter(e => e.urgency === 'overdue' || e.urgency === 'urgent')\r\n    : entries;\r\n\r\n  return {\r\n    metadata: {\r\n      analysisDate: now.toISOString().split('T')[0],\r\n      totalTracked: apps.length,\r\n      actionable: entries.length,\r\n      overdue: entries.filter(e => e.urgency === 'overdue').length,\r\n      urgent: entries.filter(e => e.urgency === 'urgent').length,\r\n      cold: entries.filter(e => e.urgency === 'cold').length,\r\n      waiting: entries.filter(e => e.urgency === 'waiting').length,\r\n    },\r\n    entries: filtered,\r\n    cadenceConfig: CADENCE,\r\n  };\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "followup-cadence.mjs",
+    "tipo": "function",
+    "nome": "printSummary",
+    "linha_inicio": 284,
+    "linha_fim": 328,
+    "loc": 45,
+    "codigo": "function printSummary(result) {\r\n  if (result.error) {\r\n    console.log(`\\n${result.error}\\n`);\r\n    return;\r\n  }\r\n\r\n  const { metadata, entries } = result;\r\n\r\n  console.log(`\\n${'='.repeat(70)}`);\r\n  console.log(`  Follow-up Cadence Dashboard — ${metadata.analysisDate}`);\r\n  console.log(`  ${metadata.totalTracked} total applications, ${metadata.actionable} actionable`);\r\n  console.log(`${'='.repeat(70)}\\n`);\r\n\r\n  if (entries.length === 0) {\r\n    console.log('  No active applications to track. Apply to some roles first.\\n');\r\n    return;\r\n  }\r\n\r\n  // Status summary\r\n  const urgencyIcon = { urgent: 'URGENT', overdue: 'OVERDUE', waiting: 'waiting', cold: 'COLD' };\r\n  console.log(`  ${metadata.urgent} urgent | ${metadata.overdue} overdue | ${metadata.waiting} waiting | ${metadata.cold} cold\\n`);\r\n\r\n  // Table header\r\n  console.log('  ' + '#'.padEnd(5) + 'Company'.padEnd(16) + 'Status'.padEnd(12) + 'Days'.padEnd(6) + 'F/U'.padEnd(5) + 'Next'.padEnd(13) + 'Urgency'.padEnd(10) + 'Contact');\r\n  console.log('  ' + '-'.repeat(80));\r\n\r\n  for (const e of entries) {\r\n    const urgLabel = urgencyIcon[e.urgency] || e.urgency;\r\n    const nextStr = e.nextFollowupDate || '-';\r\n    const contactStr = e.contacts.length > 0 ? e.contacts[0].email : '-';\r\n    console.log(\r\n      '  ' +\r\n      String(e.num).padEnd(5) +\r\n      e.company.substring(0, 15).padEnd(16) +\r\n      e.status.padEnd(12) +\r\n      String(e.daysSinceApplication).padEnd(6) +\r\n      String(e.followupCount).padEnd(5) +\r\n      nextStr.padEnd(13) +\r\n      urgLabel.padEnd(10) +\r\n      contactStr\r\n    );\r\n  }\r\n\r\n  console.log('');\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "generate-pdf.mjs",
+    "tipo": "function",
+    "nome": "normalizeTextForATS",
+    "linha_inicio": 30,
+    "linha_fim": 71,
+    "loc": 42,
+    "codigo": "function normalizeTextForATS(html) {\r\n  const replacements = {};\r\n  const bump = (key, n) => { replacements[key] = (replacements[key] || 0) + n; };\r\n\r\n  const masks = [];\r\n  const masked = html.replace(\r\n    /<(style|script)\\b[^>]*>[\\s\\S]*?<\\/\\1>/gi,\r\n    (match) => {\r\n      const token = `\\u0000MASK${masks.length}\\u0000`;\r\n      masks.push(match);\r\n      return token;\r\n    }\r\n  );\r\n\r\n  let out = '';\r\n  let i = 0;\r\n  while (i < masked.length) {\r\n    const lt = masked.indexOf('<', i);\r\n    if (lt === -1) { out += sanitizeText(masked.slice(i)); break; }\r\n    out += sanitizeText(masked.slice(i, lt));\r\n    const gt = masked.indexOf('>', lt);\r\n    if (gt === -1) { out += masked.slice(lt); break; }\r\n    out += masked.slice(lt, gt + 1);\r\n    i = gt + 1;\r\n  }\r\n\r\n  const restored = out.replace(/\\u0000MASK(\\d+)\\u0000/g, (_, n) => masks[Number(n)]);\r\n  return { html: restored, replacements };\r\n\r\n  function sanitizeText(text) {\r\n    if (!text) return text;\r\n    let t = text;\r\n    t = t.replace(/\\u2014/g, () => { bump('em-dash', 1); return '-'; });\r\n    t = t.replace(/\\u2013/g, () => { bump('en-dash', 1); return '-'; });\r\n    t = t.replace(/[\\u201C\\u201D\\u201E\\u201F]/g, () => { bump('smart-double-quote', 1); return '\"'; });\r\n    t = t.replace(/[\\u2018\\u2019\\u201A\\u201B]/g, () => { bump('smart-single-quote', 1); return \"'\"; });\r\n    t = t.replace(/\\u2026/g, () => { bump('ellipsis', 1); return '...'; });\r\n    t = t.replace(/[\\u200B\\u200C\\u200D\\u2060\\uFEFF]/g, () => { bump('zero-width', 1); return ''; });\r\n    t = t.replace(/\\u00A0/g, () => { bump('nbsp', 1); return ' '; });\r\n    return t;\r\n  }\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "generate-pdf.mjs",
+    "tipo": "function",
+    "nome": "bump",
+    "linha_inicio": 32,
+    "linha_fim": 32,
+    "loc": 1,
+    "codigo": "bump = (key, n) => { replacements[key] = (replacements[key] || 0) + n; }"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "generate-pdf.mjs",
+    "tipo": "function",
+    "nome": "sanitizeText",
+    "linha_inicio": 59,
+    "linha_fim": 70,
+    "loc": 12,
+    "codigo": "function sanitizeText(text) {\r\n    if (!text) return text;\r\n    let t = text;\r\n    t = t.replace(/\\u2014/g, () => { bump('em-dash', 1); return '-'; });\r\n    t = t.replace(/\\u2013/g, () => { bump('en-dash', 1); return '-'; });\r\n    t = t.replace(/[\\u201C\\u201D\\u201E\\u201F]/g, () => { bump('smart-double-quote', 1); return '\"'; });\r\n    t = t.replace(/[\\u2018\\u2019\\u201A\\u201B]/g, () => { bump('smart-single-quote', 1); return \"'\"; });\r\n    t = t.replace(/\\u2026/g, () => { bump('ellipsis', 1); return '...'; });\r\n    t = t.replace(/[\\u200B\\u200C\\u200D\\u2060\\uFEFF]/g, () => { bump('zero-width', 1); return ''; });\r\n    t = t.replace(/\\u00A0/g, () => { bump('nbsp', 1); return ' '; });\r\n    return t;\r\n  }"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "generate-pdf.mjs",
+    "tipo": "function",
+    "nome": "generatePDF",
+    "linha_inicio": 73,
+    "linha_fim": 174,
+    "loc": 102,
+    "codigo": "async function generatePDF() {\r\n  const args = process.argv.slice(2);\r\n\r\n  // Parse arguments\r\n  let inputPath, outputPath, format = 'a4';\r\n\r\n  for (const arg of args) {\r\n    if (arg.startsWith('--format=')) {\r\n      format = arg.split('=')[1].toLowerCase();\r\n    } else if (!inputPath) {\r\n      inputPath = arg;\r\n    } else if (!outputPath) {\r\n      outputPath = arg;\r\n    }\r\n  }\r\n\r\n  if (!inputPath || !outputPath) {\r\n    console.error('Usage: node generate-pdf.mjs <input.html> <output.pdf> [--format=letter|a4]');\r\n    process.exit(1);\r\n  }\r\n\r\n  inputPath = resolve(inputPath);\r\n  outputPath = resolve(outputPath);\r\n\r\n  // Validate format\r\n  const validFormats = ['a4', 'letter'];\r\n  if (!validFormats.includes(format)) {\r\n    console.error(`Invalid format \"${format}\". Use: ${validFormats.join(', ')}`);\r\n    process.exit(1);\r\n  }\r\n\r\n  console.log(`📄 Input:  ${inputPath}`);\r\n  console.log(`📁 Output: ${outputPath}`);\r\n  console.log(`📏 Format: ${format.toUpperCase()}`);\r\n\r\n  // Read HTML to inject font paths as absolute file:// URLs\r\n  let html = await readFile(inputPath, 'utf-8');\r\n\r\n  // Resolve font paths relative to career-ops/fonts/\r\n  const fontsDir = resolve(__dirname, 'fonts');\r\n  html = html.replace(\r\n    /url\\(['\"]?\\.\\/fonts\\//g,\r\n    `url('file://${fontsDir}/`\r\n  );\r\n  // Close any unclosed quotes from the replacement (handles all font formats)\r\n  html = html.replace(\r\n    /file:\\/\\/([^'\")]+)\\.(woff2?|ttf|otf)['\"]?\\)/g,\r\n    `file://$1.$2')`\r\n  );\r\n\r\n  // Normalize text for ATS compatibility (issue #1)\r\n  const normalized = normalizeTextForATS(html);\r\n  html = normalized.html;\r\n  const totalReplacements = Object.values(normalized.replacements).reduce((a, b) => a + b, 0);\r\n  if (totalReplacements > 0) {\r\n    const breakdown = Object.entries(normalized.replacements).map(([k, v]) => `${k}=${v}`).join(', ');\r\n    console.log(`🧹 ATS normalization: ${totalReplacements} replacements (${breakdown})`);\r\n  }\r\n\r\n  const browser = await chromium.launch({ headless: true });\r\n  try {\r\n    const page = await browser.newPage();\r\n\r\n    // Set content with file base URL for any relative resources\r\n    await page.setContent(html, {\r\n      waitUntil: 'networkidle',\r\n      baseURL: `file://${dirname(inputPath)}/`,\r\n    });\r\n\r\n    // Wait for fonts to load\r\n    await page.evaluate(() => document.fonts.ready);\r\n\r\n    // Generate PDF\r\n    const pdfBuffer = await page.pdf({\r\n      format: format,\r\n      printBackground: true,\r\n      margin: {\r\n        top: '0.6in',\r\n        right: '0.6in',\r\n        bottom: '0.6in',\r\n        left: '0.6in',\r\n      },\r\n      preferCSSPageSize: false,\r\n    });\r\n\r\n    // Write PDF\r\n    const { writeFile } = await import('fs/promises');\r\n    await writeFile(outputPath, pdfBuffer);\r\n\r\n    // Count pages (approximate from PDF structure)\r\n    const pdfString = pdfBuffer.toString('latin1');\r\n    const pageCount = (pdfString.match(/\\/Type\\s*\\/Page[^s]/g) || []).length;\r\n\r\n    console.log(`✅ PDF generated: ${outputPath}`);\r\n    console.log(`📊 Pages: ${pageCount}`);\r\n    console.log(`📦 Size: ${(pdfBuffer.length / 1024).toFixed(1)} KB`);\r\n\r\n    return { outputPath, pageCount, size: pdfBuffer.length };\r\n  } finally {\r\n    await browser.close();\r\n  }\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "liveness-core.mjs",
+    "tipo": "function",
+    "nome": "firstMatch",
+    "linha_inicio": 38,
+    "linha_fim": 40,
+    "loc": 3,
+    "codigo": "function firstMatch(patterns, text = '') {\r\n  return patterns.find((pattern) => pattern.test(text));\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "liveness-core.mjs",
+    "tipo": "function",
+    "nome": "hasApplyControl",
+    "linha_inicio": 42,
+    "linha_fim": 44,
+    "loc": 3,
+    "codigo": "function hasApplyControl(controls = []) {\r\n  return controls.some((control) => APPLY_PATTERNS.some((pattern) => pattern.test(control)));\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "liveness-core.mjs",
+    "tipo": "function",
+    "nome": "classifyLiveness",
+    "linha_inicio": 46,
+    "linha_fim": 75,
+    "loc": 30,
+    "codigo": "function classifyLiveness({ status = 0, finalUrl = '', bodyText = '', applyControls = [] } = {}) {\r\n  if (status === 404 || status === 410) {\r\n    return { result: 'expired', reason: `HTTP ${status}` };\r\n  }\r\n\r\n  const expiredUrl = firstMatch(EXPIRED_URL_PATTERNS, finalUrl);\r\n  if (expiredUrl) {\r\n    return { result: 'expired', reason: `redirect to ${finalUrl}` };\r\n  }\r\n\r\n  const expiredBody = firstMatch(HARD_EXPIRED_PATTERNS, bodyText);\r\n  if (expiredBody) {\r\n    return { result: 'expired', reason: `pattern matched: ${expiredBody.source}` };\r\n  }\r\n\r\n  if (hasApplyControl(applyControls)) {\r\n    return { result: 'active', reason: 'visible apply control detected' };\r\n  }\r\n\r\n  const listingPage = firstMatch(LISTING_PAGE_PATTERNS, bodyText);\r\n  if (listingPage) {\r\n    return { result: 'expired', reason: `pattern matched: ${listingPage.source}` };\r\n  }\r\n\r\n  if (bodyText.trim().length < MIN_CONTENT_CHARS) {\r\n    return { result: 'expired', reason: 'insufficient content — likely nav/footer only' };\r\n  }\r\n\r\n  return { result: 'uncertain', reason: 'content present but no visible apply control found' };\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "merge-tracker.mjs",
+    "tipo": "function",
+    "nome": "validateStatus",
+    "linha_inicio": 35,
+    "linha_fim": 64,
+    "loc": 30,
+    "codigo": "function validateStatus(status) {\r\n  const clean = status.replace(/\\*\\*/g, '').replace(/\\s+\\d{4}-\\d{2}-\\d{2}.*$/, '').trim();\r\n  const lower = clean.toLowerCase();\r\n\r\n  for (const valid of CANONICAL_STATES) {\r\n    if (valid.toLowerCase() === lower) return valid;\r\n  }\r\n\r\n  // Aliases\r\n  const aliases = {\r\n    // Spanish → English\r\n    'evaluada': 'Evaluated', 'condicional': 'Evaluated', 'hold': 'Evaluated', 'evaluar': 'Evaluated', 'verificar': 'Evaluated',\r\n    'aplicado': 'Applied', 'enviada': 'Applied', 'aplicada': 'Applied', 'applied': 'Applied', 'sent': 'Applied',\r\n    'respondido': 'Responded',\r\n    'entrevista': 'Interview',\r\n    'oferta': 'Offer',\r\n    'rechazado': 'Rejected', 'rechazada': 'Rejected',\r\n    'descartado': 'Discarded', 'descartada': 'Discarded', 'cerrada': 'Discarded', 'cancelada': 'Discarded',\r\n    'no aplicar': 'SKIP', 'no_aplicar': 'SKIP', 'skip': 'SKIP', 'monitor': 'SKIP',\r\n    'geo blocker': 'SKIP',\r\n  };\r\n\r\n  if (aliases[lower]) return aliases[lower];\r\n\r\n  // DUPLICADO/Repost → Discarded\r\n  if (/^(duplicado|dup|repost)/i.test(lower)) return 'Discarded';\r\n\r\n  console.warn(`⚠️  Non-canonical status \"${status}\" → defaulting to \"Evaluated\"`);\r\n  return 'Evaluated';\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "merge-tracker.mjs",
+    "tipo": "function",
+    "nome": "normalizeCompany",
+    "linha_inicio": 66,
+    "linha_fim": 68,
+    "loc": 3,
+    "codigo": "function normalizeCompany(name) {\r\n  return name.toLowerCase().replace(/[^a-z0-9]/g, '');\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "merge-tracker.mjs",
+    "tipo": "function",
+    "nome": "roleFuzzyMatch",
+    "linha_inicio": 70,
+    "linha_fim": 75,
+    "loc": 6,
+    "codigo": "function roleFuzzyMatch(a, b) {\r\n  const wordsA = a.toLowerCase().split(/\\s+/).filter(w => w.length > 3);\r\n  const wordsB = b.toLowerCase().split(/\\s+/).filter(w => w.length > 3);\r\n  const overlap = wordsA.filter(w => wordsB.some(wb => wb.includes(w) || w.includes(wb)));\r\n  return overlap.length >= 2;\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "merge-tracker.mjs",
+    "tipo": "function",
+    "nome": "extractReportNum",
+    "linha_inicio": 77,
+    "linha_fim": 80,
+    "loc": 4,
+    "codigo": "function extractReportNum(reportStr) {\r\n  const m = reportStr.match(/\\[(\\d+)\\]/);\r\n  return m ? parseInt(m[1]) : null;\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "merge-tracker.mjs",
+    "tipo": "function",
+    "nome": "parseScore",
+    "linha_inicio": 82,
+    "linha_fim": 85,
+    "loc": 4,
+    "codigo": "function parseScore(s) {\r\n  const m = s.replace(/\\*\\*/g, '').match(/([\\d.]+)/);\r\n  return m ? parseFloat(m[1]) : 0;\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "merge-tracker.mjs",
+    "tipo": "function",
+    "nome": "parseAppLine",
+    "linha_inicio": 87,
+    "linha_fim": 97,
+    "loc": 11,
+    "codigo": "function parseAppLine(line) {\r\n  const parts = line.split('|').map(s => s.trim());\r\n  if (parts.length < 9) return null;\r\n  const num = parseInt(parts[1]);\r\n  if (isNaN(num) || num === 0) return null;\r\n  return {\r\n    num, date: parts[2], company: parts[3], role: parts[4],\r\n    score: parts[5], status: parts[6], pdf: parts[7], report: parts[8],\r\n    notes: parts[9] || '', raw: line,\r\n  };\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "merge-tracker.mjs",
+    "tipo": "function",
+    "nome": "parseTsvContent",
+    "linha_inicio": 103,
+    "linha_fim": 180,
+    "loc": 78,
+    "codigo": "function parseTsvContent(content, filename) {\r\n  content = content.trim();\r\n  if (!content) return null;\r\n\r\n  let parts;\r\n  let addition;\r\n\r\n  // Detect pipe-delimited (markdown table row)\r\n  if (content.startsWith('|')) {\r\n    parts = content.split('|').map(s => s.trim()).filter(Boolean);\r\n    if (parts.length < 8) {\r\n      console.warn(`⚠️  Skipping malformed pipe-delimited ${filename}: ${parts.length} fields`);\r\n      return null;\r\n    }\r\n    // Format: num | date | company | role | score | status | pdf | report | notes\r\n    addition = {\r\n      num: parseInt(parts[0]),\r\n      date: parts[1],\r\n      company: parts[2],\r\n      role: parts[3],\r\n      score: parts[4],\r\n      status: validateStatus(parts[5]),\r\n      pdf: parts[6],\r\n      report: parts[7],\r\n      notes: parts[8] || '',\r\n    };\r\n  } else {\r\n    // Tab-separated\r\n    parts = content.split('\\t');\r\n    if (parts.length < 8) {\r\n      console.warn(`⚠️  Skipping malformed TSV ${filename}: ${parts.length} fields`);\r\n      return null;\r\n    }\r\n\r\n    // Detect column order: some TSVs have (status, score), others have (score, status)\r\n    // Heuristic: if col4 looks like a score and col5 looks like a status, they're swapped\r\n    const col4 = parts[4].trim();\r\n    const col5 = parts[5].trim();\r\n    const col4LooksLikeScore = /^\\d+\\.?\\d*\\/5$/.test(col4) || col4 === 'N/A' || col4 === 'DUP';\r\n    const col5LooksLikeScore = /^\\d+\\.?\\d*\\/5$/.test(col5) || col5 === 'N/A' || col5 === 'DUP';\r\n    const col4LooksLikeStatus = /^(evaluated|applied|responded|interview|offer|rejected|discarded|skip|evaluada|aplicado|respondido|entrevista|oferta|rechazado|descartado|no aplicar|cerrada|duplicado|repost|condicional|hold|monitor)/i.test(col4);\r\n    const col5LooksLikeStatus = /^(evaluated|applied|responded|interview|offer|rejected|discarded|skip|evaluada|aplicado|respondido|entrevista|oferta|rechazado|descartado|no aplicar|cerrada|duplicado|repost|condicional|hold|monitor)/i.test(col5);\r\n\r\n    let statusCol, scoreCol;\r\n    if (col4LooksLikeStatus && !col4LooksLikeScore) {\r\n      // Standard format: col4=status, col5=score\r\n      statusCol = col4; scoreCol = col5;\r\n    } else if (col4LooksLikeScore && col5LooksLikeStatus) {\r\n      // Swapped format: col4=score, col5=status\r\n      statusCol = col5; scoreCol = col4;\r\n    } else if (col5LooksLikeScore && !col4LooksLikeScore) {\r\n      // col5 is definitely score → col4 must be status\r\n      statusCol = col4; scoreCol = col5;\r\n    } else {\r\n      // Default: standard format (status before score)\r\n      statusCol = col4; scoreCol = col5;\r\n    }\r\n\r\n    addition = {\r\n      num: parseInt(parts[0]),\r\n      date: parts[1],\r\n      company: parts[2],\r\n      role: parts[3],\r\n      status: validateStatus(statusCol),\r\n      score: scoreCol,\r\n      pdf: parts[6],\r\n      report: parts[7],\r\n      notes: parts[8] || '',\r\n    };\r\n  }\r\n\r\n  if (isNaN(addition.num) || addition.num === 0) {\r\n    console.warn(`⚠️  Skipping ${filename}: invalid entry number`);\r\n    return null;\r\n  }\r\n\r\n  return addition;\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "normalize-statuses.mjs",
+    "tipo": "function",
+    "nome": "normalizeStatus",
+    "linha_inicio": 26,
+    "linha_fim": 84,
+    "loc": 59,
+    "codigo": "function normalizeStatus(raw) {\r\n  // Strip markdown bold\r\n  let s = raw.replace(/\\*\\*/g, '').trim();\r\n  const lower = s.toLowerCase();\r\n\r\n  // DUPLICADO variants → Discarded\r\n  if (/^duplicado/i.test(s) || /^dup\\b/i.test(s)) {\r\n    return { status: 'Discarded', moveToNotes: raw.trim() };\r\n  }\r\n\r\n  // CERRADA / Cancelada / Descartada → Discarded\r\n  if (/^cerrada$/i.test(s)) return { status: 'Discarded' };\r\n  if (/^cancelada/i.test(s)) return { status: 'Discarded' };\r\n  if (/^descartada$/i.test(s)) return { status: 'Discarded' };\r\n  if (/^descartado$/i.test(s)) return { status: 'Discarded' };\r\n\r\n  // Rechazada / Rechazado → Rejected\r\n  if (/^rechazada?$/i.test(s)) return { status: 'Rejected' };\r\n  if (/^rechazado\\s+\\d{4}/i.test(s)) return { status: 'Rejected' };\r\n\r\n  // Aplicado with date → Applied (strip date)\r\n  if (/^aplicado\\s+\\d{4}/i.test(s)) return { status: 'Applied' };\r\n\r\n  // CONDICIONAL / HOLD / EVALUAR / Verificar → Evaluated\r\n  if (/^(condicional|hold|evaluar|verificar)$/i.test(s)) return { status: 'Evaluated' };\r\n\r\n  // MONITOR → SKIP\r\n  if (/^monitor$/i.test(s)) return { status: 'SKIP' };\r\n\r\n  // GEO BLOCKER → SKIP\r\n  if (/geo.?blocker/i.test(s)) return { status: 'SKIP' };\r\n\r\n  // Repost #NNN → Discarded\r\n  if (/^repost/i.test(s)) return { status: 'Discarded', moveToNotes: raw.trim() };\r\n\r\n  // \"—\" (em dash, no status) → Discarded\r\n  if (s === '—' || s === '-' || s === '') return { status: 'Discarded' };\r\n\r\n  // Already canonical (English, per states.yml) — just fix casing/bold\r\n  const canonical = [\r\n    'Evaluated', 'Applied', 'Responded', 'Interview',\r\n    'Offer', 'Rejected', 'Discarded', 'SKIP',\r\n  ];\r\n  for (const c of canonical) {\r\n    if (lower === c.toLowerCase()) return { status: c };\r\n  }\r\n\r\n  // Spanish aliases → English canonicals\r\n  if (['evaluada'].includes(lower)) return { status: 'Evaluated' };\r\n  if (['aplicado', 'enviada', 'aplicada', 'applied', 'sent'].includes(lower)) return { status: 'Applied' };\r\n  if (['respondido'].includes(lower)) return { status: 'Responded' };\r\n  if (['entrevista'].includes(lower)) return { status: 'Interview' };\r\n  if (['oferta'].includes(lower)) return { status: 'Offer' };\r\n  if (['cerrada', 'descartada'].includes(lower)) return { status: 'Discarded' };\r\n  if (['no aplicar', 'no_aplicar', 'skip'].includes(lower)) return { status: 'SKIP' };\r\n\r\n  // Unknown — flag it\r\n  return { status: null, unknown: true };\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "scan.mjs",
+    "tipo": "function",
+    "nome": "detectApi",
+    "linha_inicio": 34,
+    "linha_fim": 70,
+    "loc": 37,
+    "codigo": "function detectApi(company) {\r\n  // Greenhouse: explicit api field\r\n  if (company.api && company.api.includes('greenhouse')) {\r\n    return { type: 'greenhouse', url: company.api };\r\n  }\r\n\r\n  const url = company.careers_url || '';\r\n\r\n  // Ashby\r\n  const ashbyMatch = url.match(/jobs\\.ashbyhq\\.com\\/([^/?#]+)/);\r\n  if (ashbyMatch) {\r\n    return {\r\n      type: 'ashby',\r\n      url: `https://api.ashbyhq.com/posting-api/job-board/${ashbyMatch[1]}?includeCompensation=true`,\r\n    };\r\n  }\r\n\r\n  // Lever\r\n  const leverMatch = url.match(/jobs\\.lever\\.co\\/([^/?#]+)/);\r\n  if (leverMatch) {\r\n    return {\r\n      type: 'lever',\r\n      url: `https://api.lever.co/v0/postings/${leverMatch[1]}`,\r\n    };\r\n  }\r\n\r\n  // Greenhouse EU boards\r\n  const ghEuMatch = url.match(/job-boards(?:\\.eu)?\\.greenhouse\\.io\\/([^/?#]+)/);\r\n  if (ghEuMatch && !company.api) {\r\n    return {\r\n      type: 'greenhouse',\r\n      url: `https://boards-api.greenhouse.io/v1/boards/${ghEuMatch[1]}/jobs`,\r\n    };\r\n  }\r\n\r\n  return null;\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "scan.mjs",
+    "tipo": "function",
+    "nome": "parseGreenhouse",
+    "linha_inicio": 74,
+    "linha_fim": 82,
+    "loc": 9,
+    "codigo": "function parseGreenhouse(json, companyName) {\r\n  const jobs = json.jobs || [];\r\n  return jobs.map(j => ({\r\n    title: j.title || '',\r\n    url: j.absolute_url || '',\r\n    company: companyName,\r\n    location: j.location?.name || '',\r\n  }));\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "scan.mjs",
+    "tipo": "function",
+    "nome": "parseAshby",
+    "linha_inicio": 84,
+    "linha_fim": 92,
+    "loc": 9,
+    "codigo": "function parseAshby(json, companyName) {\r\n  const jobs = json.jobs || [];\r\n  return jobs.map(j => ({\r\n    title: j.title || '',\r\n    url: j.jobUrl || '',\r\n    company: companyName,\r\n    location: j.location || '',\r\n  }));\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "scan.mjs",
+    "tipo": "function",
+    "nome": "parseLever",
+    "linha_inicio": 94,
+    "linha_fim": 102,
+    "loc": 9,
+    "codigo": "function parseLever(json, companyName) {\r\n  if (!Array.isArray(json)) return [];\r\n  return json.map(j => ({\r\n    title: j.text || '',\r\n    url: j.hostedUrl || '',\r\n    company: companyName,\r\n    location: j.categories?.location || '',\r\n  }));\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "scan.mjs",
+    "tipo": "function",
+    "nome": "fetchJson",
+    "linha_inicio": 108,
+    "linha_fim": 118,
+    "loc": 11,
+    "codigo": "async function fetchJson(url) {\r\n  const controller = new AbortController();\r\n  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);\r\n  try {\r\n    const res = await fetch(url, { signal: controller.signal });\r\n    if (!res.ok) throw new Error(`HTTP ${res.status}`);\r\n    return await res.json();\r\n  } finally {\r\n    clearTimeout(timer);\r\n  }\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "scan.mjs",
+    "tipo": "function",
+    "nome": "buildTitleFilter",
+    "linha_inicio": 122,
+    "linha_fim": 132,
+    "loc": 11,
+    "codigo": "function buildTitleFilter(titleFilter) {\r\n  const positive = (titleFilter?.positive || []).map(k => k.toLowerCase());\r\n  const negative = (titleFilter?.negative || []).map(k => k.toLowerCase());\r\n\r\n  return (title) => {\r\n    const lower = title.toLowerCase();\r\n    const hasPositive = positive.length === 0 || positive.some(k => lower.includes(k));\r\n    const hasNegative = negative.some(k => lower.includes(k));\r\n    return hasPositive && !hasNegative;\r\n  };\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "scan.mjs",
+    "tipo": "function",
+    "nome": "loadSeenUrls",
+    "linha_inicio": 136,
+    "linha_fim": 165,
+    "loc": 30,
+    "codigo": "function loadSeenUrls() {\r\n  const seen = new Set();\r\n\r\n  // scan-history.tsv\r\n  if (existsSync(SCAN_HISTORY_PATH)) {\r\n    const lines = readFileSync(SCAN_HISTORY_PATH, 'utf-8').split('\\n');\r\n    for (const line of lines.slice(1)) { // skip header\r\n      const url = line.split('\\t')[0];\r\n      if (url) seen.add(url);\r\n    }\r\n  }\r\n\r\n  // pipeline.md — extract URLs from checkbox lines\r\n  if (existsSync(PIPELINE_PATH)) {\r\n    const text = readFileSync(PIPELINE_PATH, 'utf-8');\r\n    for (const match of text.matchAll(/- \\[[ x]\\] (https?:\\/\\/\\S+)/g)) {\r\n      seen.add(match[1]);\r\n    }\r\n  }\r\n\r\n  // applications.md — extract URLs from report links and any inline URLs\r\n  if (existsSync(APPLICATIONS_PATH)) {\r\n    const text = readFileSync(APPLICATIONS_PATH, 'utf-8');\r\n    for (const match of text.matchAll(/https?:\\/\\/[^\\s|)]+/g)) {\r\n      seen.add(match[0]);\r\n    }\r\n  }\r\n\r\n  return seen;\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "scan.mjs",
+    "tipo": "function",
+    "nome": "loadSeenCompanyRoles",
+    "linha_inicio": 167,
+    "linha_fim": 181,
+    "loc": 15,
+    "codigo": "function loadSeenCompanyRoles() {\r\n  const seen = new Set();\r\n  if (existsSync(APPLICATIONS_PATH)) {\r\n    const text = readFileSync(APPLICATIONS_PATH, 'utf-8');\r\n    // Parse markdown table rows: | # | Date | Company | Role | ...\r\n    for (const match of text.matchAll(/\\|[^|]+\\|[^|]+\\|\\s*([^|]+)\\s*\\|\\s*([^|]+)\\s*\\|/g)) {\r\n      const company = match[1].trim().toLowerCase();\r\n      const role = match[2].trim().toLowerCase();\r\n      if (company && role && company !== 'company') {\r\n        seen.add(`${company}::${role}`);\r\n      }\r\n    }\r\n  }\r\n  return seen;\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "scan.mjs",
+    "tipo": "function",
+    "nome": "appendToPipeline",
+    "linha_inicio": 185,
+    "linha_fim": 214,
+    "loc": 30,
+    "codigo": "function appendToPipeline(offers) {\r\n  if (offers.length === 0) return;\r\n\r\n  let text = readFileSync(PIPELINE_PATH, 'utf-8');\r\n\r\n  // Find \"## Pendientes\" section and append after it\r\n  const marker = '## Pendientes';\r\n  const idx = text.indexOf(marker);\r\n  if (idx === -1) {\r\n    // No Pendientes section — append at end before Procesadas\r\n    const procIdx = text.indexOf('## Procesadas');\r\n    const insertAt = procIdx === -1 ? text.length : procIdx;\r\n    const block = `\\n${marker}\\n\\n` + offers.map(o =>\r\n      `- [ ] ${o.url} | ${o.company} | ${o.title}`\r\n    ).join('\\n') + '\\n\\n';\r\n    text = text.slice(0, insertAt) + block + text.slice(insertAt);\r\n  } else {\r\n    // Find the end of existing Pendientes content (next ## or end)\r\n    const afterMarker = idx + marker.length;\r\n    const nextSection = text.indexOf('\\n## ', afterMarker);\r\n    const insertAt = nextSection === -1 ? text.length : nextSection;\r\n\r\n    const block = '\\n' + offers.map(o =>\r\n      `- [ ] ${o.url} | ${o.company} | ${o.title}`\r\n    ).join('\\n') + '\\n';\r\n    text = text.slice(0, insertAt) + block + text.slice(insertAt);\r\n  }\r\n\r\n  writeFileSync(PIPELINE_PATH, text, 'utf-8');\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "scan.mjs",
+    "tipo": "function",
+    "nome": "appendToScanHistory",
+    "linha_inicio": 216,
+    "linha_fim": 227,
+    "loc": 12,
+    "codigo": "function appendToScanHistory(offers, date) {\r\n  // Ensure file + header exist\r\n  if (!existsSync(SCAN_HISTORY_PATH)) {\r\n    writeFileSync(SCAN_HISTORY_PATH, 'url\\tfirst_seen\\tportal\\ttitle\\tcompany\\tstatus\\n', 'utf-8');\r\n  }\r\n\r\n  const lines = offers.map(o =>\r\n    `${o.url}\\t${date}\\t${o.source}\\t${o.title}\\t${o.company}\\tadded`\r\n  ).join('\\n') + '\\n';\r\n\r\n  appendFileSync(SCAN_HISTORY_PATH, lines, 'utf-8');\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "scan.mjs",
+    "tipo": "function",
+    "nome": "parallelFetch",
+    "linha_inicio": 231,
+    "linha_fim": 245,
+    "loc": 15,
+    "codigo": "async function parallelFetch(tasks, limit) {\r\n  const results = [];\r\n  let i = 0;\r\n\r\n  async function next() {\r\n    while (i < tasks.length) {\r\n      const task = tasks[i++];\r\n      results.push(await task());\r\n    }\r\n  }\r\n\r\n  const workers = Array.from({ length: Math.min(limit, tasks.length) }, () => next());\r\n  await Promise.all(workers);\r\n  return results;\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "scan.mjs",
+    "tipo": "function",
+    "nome": "next",
+    "linha_inicio": 235,
+    "linha_fim": 240,
+    "loc": 6,
+    "codigo": "async function next() {\r\n    while (i < tasks.length) {\r\n      const task = tasks[i++];\r\n      results.push(await task());\r\n    }\r\n  }"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "scan.mjs",
+    "tipo": "function",
+    "nome": "main",
+    "linha_inicio": 249,
+    "linha_fim": 359,
+    "loc": 111,
+    "codigo": "async function main() {\r\n  const args = process.argv.slice(2);\r\n  const dryRun = args.includes('--dry-run');\r\n  const companyFlag = args.indexOf('--company');\r\n  const filterCompany = companyFlag !== -1 ? args[companyFlag + 1]?.toLowerCase() : null;\r\n\r\n  // 1. Read portals.yml\r\n  if (!existsSync(PORTALS_PATH)) {\r\n    console.error('Error: portals.yml not found. Run onboarding first.');\r\n    process.exit(1);\r\n  }\r\n\r\n  const config = parseYaml(readFileSync(PORTALS_PATH, 'utf-8'));\r\n  const companies = config.tracked_companies || [];\r\n  const titleFilter = buildTitleFilter(config.title_filter);\r\n\r\n  // 2. Filter to enabled companies with detectable APIs\r\n  const targets = companies\r\n    .filter(c => c.enabled !== false)\r\n    .filter(c => !filterCompany || c.name.toLowerCase().includes(filterCompany))\r\n    .map(c => ({ ...c, _api: detectApi(c) }))\r\n    .filter(c => c._api !== null);\r\n\r\n  const skippedCount = companies.filter(c => c.enabled !== false).length - targets.length;\r\n\r\n  console.log(`Scanning ${targets.length} companies via API (${skippedCount} skipped — no API detected)`);\r\n  if (dryRun) console.log('(dry run — no files will be written)\\n');\r\n\r\n  // 3. Load dedup sets\r\n  const seenUrls = loadSeenUrls();\r\n  const seenCompanyRoles = loadSeenCompanyRoles();\r\n\r\n  // 4. Fetch all APIs\r\n  const date = new Date().toISOString().slice(0, 10);\r\n  let totalFound = 0;\r\n  let totalFiltered = 0;\r\n  let totalDupes = 0;\r\n  const newOffers = [];\r\n  const errors = [];\r\n\r\n  const tasks = targets.map(company => async () => {\r\n    const { type, url } = company._api;\r\n    try {\r\n      const json = await fetchJson(url);\r\n      const jobs = PARSERS[type](json, company.name);\r\n      totalFound += jobs.length;\r\n\r\n      for (const job of jobs) {\r\n        if (!titleFilter(job.title)) {\r\n          totalFiltered++;\r\n          continue;\r\n        }\r\n        if (seenUrls.has(job.url)) {\r\n          totalDupes++;\r\n          continue;\r\n        }\r\n        const key = `${job.company.toLowerCase()}::${job.title.toLowerCase()}`;\r\n        if (seenCompanyRoles.has(key)) {\r\n          totalDupes++;\r\n          continue;\r\n        }\r\n        // Mark as seen to avoid intra-scan dupes\r\n        seenUrls.add(job.url);\r\n        seenCompanyRoles.add(key);\r\n        newOffers.push({ ...job, source: `${type}-api` });\r\n      }\r\n    } catch (err) {\r\n      errors.push({ company: company.name, error: err.message });\r\n    }\r\n  });\r\n\r\n  await parallelFetch(tasks, CONCURRENCY);\r\n\r\n  // 5. Write results\r\n  if (!dryRun && newOffers.length > 0) {\r\n    appendToPipeline(newOffers);\r\n    appendToScanHistory(newOffers, date);\r\n  }\r\n\r\n  // 6. Print summary\r\n  console.log(`\\n${'━'.repeat(45)}`);\r\n  console.log(`Portal Scan — ${date}`);\r\n  console.log(`${'━'.repeat(45)}`);\r\n  console.log(`Companies scanned:     ${targets.length}`);\r\n  console.log(`Total jobs found:      ${totalFound}`);\r\n  console.log(`Filtered by title:     ${totalFiltered} removed`);\r\n  console.log(`Duplicates:            ${totalDupes} skipped`);\r\n  console.log(`New offers added:      ${newOffers.length}`);\r\n\r\n  if (errors.length > 0) {\r\n    console.log(`\\nErrors (${errors.length}):`);\r\n    for (const e of errors) {\r\n      console.log(`  ✗ ${e.company}: ${e.error}`);\r\n    }\r\n  }\r\n\r\n  if (newOffers.length > 0) {\r\n    console.log('\\nNew offers:');\r\n    for (const o of newOffers) {\r\n      console.log(`  + ${o.company} | ${o.title} | ${o.location || 'N/A'}`);\r\n    }\r\n    if (dryRun) {\r\n      console.log('\\n(dry run — run without --dry-run to save results)');\r\n    } else {\r\n      console.log(`\\nResults saved to ${PIPELINE_PATH} and ${SCAN_HISTORY_PATH}`);\r\n    }\r\n  }\r\n\r\n  console.log(`\\n→ Run /career-ops pipeline to evaluate new offers.`);\r\n  console.log('→ Share results and get help: https://discord.gg/8pRpHETxa4');\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "test-all.mjs",
+    "tipo": "function",
+    "nome": "pass",
+    "linha_inicio": 27,
+    "linha_fim": 27,
+    "loc": 1,
+    "codigo": "function pass(msg) { console.log(`  ✅ ${msg}`); passed++; }"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "test-all.mjs",
+    "tipo": "function",
+    "nome": "fail",
+    "linha_inicio": 28,
+    "linha_fim": 28,
+    "loc": 1,
+    "codigo": "function fail(msg) { console.log(`  ❌ ${msg}`); failed++; }"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "test-all.mjs",
+    "tipo": "function",
+    "nome": "warn",
+    "linha_inicio": 29,
+    "linha_fim": 29,
+    "loc": 1,
+    "codigo": "function warn(msg) { console.log(`  ⚠️  ${msg}`); warnings++; }"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "test-all.mjs",
+    "tipo": "function",
+    "nome": "run",
+    "linha_inicio": 31,
+    "linha_fim": 37,
+    "loc": 7,
+    "codigo": "function run(cmd, opts = {}) {\r\n  try {\r\n    return execSync(cmd, { cwd: ROOT, encoding: 'utf-8', timeout: 30000, ...opts }).trim();\r\n  } catch (e) {\r\n    return null;\r\n  }\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "test-all.mjs",
+    "tipo": "function",
+    "nome": "fileExists",
+    "linha_inicio": 39,
+    "linha_fim": 39,
+    "loc": 1,
+    "codigo": "function fileExists(path) { return existsSync(join(ROOT, path)); }"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "test-all.mjs",
+    "tipo": "function",
+    "nome": "readFile",
+    "linha_inicio": 40,
+    "linha_fim": 40,
+    "loc": 1,
+    "codigo": "function readFile(path) { return readFileSync(join(ROOT, path), 'utf-8'); }"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "update-system.mjs",
+    "tipo": "function",
+    "nome": "localVersion",
+    "linha_inicio": 88,
+    "linha_fim": 91,
+    "loc": 4,
+    "codigo": "function localVersion() {\r\n  const vPath = join(ROOT, 'VERSION');\r\n  return existsSync(vPath) ? readFileSync(vPath, 'utf-8').trim() : '0.0.0';\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "update-system.mjs",
+    "tipo": "function",
+    "nome": "compareVersions",
+    "linha_inicio": 93,
+    "linha_fim": 101,
+    "loc": 9,
+    "codigo": "function compareVersions(a, b) {\r\n  const pa = a.split('.').map(Number);\r\n  const pb = b.split('.').map(Number);\r\n  for (let i = 0; i < 3; i++) {\r\n    if ((pa[i] || 0) < (pb[i] || 0)) return -1;\r\n    if ((pa[i] || 0) > (pb[i] || 0)) return 1;\r\n  }\r\n  return 0;\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "update-system.mjs",
+    "tipo": "function",
+    "nome": "git",
+    "linha_inicio": 103,
+    "linha_fim": 105,
+    "loc": 3,
+    "codigo": "function git(...args) {\r\n  return execFileSync('git', args, { cwd: ROOT, encoding: 'utf-8', timeout: 30000 }).trim();\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "update-system.mjs",
+    "tipo": "function",
+    "nome": "gitStatusEntries",
+    "linha_inicio": 107,
+    "linha_fim": 117,
+    "loc": 11,
+    "codigo": "function gitStatusEntries() {\r\n  const status = git('status', '--porcelain');\r\n  if (!status) return [];\r\n\r\n  return status.split('\\n')\r\n    .filter(Boolean)\r\n    .map(line => ({\r\n      code: line.slice(0, 2),\r\n      path: line.slice(3),\r\n    }));\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "update-system.mjs",
+    "tipo": "function",
+    "nome": "revertPaths",
+    "linha_inicio": 119,
+    "linha_fim": 122,
+    "loc": 4,
+    "codigo": "function revertPaths(paths) {\r\n  if (paths.length === 0) return;\r\n  git('checkout', '--', ...paths);\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "update-system.mjs",
+    "tipo": "function",
+    "nome": "addPaths",
+    "linha_inicio": 124,
+    "linha_fim": 127,
+    "loc": 4,
+    "codigo": "function addPaths(paths) {\r\n  if (paths.length === 0) return;\r\n  git('add', '--', ...paths);\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "update-system.mjs",
+    "tipo": "function",
+    "nome": "check",
+    "linha_inicio": 131,
+    "linha_fim": 175,
+    "loc": 45,
+    "codigo": "async function check() {\r\n  // Respect dismiss flag\r\n  if (existsSync(join(ROOT, '.update-dismissed'))) {\r\n    console.log(JSON.stringify({ status: 'dismissed' }));\r\n    return;\r\n  }\r\n\r\n  const local = localVersion();\r\n  let remote;\r\n\r\n  try {\r\n    const res = await fetch(RAW_VERSION_URL);\r\n    if (!res.ok) throw new Error(`HTTP ${res.status}`);\r\n    remote = (await res.text()).trim();\r\n  } catch {\r\n    console.log(JSON.stringify({ status: 'offline', local }));\r\n    return;\r\n  }\r\n\r\n  if (compareVersions(local, remote) >= 0) {\r\n    console.log(JSON.stringify({ status: 'up-to-date', local, remote }));\r\n    return;\r\n  }\r\n\r\n  // Fetch changelog from GitHub releases\r\n  let changelog = '';\r\n  try {\r\n    const res = await fetch(RELEASES_API, {\r\n      headers: { 'Accept': 'application/vnd.github.v3+json' }\r\n    });\r\n    if (res.ok) {\r\n      const release = await res.json();\r\n      changelog = release.body || '';\r\n    }\r\n  } catch {\r\n    // No changelog available, that's OK\r\n  }\r\n\r\n  console.log(JSON.stringify({\r\n    status: 'update-available',\r\n    local,\r\n    remote,\r\n    changelog: changelog.slice(0, 500),\r\n  }));\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "update-system.mjs",
+    "tipo": "function",
+    "nome": "apply",
+    "linha_inicio": 179,
+    "linha_fim": 272,
+    "loc": 94,
+    "codigo": "async function apply() {\r\n  const local = localVersion();\r\n  const initialStatusPaths = new Set(gitStatusEntries().map(entry => entry.path));\r\n\r\n  // Check for lock\r\n  const lockFile = join(ROOT, '.update-lock');\r\n  if (existsSync(lockFile)) {\r\n    console.error('Update already in progress (.update-lock exists). If stuck, delete it manually.');\r\n    process.exit(1);\r\n  }\r\n\r\n  // Create lock\r\n  writeFileSync(lockFile, new Date().toISOString());\r\n\r\n  try {\r\n    // 1. Backup: create branch\r\n    const backupBranch = `backup-pre-update-${local}`;\r\n    try {\r\n      git('branch', backupBranch);\r\n      console.log(`Backup branch created: ${backupBranch}`);\r\n    } catch {\r\n      console.log(`Backup branch already exists (${backupBranch}), continuing...`);\r\n    }\r\n\r\n    // 2. Fetch from canonical repo\r\n    console.log('Fetching latest from upstream...');\r\n    git('fetch', CANONICAL_REPO, 'main');\r\n\r\n    // 3. Checkout system files only\r\n    console.log('Updating system files...');\r\n    const updated = [];\r\n    for (const path of SYSTEM_PATHS) {\r\n      try {\r\n        git('checkout', 'FETCH_HEAD', '--', path);\r\n        updated.push(path);\r\n      } catch {\r\n        // File may not exist in remote (new additions), skip\r\n      }\r\n    }\r\n\r\n    // 4. Validate: check NO user files were touched\r\n    let userFileTouched = false;\r\n    try {\r\n      for (const entry of gitStatusEntries()) {\r\n        const file = entry.path;\r\n        if (initialStatusPaths.has(file)) continue;\r\n        for (const userPath of USER_PATHS) {\r\n          if (file.startsWith(userPath)) {\r\n            console.error(`SAFETY VIOLATION: User file was modified: ${file}`);\r\n            userFileTouched = true;\r\n          }\r\n        }\r\n      }\r\n    } catch {\r\n      // git status failed, skip validation\r\n    }\r\n\r\n    if (userFileTouched) {\r\n      console.error('Aborting: user files were touched. Rolling back...');\r\n      revertPaths(updated);\r\n      process.exit(1);\r\n    }\r\n\r\n    // 5. Install any new dependencies\r\n    try {\r\n      execSync('npm install --silent', { cwd: ROOT, timeout: 60000 });\r\n    } catch {\r\n      console.log('npm install skipped (may need manual run)');\r\n    }\r\n\r\n    // 6. Commit the update\r\n    const remote = localVersion(); // Re-read after checkout updated VERSION\r\n    try {\r\n      const pathsToStage = [...updated];\r\n      const dismissFile = join(ROOT, '.update-dismissed');\r\n      if (existsSync(dismissFile)) {\r\n        unlinkSync(dismissFile);\r\n        pathsToStage.push('.update-dismissed');\r\n      }\r\n      addPaths(pathsToStage);\r\n      git('commit', '-m', `chore: auto-update system files to v${remote}`);\r\n    } catch {\r\n      // Nothing to commit (already up to date)\r\n    }\r\n\r\n    console.log(`\\nUpdate complete: v${local} → v${remote}`);\r\n    console.log(`Updated ${updated.length} system paths.`);\r\n    console.log(`Rollback available: node update-system.mjs rollback`);\r\n\r\n  } finally {\r\n    // Remove lock\r\n    if (existsSync(lockFile)) unlinkSync(lockFile);\r\n  }\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "update-system.mjs",
+    "tipo": "function",
+    "nome": "rollback",
+    "linha_inicio": 276,
+    "linha_fim": 308,
+    "loc": 33,
+    "codigo": "function rollback() {\r\n  // Find most recent backup branch\r\n  try {\r\n    const branches = git('for-each-ref', '--sort=-committerdate', '--format=%(refname:short)', 'refs/heads/backup-pre-update-*');\r\n    const branchList = branches.split('\\n').map(b => b.trim()).filter(Boolean);\r\n\r\n    if (branchList.length === 0) {\r\n      console.error('No backup branches found. Nothing to rollback.');\r\n      process.exit(1);\r\n    }\r\n\r\n    const latest = branchList[0];\r\n    console.log(`Rolling back to: ${latest}`);\r\n\r\n    // Checkout system files from backup branch\r\n    for (const path of SYSTEM_PATHS) {\r\n      try {\r\n        git('checkout', latest, '--', path);\r\n      } catch {\r\n        // File may not have existed in backup\r\n      }\r\n    }\r\n\r\n    addPaths(SYSTEM_PATHS);\r\n    git('commit', '-m', `chore: rollback system files from ${latest}`);\r\n\r\n    console.log(`Rollback complete. System files restored from ${latest}.`);\r\n    console.log('Your data (CV, profile, tracker, reports) was not affected.');\r\n  } catch (err) {\r\n    console.error('Rollback failed:', err.message);\r\n    process.exit(1);\r\n  }\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "update-system.mjs",
+    "tipo": "function",
+    "nome": "dismiss",
+    "linha_inicio": 312,
+    "linha_fim": 315,
+    "loc": 4,
+    "codigo": "function dismiss() {\r\n  writeFileSync(join(ROOT, '.update-dismissed'), new Date().toISOString());\r\n  console.log('Update check dismissed. Run \"node update-system.mjs check\" or say \"check for updates\" to re-enable.');\r\n}"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "verify-pipeline.mjs",
+    "tipo": "function",
+    "nome": "error",
+    "linha_inicio": 51,
+    "linha_fim": 51,
+    "loc": 1,
+    "codigo": "function error(msg) { console.log(`❌ ${msg}`); errors++; }"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "verify-pipeline.mjs",
+    "tipo": "function",
+    "nome": "warn",
+    "linha_inicio": 52,
+    "linha_fim": 52,
+    "loc": 1,
+    "codigo": "function warn(msg) { console.log(`⚠️  ${msg}`); warnings++; }"
+  },
+  {
+    "repo": "career-ops",
+    "arquivo": "verify-pipeline.mjs",
+    "tipo": "function",
+    "nome": "ok",
+    "linha_inicio": 53,
+    "linha_fim": 53,
+    "loc": 1,
+    "codigo": "function ok(msg) { console.log(`✅ ${msg}`); }"
+  }
+]

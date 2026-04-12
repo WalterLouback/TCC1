@@ -1,0 +1,232 @@
+[
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/check_update.js",
+    "size_bytes": 1202
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/forge.config.js",
+    "size_bytes": 408
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/main.js",
+    "size_bytes": 77985
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/server.js",
+    "size_bytes": 34266
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/start_server.js",
+    "size_bytes": 141
+  },
+  {
+    "repo": "EasySpider",
+    "path": "Extension/manifest_v3/package.js",
+    "size_bytes": 3773
+  },
+  {
+    "repo": "EasySpider",
+    "path": "Extension/manifest_v3/rollup.config.js",
+    "size_bytes": 2391
+  },
+  {
+    "repo": "EasySpider",
+    "path": "Extension/manifest_v3/src/popup.js",
+    "size_bytes": 4876
+  },
+  {
+    "repo": "EasySpider",
+    "path": "Extension/manifest_v3/src/content-scripts/global.js",
+    "size_bytes": 62569
+  },
+  {
+    "repo": "EasySpider",
+    "path": "Extension/manifest_v3/src/content-scripts/main.js",
+    "size_bytes": 11681
+  },
+  {
+    "repo": "EasySpider",
+    "path": "Extension/manifest_v3/src/content-scripts/messageInteraction.js",
+    "size_bytes": 13434
+  },
+  {
+    "repo": "EasySpider",
+    "path": "Extension/manifest_v3/src/content-scripts/trail.js",
+    "size_bytes": 16209
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/EasySpider_en/background.js",
+    "size_bytes": 3191
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/EasySpider_en/popup.js",
+    "size_bytes": 4528
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/EasySpider_zh/background.js",
+    "size_bytes": 3191
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/EasySpider_zh/popup.js",
+    "size_bytes": 4526
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/selenium-webdriver-bidi-webExtension/extensionData.js",
+    "size_bytes": 1474
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/selenium-webdriver-bidi-webExtension/webExtension.js",
+    "size_bytes": 3306
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/src/index.js",
+    "size_bytes": 3083
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/src/bootstrap/baozhuangscript.js",
+    "size_bytes": 4759
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/src/bootstrap/baozhuangscript3.js",
+    "size_bytes": 3101
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/src/js/preload.js",
+    "size_bytes": 691
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/src/js/vue.global.js",
+    "size_bytes": 659198
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/src/taskGrid/FlowChart.js",
+    "size_bytes": 42969
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/src/taskGrid/global.js",
+    "size_bytes": 4858
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/src/taskGrid/logic.js",
+    "size_bytes": 36605
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/src/taskGrid/vue.js",
+    "size_bytes": 354126
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/src/taskGrid/bootstrap/baozhuangscript.js",
+    "size_bytes": 4759
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/src/taskGrid/bootstrap/baozhuangscript3.js",
+    "size_bytes": 3101
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/src/taskGrid/element-ui/index.js",
+    "size_bytes": 664912
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/src/taskGrid/bootstrap/js/bootstrap.bundle.js",
+    "size_bytes": 235114
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/src/taskGrid/bootstrap/js/bootstrap.js",
+    "size_bytes": 139600
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/src/locale/en/strings.js",
+    "size_bytes": 123
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/src/locale/zh/strings.js",
+    "size_bytes": 131
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/src/bootstrap/js/bootstrap.bundle.js",
+    "size_bytes": 235114
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/src/bootstrap/js/bootstrap.js",
+    "size_bytes": 139600
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/EasySpider_zh/content-scripts/global.js",
+    "size_bytes": 62594
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/EasySpider_zh/content-scripts/import-main.js",
+    "size_bytes": 150
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/EasySpider_zh/content-scripts/main.js",
+    "size_bytes": 603211
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/EasySpider_zh/content-scripts/messageInteraction.js",
+    "size_bytes": 13562
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/EasySpider_zh/content-scripts/trail.js",
+    "size_bytes": 16119
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/EasySpider_en/content-scripts/global.js",
+    "size_bytes": 62594
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/EasySpider_en/content-scripts/import-main.js",
+    "size_bytes": 150
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/EasySpider_en/content-scripts/main.js",
+    "size_bytes": 603211
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/EasySpider_en/content-scripts/messageInteraction.js",
+    "size_bytes": 13562
+  },
+  {
+    "repo": "EasySpider",
+    "path": "ElectronJS/EasySpider_en/content-scripts/trail.js",
+    "size_bytes": 16119
+  }
+]

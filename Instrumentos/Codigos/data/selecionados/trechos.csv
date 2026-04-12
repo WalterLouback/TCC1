@@ -1,0 +1,262 @@
+id_trecho,repo,arquivo,tipo,nome,linha_inicio,linha_fim,loc,arquivo_codigo,ordem_no_repo,mesma_base_para,codigo
+c43197032390,EasySpider,ElectronJS/selenium-webdriver-bidi-webExtension/extensionData.js,class,ExtensionData,18,51,34,c43197032390.js,3,ia_metricas_humanos,"class ExtensionData {
+  #type
+  #path
+
+  constructor(type, path) {
+    this.#type = type
+    this.#path = path
+  }
+
+  static setPath(path) {
+    return new ExtensionData('path', path)
+  }
+
+  static setArchivePath(path) {
+    return new ExtensionData('archivePath', path)
+  }
+
+  static setBase64Encoded(value) {
+    return new ExtensionData('base64', value)
+  }
+
+  asMap() {
+    let toReturn = {}
+    toReturn['type'] = this.#type
+
+    if (this.#type === 'base64') {
+      toReturn['value'] = this.#path
+    } else {
+      toReturn['path'] = this.#path
+    }
+
+    return toReturn
+  }
+}"
+973da9838b0b,EasySpider,ElectronJS/EasySpider_en/content-scripts/global.js,function,clearEl,225,244,20,973da9838b0b.js,1,ia_metricas_humanos,"function clearEl(trail=false) {
+    //如果最后停留的元素被选中，则调整此元素的style为原始style，否则不进行调整
+    for (let node of global.nodeList) {
+        node[""node""].style.backgroundColor = node[""bgColor""];
+        node[""node""].style.boxShadow = node[""boxShadow""];
+        if (global.NowNode == node[""node""] && !trail) ;
+    }
+    for (let node of global.markElements) {
+        let element = node.element;
+        element.style.boxShadow = ""none"";
+    }
+    global.markElements = [];
+    global.step = 0;
+    clearReady();
+    clearParameters();
+    global.nodeList.splice(0, global.nodeList.length); //清空数组
+    global.app._data.option = 0; //选项重置
+    global.app._data.page = 0; //恢复原始页面
+    // global.app._data.nextPage = 0; //不出现翻页操作提示
+}"
+1f63e3ecabcc,EasySpider,ElectronJS/EasySpider_en/content-scripts/global.js,function,generateValTable,1004,1023,20,1f63e3ecabcc.js,2,ia_metricas_humanos,"function generateValTable(multiline = true) {
+    let paraValues = [];
+    for (let i = 0; i < global.outputParameters.length; i++) {
+        let tValues = [];
+        let tindex = 0;
+        let l = multiline ? global.nodeList.length : 1;
+        for (let j = 0; j < l; j++) {
+            //注意第一个循环条件，index超出界限了就不需要再寻找了，其他的全是空
+            if (tindex < global.outputParameters[i][""exampleValues""].length && global.outputParameters[i][""exampleValues""][tindex][""num""] == j) {
+                tValues.push(global.outputParameters[i][""exampleValues""][tindex][""value""]);
+                tindex++;
+            } else {
+                tValues.push("" "");
+            }
+        }
+        paraValues.push(tValues);
+    }
+    global.app._data.valTable = paraValues;
+    // console.log(""生成参数表格"", paraValues);
+}"
+4e1a40162746,career-ops,analyze-patterns.mjs,function,parseTracker,62,79,18,4e1a40162746.js,2,ia_metricas_humanos,"function parseTracker() {
+  if (!existsSync(APPS_FILE)) return [];
+  const content = readFileSync(APPS_FILE, 'utf-8');
+  const entries = [];
+  for (const line of content.split('\n')) {
+    if (!line.startsWith('|')) continue;
+    const parts = line.split('|').map(s => s.trim());
+    if (parts.length < 9) continue;
+    const num = parseInt(parts[1]);
+    if (isNaN(num)) continue;
+    entries.push({
+      num, date: parts[2], company: parts[3], role: parts[4],
+      score: parts[5], status: parts[6], pdf: parts[7], report: parts[8],
+      notes: parts[9] || '',
+    });
+  }
+  return entries;
+}"
+1f79ea8ba0a3,career-ops,doctor.mjs,function,checkPlaywright,44,63,20,1f79ea8ba0a3.js,1,ia_metricas_humanos,"async function checkPlaywright() {
+  try {
+    const { chromium } = await import('playwright');
+    const execPath = chromium.executablePath();
+    if (existsSync(execPath)) {
+      return { pass: true, label: 'Playwright chromium installed' };
+    }
+    return {
+      pass: false,
+      label: 'Playwright chromium not installed',
+      fix: 'Run: npx playwright install chromium',
+    };
+  } catch {
+    return {
+      pass: false,
+      label: 'Playwright chromium not installed',
+      fix: 'Run: npx playwright install chromium',
+    };
+  }
+}"
+ee5aa5efba45,meteor,packages/random/NodeRandomGenerator.js,class,NodeRandomGenerator,4,37,34,ee5aa5efba45.js,3,ia_metricas_humanos,"class NodeRandomGenerator extends RandomGenerator {
+  /**
+   * @name Random.fraction
+   * @summary Return a number between 0 and 1, like `Math.random`.
+   * @locus Anywhere
+   */
+  fraction () {
+    const numerator = Number.parseInt(this.hexString(8), 16);
+    return numerator * 2.3283064365386963e-10; // 2^-3;
+  }
+
+  /**
+   * @name Random.hexString
+   * @summary Return a random string of `n` hexadecimal digits.
+   * @locus Anywhere
+   * @param {Number} n Length of the string
+   */
+  hexString (digits) {
+    const numBytes = Math.ceil(digits / 2);
+    let bytes;
+    // Try to get cryptographically strong randomness. Fall back to
+    // non-cryptographically strong if not available.
+    try {
+      bytes = crypto.randomBytes(numBytes);
+    } catch (e) {
+      // XXX should re-throw any error except insufficient entropy
+      bytes = crypto.pseudoRandomBytes(numBytes);
+    }
+    const result = bytes.toString('hex');
+    // If the number of digits is odd, we'll have generated an extra 4 bits
+    // of randomness, so we need to trim the last digit.
+    return result.substring(0, digits);
+  }
+}"
+dcd49f16f874,meteor,npm-packages/meteor-babel/cache.js,function,ensureCacheDir,22,41,20,dcd49f16f874.js,1,ia_metricas_humanos,"function ensureCacheDir(cacheDir) {
+  cacheDir = path.resolve(
+    cacheDir ||
+    process.env.BABEL_CACHE_DIR ||
+    path.join(
+      process.env.HOME || process.env.USERPROFILE || __dirname,
+      "".babel-cache""
+    )
+  );
+
+  try {
+    util.mkdirp(cacheDir);
+  } catch (error) {
+    if (error.code !== ""EEXIST"") {
+      throw error;
+    }
+  }
+
+  return cacheDir;
+}"
+9276dc24aa63,meteor,npm-packages/meteor-babel/options.js,function,getDefaultsForModernBrowsers,96,115,20,9276dc24aa63.js,2,ia_metricas_humanos,"function getDefaultsForModernBrowsers(features) {
+  const combined = {
+    presets: [],
+    plugins: [getReifyPlugin(features)]
+  };
+
+  const compileModulesOnly = features && features.compileModulesOnly;
+  if (! compileModulesOnly) {
+    combined.presets.push(babelPresetMeteorModern.getPreset);
+
+    const rt = getRuntimeTransform(features);
+    if (rt) {
+      combined.plugins.push(rt);
+    }
+
+    maybeAddReactPlugins(features, combined);
+  }
+
+  return finish(features, [combined]);
+}"
+a7fd9e0fae66,react,scripts/bench/benchmarks/pe-class-components/benchmark.js,class,AdsPEMultiTabDrawer136,3072,3106,35,a7fd9e0fae66.js,3,ia_metricas_humanos,"class AdsPEMultiTabDrawer136 extends React.Component {
+    render() {
+      if (this.props.x === 299) {
+        return React.createElement(
+          'div',
+          {className: '_2kev _2kex'},
+          React.createElement(
+            'div',
+            {className: '_5yno'},
+            React.createElement(AdsPEEditorTrayTabButton83, {
+              x: 197,
+              key: 'editor_tray_button',
+            }),
+            React.createElement(AdsPEInsightsTrayTabButton84, {
+              x: 202,
+              key: 'insights_tray_button',
+            }),
+            React.createElement(AdsPENekoDebuggerTrayTabButton85, {
+              x: 204,
+              key: 'neko_debugger_tray_button',
+            })
+          ),
+          React.createElement(
+            'div',
+            {className: '_5ynn'},
+            React.createElement(AdsPEEditorTrayTabContentContainer135, {
+              x: 298,
+              key: 'EDITOR_DRAWER',
+            }),
+            null
+          )
+        );
+      }
+    }
+  }"
+2e5d78a0b2c5,react,compiler/scripts/enable-feature-flag.js,function,parseArgs,32,51,20,2e5d78a0b2c5.js,1,ia_metricas_humanos,"function parseArgs() {
+  const argv = yargs(hideBin(process.argv))
+    .usage('Usage: $0 <flag-name>')
+    .command('$0 <flag-name>', 'Enable a feature flag by default', yargs => {
+      yargs.positional('flag-name', {
+        describe: 'Name of the feature flag to enable',
+        type: 'string',
+      });
+    })
+    .example(
+      '$0 validateExhaustiveMemoizationDependencies',
+      'Enable the validateExhaustiveMemoizationDependencies flag'
+    )
+    .help('h')
+    .alias('h', 'help')
+    .strict()
+    .parseSync();
+
+  return argv['flag-name'];
+}"
+059bf977eeba,react,packages/eslint-plugin-react-hooks/src/code-path-analysis/fork-context.js,function,makeSegments,37,56,20,059bf977eeba.js,2,ia_metricas_humanos,"function makeSegments(context, begin, end, create) {
+  const list = context.segmentsList;
+
+  const normalizedBegin = begin >= 0 ? begin : list.length + begin;
+  const normalizedEnd = end >= 0 ? end : list.length + end;
+
+  const segments = [];
+
+  for (let i = 0; i < context.count; ++i) {
+    const allPrevSegments = [];
+
+    for (let j = normalizedBegin; j <= normalizedEnd; ++j) {
+      allPrevSegments.push(list[j][i]);
+    }
+
+    segments.push(create(context.idGenerator.next(), allPrevSegments));
+  }
+
+  return segments;
+}"
