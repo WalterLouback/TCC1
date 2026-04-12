@@ -1,0 +1,77 @@
+[
+  {
+    "repo": "awesome-cheatsheets",
+    "path": "commitlint.config.js",
+    "size_bytes": 65
+  },
+  {
+    "repo": "awesome-cheatsheets",
+    "path": "backend/adonis.js",
+    "size_bytes": 31424
+  },
+  {
+    "repo": "awesome-cheatsheets",
+    "path": "backend/express.js",
+    "size_bytes": 7851
+  },
+  {
+    "repo": "awesome-cheatsheets",
+    "path": "backend/feathers.js",
+    "size_bytes": 28923
+  },
+  {
+    "repo": "awesome-cheatsheets",
+    "path": "backend/moleculer.js",
+    "size_bytes": 23132
+  },
+  {
+    "repo": "awesome-cheatsheets",
+    "path": "backend/node.js",
+    "size_bytes": 46731
+  },
+  {
+    "repo": "awesome-cheatsheets",
+    "path": "backend/sails.js",
+    "size_bytes": 28898
+  },
+  {
+    "repo": "awesome-cheatsheets",
+    "path": "frontend/angular.js",
+    "size_bytes": 17124
+  },
+  {
+    "repo": "awesome-cheatsheets",
+    "path": "frontend/angularjs.js",
+    "size_bytes": 17623
+  },
+  {
+    "repo": "awesome-cheatsheets",
+    "path": "frontend/ember.js",
+    "size_bytes": 25220
+  },
+  {
+    "repo": "awesome-cheatsheets",
+    "path": "frontend/react.js",
+    "size_bytes": 16446
+  },
+  {
+    "repo": "awesome-cheatsheets",
+    "path": "frontend/vue.js",
+    "size_bytes": 35857
+  },
+  {
+    "repo": "awesome-cheatsheets",
+    "path": "languages/javascript.js",
+    "size_bytes": 11255
+  },
+  {
+    "repo": "awesome-cheatsheets",
+    "path": "tools/elasticsearch.js",
+    "size_bytes": 800
+  },
+  {
+    "repo": "awesome-cheatsheets",
+    "path": "tools/puppeteer.js",
+    "size_bytes": 39419
+  }
+]

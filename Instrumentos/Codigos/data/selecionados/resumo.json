@@ -1,0 +1,36 @@
+{
+  "config": {
+    "funcoes_por_repo": 2,
+    "classes_por_repo": 1,
+    "modo_estrito": false
+  },
+  "repositorios": {
+    "EasySpider": {
+      "funcoes_candidatas": 1813,
+      "classes_candidatas": 8,
+      "funcoes_selecionadas": 2,
+      "classes_selecionadas": 1
+    },
+    "career-ops": {
+      "funcoes_candidatas": 55,
+      "classes_candidatas": 0,
+      "funcoes_selecionadas": 2,
+      "classes_selecionadas": 0
+    },
+    "meteor": {
+      "funcoes_candidatas": 1689,
+      "classes_candidatas": 72,
+      "funcoes_selecionadas": 2,
+      "classes_selecionadas": 1
+    },
+    "react": {
+      "funcoes_candidatas": 892,
+      "classes_candidatas": 113,
+      "funcoes_selecionadas": 2,
+      "classes_selecionadas": 1
+    }
+  },
+  "erros": [
+    "career-ops: classes insuficientes (0/1)"
+  ]
+}

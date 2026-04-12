@@ -1,0 +1,72 @@
+[
+  {
+    "repo": "career-ops",
+    "path": "analyze-patterns.mjs",
+    "size_bytes": 21634
+  },
+  {
+    "repo": "career-ops",
+    "path": "check-liveness.mjs",
+    "size_bytes": 3785
+  },
+  {
+    "repo": "career-ops",
+    "path": "cv-sync-check.mjs",
+    "size_bytes": 3684
+  },
+  {
+    "repo": "career-ops",
+    "path": "dedup-tracker.mjs",
+    "size_bytes": 6351
+  },
+  {
+    "repo": "career-ops",
+    "path": "doctor.mjs",
+    "size_bytes": 5393
+  },
+  {
+    "repo": "career-ops",
+    "path": "followup-cadence.mjs",
+    "size_bytes": 11651
+  },
+  {
+    "repo": "career-ops",
+    "path": "generate-pdf.mjs",
+    "size_bytes": 5968
+  },
+  {
+    "repo": "career-ops",
+    "path": "liveness-core.mjs",
+    "size_bytes": 2278
+  },
+  {
+    "repo": "career-ops",
+    "path": "merge-tracker.mjs",
+    "size_bytes": 12084
+  },
+  {
+    "repo": "career-ops",
+    "path": "normalize-statuses.mjs",
+    "size_bytes": 5775
+  },
+  {
+    "repo": "career-ops",
+    "path": "scan.mjs",
+    "size_bytes": 12515
+  },
+  {
+    "repo": "career-ops",
+    "path": "test-all.mjs",
+    "size_bytes": 11084
+  },
+  {
+    "repo": "career-ops",
+    "path": "update-system.mjs",
+    "size_bytes": 10088
+  },
+  {
+    "repo": "career-ops",
+    "path": "verify-pipeline.mjs",
+    "size_bytes": 6694
+  }
+]
