@@ -1,0 +1,4 @@
+/**
+ * Gera uma lista de novos segmentos com base em um contexto de análise de caminho de código.
+ * Para cada iteração até `context.count`, a função coleta um "slice" de segmentos anteriores
+ * de

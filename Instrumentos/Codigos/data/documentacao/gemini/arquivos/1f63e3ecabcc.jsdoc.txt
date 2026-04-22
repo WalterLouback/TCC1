@@ -1,0 +1,17 @@
+/**
+ * Gera uma tabela de valores (`valTable`) com base nos parâmetros de saída globais e na lista de nós.
+ * Esta função itera sobre cada parâmetro de saída definido em `global.outputParameters` e constrói uma linha de valores para ele.
+ * Os valores são extraídos de `exampleValues` de cada parâmetro, correspondendo pelo índice `num`.
+ * Se um valor de exemplo não for encontrado para um determinado índice (linha), um espaço em branco é usado como preenchimento.
+ * O resultado é uma matriz bidimensional que representa a tabela de valores, a qual é então atribuída a `global.app._data.valTable`.
+ *
+ * @param {boolean} [multiline=true] - Indica se a tabela deve considerar múltiplos nós/linhas (`global.nodeList.length`)
+ *   ou apenas uma única linha (1). Se `true`, o número de linhas é determinado por `global.nodeList.length`.
+ *   Se `false`, apenas a primeira linha é considerada.
+ * @returns {void} Esta função não retorna um valor explicitamente; ela modifica a propriedade `global.app._data.valTable` como um efeito colateral.
+ *
+ * @global
+ * @requires global.outputParameters - Um array de objetos, onde cada objeto representa um parâmetro de saída.
+ *   Cada objeto em `outputParameters` deve conter uma propriedade `exampleValues`, que é um array de objetos.
+ *   Cada objeto em `exampleValues` deve ter as propriedades `num` (number, representando o índice da linha) e `value` (any, o valor a ser exibido).
+ * @requires global.nodeList - Um array cuja propriedade `length` é usada para determinar o número de linhas da tabela quando `

@@ -1,0 +1,15 @@
+/**
+ * Verifica se o navegador Chromium do Playwright está instalado e acessível no sistema.
+ *
+ * Esta função tenta importar dinamicamente a biblioteca 'playwright',
+ * obtém o caminho do executável do Chromium e verifica sua existência no sistema de arquivos.
+ *
+ * @returns {Promise<{pass: boolean, label: string, fix?: string}>} Um objeto indicando o status da verificação.
+ *   - `pass`: `true` se o executável do Chromium do Playwright for encontrado; `false` caso contrário.
+ *   - `label`: Uma mensagem descritiva sobre o status da instalação.
+ *   - `fix`: (Opcional) Uma sugestão de comando para corrigir o problema, presente apenas quando `pass` é `false`.
+ *
+ * @throws {Error} Esta função não lança exceções diretamente para o chamador.
+ *   Quaisquer erros durante a importação do Playwright ou a verificação do caminho do executável
+ *   são capturados internamente e resultam em um retorno com `pass: false`.
+ */

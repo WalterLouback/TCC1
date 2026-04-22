@@ -1,0 +1,5 @@
+/**
+ * Resets the visual styles of selected and marked elements and clears various global state variables related to the application's element selection and page navigation.
+ *
+ * This function performs the following actions:
+ * 1. Iter

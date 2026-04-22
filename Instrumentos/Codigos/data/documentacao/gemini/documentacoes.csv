@@ -1,0 +1,611 @@
+id_trecho,repo,arquivo,tipo,nome,linha_inicio,linha_fim,loc,ferramenta,modelo,temperatura,max_output_tokens,ok,tentativa,tempo_geracao_segundos,erro,arquivo_documentacao,prompt,documentacao_gerada
+c43197032390,EasySpider,ElectronJS/selenium-webdriver-bidi-webExtension/extensionData.js,class,ExtensionData,18,51,34,gemini,gemini-2.5-flash,0.0,1200,True,1,6.5483,,c43197032390.jsdoc.txt,"Gere documentação JSDoc completa para a seguinte classe JavaScript.
+
+Inclua:
+- descrição funcional detalhada da classe;
+- documentação do construtor, quando aplicável;
+- descrição dos principais parâmetros, quando inferíveis;
+- comportamento relevante e casos especiais, quando aplicável.
+
+Regras:
+- Retorne apenas um bloco JSDoc principal da classe.
+- Se algum tipo não puder ser inferido com segurança, use uma descrição neutra sem inventar detalhes.
+- Não inclua markdown fora do comentário.
+
+ID do trecho: c43197032390
+Tipo: class
+Repositório: EasySpider
+Arquivo: ElectronJS/selenium-webdriver-bidi-webExtension/extensionData.js
+Nome: ExtensionData
+Linhas: 18-51
+
+Código:
+```javascript
+class ExtensionData {
+  #type
+  #path
+
+  constructor(type, path) {
+    this.#type = type
+    this.#path = path
+  }
+
+  static setPath(path) {
+    return new ExtensionData('path', path)
+  }
+
+  static setArchivePath(path) {
+    return new ExtensionData('archivePath', path)
+  }
+
+  static setBase64Encoded(value) {
+    return new ExtensionData('base64', value)
+  }
+
+  asMap() {
+    let toReturn = {}
+    toReturn['type'] = this.#type
+
+    if (this.#type === 'base64') {
+      toReturn['value'] = this.#path
+    } else {
+      toReturn['path'] = this.#path
+    }
+
+    return toReturn
+  }
+}
+```","/**
+ * Representa dados para uma extensão de navegador, encapsulando seu tipo e valor.
+ * Esta classe fornece uma maneira estruturada de definir como a origem de uma extensão
+ * é fornecida, seja como um caminho de"
+973da9838b0b,EasySpider,ElectronJS/EasySpider_en/content-scripts/global.js,function,clearEl,225,244,20,gemini,gemini-2.5-flash,0.0,1200,True,1,6.9732,,973da9838b0b.jsdoc.txt,"Gere documentação JSDoc completa para a seguinte função JavaScript.
+
+Inclua:
+- descrição funcional detalhada;
+- tipos e descrições de todos os parâmetros, quando inferíveis;
+- tipo e descrição do valor de retorno, quando inferível;
+- possíveis exceções, erros ou casos especiais, quando aplicável.
+
+Regras:
+- Retorne apenas um bloco JSDoc.
+- Se algum tipo não puder ser inferido com segurança, use uma descrição neutra sem inventar detalhes.
+- Não inclua markdown fora do comentário.
+
+ID do trecho: 973da9838b0b
+Tipo: function
+Repositório: EasySpider
+Arquivo: ElectronJS/EasySpider_en/content-scripts/global.js
+Nome: clearEl
+Linhas: 225-244
+
+Código:
+```javascript
+function clearEl(trail=false) {
+    //如果最后停留的元素被选中，则调整此元素的style为原始style，否则不进行调整
+    for (let node of global.nodeList) {
+        node[""node""].style.backgroundColor = node[""bgColor""];
+        node[""node""].style.boxShadow = node[""boxShadow""];
+        if (global.NowNode == node[""node""] && !trail) ;
+    }
+    for (let node of global.markElements) {
+        let element = node.element;
+        element.style.boxShadow = ""none"";
+    }
+    global.markElements = [];
+    global.step = 0;
+    clearReady();
+    clearParameters();
+    global.nodeList.splice(0, global.nodeList.length); //清空数组
+    global.app._data.option = 0; //选项重置
+    global.app._data.page = 0; //恢复原始页面
+    // global.app._data.nextPage = 0; //不出现翻页操作提示
+}
+```","/**
+ * Resets the visual styles of selected and marked elements and clears various global state variables related to the application's element selection and page navigation.
+ *
+ * This function performs the following actions:
+ * 1. Iter"
+1f63e3ecabcc,EasySpider,ElectronJS/EasySpider_en/content-scripts/global.js,function,generateValTable,1004,1023,20,gemini,gemini-2.5-flash,0.0,1200,True,1,7.0459,,1f63e3ecabcc.jsdoc.txt,"Gere documentação JSDoc completa para a seguinte função JavaScript.
+
+Inclua:
+- descrição funcional detalhada;
+- tipos e descrições de todos os parâmetros, quando inferíveis;
+- tipo e descrição do valor de retorno, quando inferível;
+- possíveis exceções, erros ou casos especiais, quando aplicável.
+
+Regras:
+- Retorne apenas um bloco JSDoc.
+- Se algum tipo não puder ser inferido com segurança, use uma descrição neutra sem inventar detalhes.
+- Não inclua markdown fora do comentário.
+
+ID do trecho: 1f63e3ecabcc
+Tipo: function
+Repositório: EasySpider
+Arquivo: ElectronJS/EasySpider_en/content-scripts/global.js
+Nome: generateValTable
+Linhas: 1004-1023
+
+Código:
+```javascript
+function generateValTable(multiline = true) {
+    let paraValues = [];
+    for (let i = 0; i < global.outputParameters.length; i++) {
+        let tValues = [];
+        let tindex = 0;
+        let l = multiline ? global.nodeList.length : 1;
+        for (let j = 0; j < l; j++) {
+            //注意第一个循环条件，index超出界限了就不需要再寻找了，其他的全是空
+            if (tindex < global.outputParameters[i][""exampleValues""].length && global.outputParameters[i][""exampleValues""][tindex][""num""] == j) {
+                tValues.push(global.outputParameters[i][""exampleValues""][tindex][""value""]);
+                tindex++;
+            } else {
+                tValues.push("" "");
+            }
+        }
+        paraValues.push(tValues);
+    }
+    global.app._data.valTable = paraValues;
+    // console.log(""生成参数表格"", paraValues);
+}
+```","/**
+ * Gera uma tabela de valores (`valTable`) com base nos parâmetros de saída globais e na lista de nós.
+ * Esta função itera sobre cada parâmetro de saída definido em `global.outputParameters` e constrói uma linha de valores para ele.
+ * Os valores são extraídos de `exampleValues` de cada parâmetro, correspondendo pelo índice `num`.
+ * Se um valor de exemplo não for encontrado para um determinado índice (linha), um espaço em branco é usado como preenchimento.
+ * O resultado é uma matriz bidimensional que representa a tabela de valores, a qual é então atribuída a `global.app._data.valTable`.
+ *
+ * @param {boolean} [multiline=true] - Indica se a tabela deve considerar múltiplos nós/linhas (`global.nodeList.length`)
+ *   ou apenas uma única linha (1). Se `true`, o número de linhas é determinado por `global.nodeList.length`.
+ *   Se `false`, apenas a primeira linha é considerada.
+ * @returns {void} Esta função não retorna um valor explicitamente; ela modifica a propriedade `global.app._data.valTable` como um efeito colateral.
+ *
+ * @global
+ * @requires global.outputParameters - Um array de objetos, onde cada objeto representa um parâmetro de saída.
+ *   Cada objeto em `outputParameters` deve conter uma propriedade `exampleValues`, que é um array de objetos.
+ *   Cada objeto em `exampleValues` deve ter as propriedades `num` (number, representando o índice da linha) e `value` (any, o valor a ser exibido).
+ * @requires global.nodeList - Um array cuja propriedade `length` é usada para determinar o número de linhas da tabela quando `"
+4e1a40162746,career-ops,analyze-patterns.mjs,function,parseTracker,62,79,18,gemini,gemini-2.5-flash,0.0,1200,True,1,6.2841,,4e1a40162746.jsdoc.txt,"Gere documentação JSDoc completa para a seguinte função JavaScript.
+
+Inclua:
+- descrição funcional detalhada;
+- tipos e descrições de todos os parâmetros, quando inferíveis;
+- tipo e descrição do valor de retorno, quando inferível;
+- possíveis exceções, erros ou casos especiais, quando aplicável.
+
+Regras:
+- Retorne apenas um bloco JSDoc.
+- Se algum tipo não puder ser inferido com segurança, use uma descrição neutra sem inventar detalhes.
+- Não inclua markdown fora do comentário.
+
+ID do trecho: 4e1a40162746
+Tipo: function
+Repositório: career-ops
+Arquivo: analyze-patterns.mjs
+Nome: parseTracker
+Linhas: 62-79
+
+Código:
+```javascript
+function parseTracker() {
+  if (!existsSync(APPS_FILE)) return [];
+  const content = readFileSync(APPS_FILE, 'utf-8');
+  const entries = [];
+  for (const line of content.split('\n')) {
+    if (!line.startsWith('|')) continue;
+    const parts = line.split('|').map(s => s.trim());
+    if (parts.length < 9) continue;
+    const num = parseInt(parts[1]);
+    if (isNaN(num)) continue;
+    entries.push({
+      num, date: parts[2], company: parts[3], role: parts[4],
+      score: parts[5], status: parts[6], pdf: parts[7], report: parts[8],
+      notes: parts[9] || '',
+    });
+  }
+  return entries;
+}
+```","/**
+ * Analisa e extrai dados de um arquivo de rastreamento (tracker file),
+ * cujo caminho é definido pela constante global `APPS_FILE`.
+ *
+ * O arquivo é lido linha por linha,"
+1f79ea8ba0a3,career-ops,doctor.mjs,function,checkPlaywright,44,63,20,gemini,gemini-2.5-flash,0.0,1200,True,1,4.3352,,1f79ea8ba0a3.jsdoc.txt,"Gere documentação JSDoc completa para a seguinte função JavaScript.
+
+Inclua:
+- descrição funcional detalhada;
+- tipos e descrições de todos os parâmetros, quando inferíveis;
+- tipo e descrição do valor de retorno, quando inferível;
+- possíveis exceções, erros ou casos especiais, quando aplicável.
+
+Regras:
+- Retorne apenas um bloco JSDoc.
+- Se algum tipo não puder ser inferido com segurança, use uma descrição neutra sem inventar detalhes.
+- Não inclua markdown fora do comentário.
+
+ID do trecho: 1f79ea8ba0a3
+Tipo: function
+Repositório: career-ops
+Arquivo: doctor.mjs
+Nome: checkPlaywright
+Linhas: 44-63
+
+Código:
+```javascript
+async function checkPlaywright() {
+  try {
+    const { chromium } = await import('playwright');
+    const execPath = chromium.executablePath();
+    if (existsSync(execPath)) {
+      return { pass: true, label: 'Playwright chromium installed' };
+    }
+    return {
+      pass: false,
+      label: 'Playwright chromium not installed',
+      fix: 'Run: npx playwright install chromium',
+    };
+  } catch {
+    return {
+      pass: false,
+      label: 'Playwright chromium not installed',
+      fix: 'Run: npx playwright install chromium',
+    };
+  }
+}
+```","/**
+ * Verifica se o navegador Chromium do Playwright está instalado e acessível no sistema.
+ *
+ * Esta função tenta importar dinamicamente a biblioteca 'playwright',
+ * obtém o caminho do executável do Chromium e verifica sua existência no sistema de arquivos.
+ *
+ * @returns {Promise<{pass: boolean, label: string, fix?: string}>} Um objeto indicando o status da verificação.
+ *   - `pass`: `true` se o executável do Chromium do Playwright for encontrado; `false` caso contrário.
+ *   - `label`: Uma mensagem descritiva sobre o status da instalação.
+ *   - `fix`: (Opcional) Uma sugestão de comando para corrigir o problema, presente apenas quando `pass` é `false`.
+ *
+ * @throws {Error} Esta função não lança exceções diretamente para o chamador.
+ *   Quaisquer erros durante a importação do Playwright ou a verificação do caminho do executável
+ *   são capturados internamente e resultam em um retorno com `pass: false`.
+ */"
+ee5aa5efba45,meteor,packages/random/NodeRandomGenerator.js,class,NodeRandomGenerator,4,37,34,gemini,gemini-2.5-flash,0.0,1200,True,1,5.088,,ee5aa5efba45.jsdoc.txt,"Gere documentação JSDoc completa para a seguinte classe JavaScript.
+
+Inclua:
+- descrição funcional detalhada da classe;
+- documentação do construtor, quando aplicável;
+- descrição dos principais parâmetros, quando inferíveis;
+- comportamento relevante e casos especiais, quando aplicável.
+
+Regras:
+- Retorne apenas um bloco JSDoc principal da classe.
+- Se algum tipo não puder ser inferido com segurança, use uma descrição neutra sem inventar detalhes.
+- Não inclua markdown fora do comentário.
+
+ID do trecho: ee5aa5efba45
+Tipo: class
+Repositório: meteor
+Arquivo: packages/random/NodeRandomGenerator.js
+Nome: NodeRandomGenerator
+Linhas: 4-37
+
+Código:
+```javascript
+class NodeRandomGenerator extends RandomGenerator {
+  /**
+   * @name Random.fraction
+   * @summary Return a number between 0 and 1, like `Math.random`.
+   * @locus Anywhere
+   */
+  fraction () {
+    const numerator = Number.parseInt(this.hexString(8), 16);
+    return numerator * 2.3283064365386963e-10; // 2^-3;
+  }
+
+  /**
+   * @name Random.hexString
+   * @summary Return a random string of `n` hexadecimal digits.
+   * @locus Anywhere
+   * @param {Number} n Length of the string
+   */
+  hexString (digits) {
+    const numBytes = Math.ceil(digits / 2);
+    let bytes;
+    // Try to get cryptographically strong randomness. Fall back to
+    // non-cryptographically strong if not available.
+    try {
+      bytes = crypto.randomBytes(numBytes);
+    } catch (e) {
+      // XXX should re-throw any error except insufficient entropy
+      bytes = crypto.pseudoRandomBytes(numBytes);
+    }
+    const result = bytes.toString('hex');
+    // If the number of digits is odd, we'll have generated an extra 4 bits
+    // of randomness, so we need to trim the last digit.
+    return result.substring(0, digits);
+  }
+}
+```","/**
+ * Uma implementação de gerador de números aleatórios otimizada para ambientes Node.js.
+ * Esta classe estende `RandomGenerator` e fornece métodos para gerar números de ponto flutuante
+ * aleatórios entre 0 e 1, e strings hexadecimais aleatórias.
+ *
+ * Ela prioriza a utilização de aleatoriedade criptograficamente forte através de `crypto.randomBytes`
+ * do Node.js. Em caso de falha (por exemplo, devido a entropia insuficiente), ela faz um fallback
+ * para `crypto.pseudoRandomBytes` para garantir a disponibilidade de aleatoriedade, embora não
+ * criptograficamente forte.
+ *
+ * @extends {RandomGenerator}
+ */"
+dcd49f16f874,meteor,npm-packages/meteor-babel/cache.js,function,ensureCacheDir,22,41,20,gemini,gemini-2.5-flash,0.0,1200,True,2,7.1719,,dcd49f16f874.jsdoc.txt,"Gere documentação JSDoc completa para a seguinte função JavaScript.
+
+Inclua:
+- descrição funcional detalhada;
+- tipos e descrições de todos os parâmetros, quando inferíveis;
+- tipo e descrição do valor de retorno, quando inferível;
+- possíveis exceções, erros ou casos especiais, quando aplicável.
+
+Regras:
+- Retorne apenas um bloco JSDoc.
+- Se algum tipo não puder ser inferido com segurança, use uma descrição neutra sem inventar detalhes.
+- Não inclua markdown fora do comentário.
+
+ID do trecho: dcd49f16f874
+Tipo: function
+Repositório: meteor
+Arquivo: npm-packages/meteor-babel/cache.js
+Nome: ensureCacheDir
+Linhas: 22-41
+
+Código:
+```javascript
+function ensureCacheDir(cacheDir) {
+  cacheDir = path.resolve(
+    cacheDir ||
+    process.env.BABEL_CACHE_DIR ||
+    path.join(
+      process.env.HOME || process.env.USERPROFILE || __dirname,
+      "".babel-cache""
+    )
+  );
+
+  try {
+    util.mkdirp(cacheDir);
+  } catch (error) {
+    if (error.code !== ""EEXIST"") {
+      throw error;
+    }
+  }
+
+  return cacheDir;
+}
+```","/**
+ * Garante que um diretório de cache exista.
+ *
+ * A função resolve o caminho do diretório de cache seguindo a seguinte precedência:
+ * 1. O caminho fornecido no parâmetro `cacheDir`.
+ * 2. O valor da variável de ambiente `BABEL_CACHE_DIR`.
+ * 3. Um caminho padrão construído a partir de `process.env.HOME`, `process.env.USERPROFILE`, ou `__dirname`,
+ *    juntamente com o nome de diretório "".babel-cache"".
+ *
+ * Após determinar o caminho, a função tenta criar o diretório recursivamente se ele não existir.
+ * Se o diretório já existir, nenhuma ação é tomada e nenhum erro é lançado.
+ *
+ * @param {string | undefined | null} cacheDir - Um caminho opcional para o diretório de cache.
+ *   Se for um valor falsy (como `undefined`, `null` ou uma string vazia),
+ *   um caminho padrão será determinado com base nas variáveis de ambiente ou no diretório atual.
+ * @returns {string} O caminho absoluto para o diretório de cache garantido."
+9276dc24aa63,meteor,npm-packages/meteor-babel/options.js,function,getDefaultsForModernBrowsers,96,115,20,gemini,gemini-2.5-flash,0.0,1200,True,1,6.7375,,9276dc24aa63.jsdoc.txt,"Gere documentação JSDoc completa para a seguinte função JavaScript.
+
+Inclua:
+- descrição funcional detalhada;
+- tipos e descrições de todos os parâmetros, quando inferíveis;
+- tipo e descrição do valor de retorno, quando inferível;
+- possíveis exceções, erros ou casos especiais, quando aplicável.
+
+Regras:
+- Retorne apenas um bloco JSDoc.
+- Se algum tipo não puder ser inferido com segurança, use uma descrição neutra sem inventar detalhes.
+- Não inclua markdown fora do comentário.
+
+ID do trecho: 9276dc24aa63
+Tipo: function
+Repositório: meteor
+Arquivo: npm-packages/meteor-babel/options.js
+Nome: getDefaultsForModernBrowsers
+Linhas: 96-115
+
+Código:
+```javascript
+function getDefaultsForModernBrowsers(features) {
+  const combined = {
+    presets: [],
+    plugins: [getReifyPlugin(features)]
+  };
+
+  const compileModulesOnly = features && features.compileModulesOnly;
+  if (! compileModulesOnly) {
+    combined.presets.push(babelPresetMeteorModern.getPreset);
+
+    const rt = getRuntimeTransform(features);
+    if (rt) {
+      combined.plugins.push(rt);
+    }
+
+    maybeAddReactPlugins(features, combined);
+  }
+
+  return finish(features, [combined]);
+}
+```","/**
+ * Gera um conjunto de opções de configuração Babel otimizadas para ambientes de navegador modernos
+ * dentro do ecossistema Meteor.
+ *
+ * Esta função constrói dinamicamente a configuração Babel, incluindo presets e plugins,
+ * com base nas características e requisitos especificados no objeto `features`."
+a7fd9e0fae66,react,scripts/bench/benchmarks/pe-class-components/benchmark.js,class,AdsPEMultiTabDrawer136,3072,3106,35,gemini,gemini-2.5-flash,0.0,1200,True,1,6.7445,,a7fd9e0fae66.jsdoc.txt,"Gere documentação JSDoc completa para a seguinte classe JavaScript.
+
+Inclua:
+- descrição funcional detalhada da classe;
+- documentação do construtor, quando aplicável;
+- descrição dos principais parâmetros, quando inferíveis;
+- comportamento relevante e casos especiais, quando aplicável.
+
+Regras:
+- Retorne apenas um bloco JSDoc principal da classe.
+- Se algum tipo não puder ser inferido com segurança, use uma descrição neutra sem inventar detalhes.
+- Não inclua markdown fora do comentário.
+
+ID do trecho: a7fd9e0fae66
+Tipo: class
+Repositório: react
+Arquivo: scripts/bench/benchmarks/pe-class-components/benchmark.js
+Nome: AdsPEMultiTabDrawer136
+Linhas: 3072-3106
+
+Código:
+```javascript
+class AdsPEMultiTabDrawer136 extends React.Component {
+    render() {
+      if (this.props.x === 299) {
+        return React.createElement(
+          'div',
+          {className: '_2kev _2kex'},
+          React.createElement(
+            'div',
+            {className: '_5yno'},
+            React.createElement(AdsPEEditorTrayTabButton83, {
+              x: 197,
+              key: 'editor_tray_button',
+            }),
+            React.createElement(AdsPEInsightsTrayTabButton84, {
+              x: 202,
+              key: 'insights_tray_button',
+            }),
+            React.createElement(AdsPENekoDebuggerTrayTabButton85, {
+              x: 204,
+              key: 'neko_debugger_tray_button',
+            })
+          ),
+          React.createElement(
+            'div',
+            {className: '_5ynn'},
+            React.createElement(AdsPEEditorTrayTabContentContainer135, {
+              x: 298,
+              key: 'EDITOR_DRAWER',
+            }),
+            null
+          )
+        );
+      }
+    }
+  }
+```","/**
+ * Um componente React que representa um painel de gaveta (drawer) com múltiplas abas,
+ * tipicamente utilizado no contexto de uma interface de editor, como o Ads Power Editor (PE).
+ *
+ * Este componente implementa renderização condicional: ele exibe seu conteúdo completo
+ * apenas quando a propriedade `x` é estritamente igual a `299`.
+ *
+ * Quando ativo, o painel é estruturado em duas seções principais:
+ * 1. Uma área superior contendo botões de abas para diferentes funcionalidades, como Editor, Insights e Neko Debugger.
+ * 2. Uma área inferior destinada ao conteúdo da aba selecionada, inicialmente mostrando o conteúdo do Editor.
+ *
+ * Se a propriedade `x` não for `299`, o componente não render"
+2e5d78a0b2c5,react,compiler/scripts/enable-feature-flag.js,function,parseArgs,32,51,20,gemini,gemini-2.5-flash,0.0,1200,True,1,5.6296,,2e5d78a0b2c5.jsdoc.txt,"Gere documentação JSDoc completa para a seguinte função JavaScript.
+
+Inclua:
+- descrição funcional detalhada;
+- tipos e descrições de todos os parâmetros, quando inferíveis;
+- tipo e descrição do valor de retorno, quando inferível;
+- possíveis exceções, erros ou casos especiais, quando aplicável.
+
+Regras:
+- Retorne apenas um bloco JSDoc.
+- Se algum tipo não puder ser inferido com segurança, use uma descrição neutra sem inventar detalhes.
+- Não inclua markdown fora do comentário.
+
+ID do trecho: 2e5d78a0b2c5
+Tipo: function
+Repositório: react
+Arquivo: compiler/scripts/enable-feature-flag.js
+Nome: parseArgs
+Linhas: 32-51
+
+Código:
+```javascript
+function parseArgs() {
+  const argv = yargs(hideBin(process.argv))
+    .usage('Usage: $0 <flag-name>')
+    .command('$0 <flag-name>', 'Enable a feature flag by default', yargs => {
+      yargs.positional('flag-name', {
+        describe: 'Name of the feature flag to enable',
+        type: 'string',
+      });
+    })
+    .example(
+      '$0 validateExhaustiveMemoizationDependencies',
+      'Enable the validateExhaustiveMemoizationDependencies flag'
+    )
+    .help('h')
+    .alias('h', 'help')
+    .strict()
+    .parseSync();
+
+  return argv['flag-name'];
+}
+```","/**
+ * Parses command-line arguments to extract the name of a feature flag.
+ * This function expects a single positional argument, which is the name of the feature flag
+ * to be enabled. It leverages `yargs` for robust argument parsing, including usage
+ * instructions, examples, help options, and strict validation.
+ *
+ * @returns {string} The name of the feature flag provided as a command-line argument.
+ * @throws {Error} If `yargs` encounters invalid or unexpected command-line arguments
+ *   due to strict parsing rules (e.g., missing the required `flag-name` positional
+ *   argument or providing unknown arguments), it may throw an error or exit the process.
+ */"
+059bf977eeba,react,packages/eslint-plugin-react-hooks/src/code-path-analysis/fork-context.js,function,makeSegments,37,56,20,gemini,gemini-2.5-flash,0.0,1200,True,1,6.5342,,059bf977eeba.jsdoc.txt,"Gere documentação JSDoc completa para a seguinte função JavaScript.
+
+Inclua:
+- descrição funcional detalhada;
+- tipos e descrições de todos os parâmetros, quando inferíveis;
+- tipo e descrição do valor de retorno, quando inferível;
+- possíveis exceções, erros ou casos especiais, quando aplicável.
+
+Regras:
+- Retorne apenas um bloco JSDoc.
+- Se algum tipo não puder ser inferido com segurança, use uma descrição neutra sem inventar detalhes.
+- Não inclua markdown fora do comentário.
+
+ID do trecho: 059bf977eeba
+Tipo: function
+Repositório: react
+Arquivo: packages/eslint-plugin-react-hooks/src/code-path-analysis/fork-context.js
+Nome: makeSegments
+Linhas: 37-56
+
+Código:
+```javascript
+function makeSegments(context, begin, end, create) {
+  const list = context.segmentsList;
+
+  const normalizedBegin = begin >= 0 ? begin : list.length + begin;
+  const normalizedEnd = end >= 0 ? end : list.length + end;
+
+  const segments = [];
+
+  for (let i = 0; i < context.count; ++i) {
+    const allPrevSegments = [];
+
+    for (let j = normalizedBegin; j <= normalizedEnd; ++j) {
+      allPrevSegments.push(list[j][i]);
+    }
+
+    segments.push(create(context.idGenerator.next(), allPrevSegments));
+  }
+
+  return segments;
+}
+```","/**
+ * Gera uma lista de novos segmentos com base em um contexto de análise de caminho de código.
+ * Para cada iteração até `context.count`, a função coleta um ""slice"" de segmentos anteriores
+ * de"

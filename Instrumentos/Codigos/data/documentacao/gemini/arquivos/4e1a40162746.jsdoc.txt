@@ -1,0 +1,5 @@
+/**
+ * Analisa e extrai dados de um arquivo de rastreamento (tracker file),
+ * cujo caminho é definido pela constante global `APPS_FILE`.
+ *
+ * O arquivo é lido linha por linha,
