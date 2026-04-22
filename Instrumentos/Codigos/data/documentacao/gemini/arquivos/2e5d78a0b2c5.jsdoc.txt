@@ -1,0 +1,11 @@
+/**
+ * Parses command-line arguments to extract the name of a feature flag.
+ * This function expects a single positional argument, which is the name of the feature flag
+ * to be enabled. It leverages `yargs` for robust argument parsing, including usage
+ * instructions, examples, help options, and strict validation.
+ *
+ * @returns {string} The name of the feature flag provided as a command-line argument.
+ * @throws {Error} If `yargs` encounters invalid or unexpected command-line arguments
+ *   due to strict parsing rules (e.g., missing the required `flag-name` positional
+ *   argument or providing unknown arguments), it may throw an error or exit the process.
+ */

@@ -1,0 +1,4 @@
+/**
+ * Representa dados para uma extensão de navegador, encapsulando seu tipo e valor.
+ * Esta classe fornece uma maneira estruturada de definir como a origem de uma extensão
+ * é fornecida, seja como um caminho de

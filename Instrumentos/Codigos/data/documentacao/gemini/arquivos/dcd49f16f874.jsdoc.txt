@@ -1,0 +1,16 @@
+/**
+ * Garante que um diretório de cache exista.
+ *
+ * A função resolve o caminho do diretório de cache seguindo a seguinte precedência:
+ * 1. O caminho fornecido no parâmetro `cacheDir`.
+ * 2. O valor da variável de ambiente `BABEL_CACHE_DIR`.
+ * 3. Um caminho padrão construído a partir de `process.env.HOME`, `process.env.USERPROFILE`, ou `__dirname`,
+ *    juntamente com o nome de diretório ".babel-cache".
+ *
+ * Após determinar o caminho, a função tenta criar o diretório recursivamente se ele não existir.
+ * Se o diretório já existir, nenhuma ação é tomada e nenhum erro é lançado.
+ *
+ * @param {string | undefined | null} cacheDir - Um caminho opcional para o diretório de cache.
+ *   Se for um valor falsy (como `undefined`, `null` ou uma string vazia),
+ *   um caminho padrão será determinado com base nas variáveis de ambiente ou no diretório atual.
+ * @returns {string} O caminho absoluto para o diretório de cache garantido.

@@ -1,0 +1,12 @@
+/**
+ * Um componente React que representa um painel de gaveta (drawer) com múltiplas abas,
+ * tipicamente utilizado no contexto de uma interface de editor, como o Ads Power Editor (PE).
+ *
+ * Este componente implementa renderização condicional: ele exibe seu conteúdo completo
+ * apenas quando a propriedade `x` é estritamente igual a `299`.
+ *
+ * Quando ativo, o painel é estruturado em duas seções principais:
+ * 1. Uma área superior contendo botões de abas para diferentes funcionalidades, como Editor, Insights e Neko Debugger.
+ * 2. Uma área inferior destinada ao conteúdo da aba selecionada, inicialmente mostrando o conteúdo do Editor.
+ *
+ * Se a propriedade `x` não for `299`, o componente não render

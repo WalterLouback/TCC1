@@ -1,0 +1,6 @@
+/**
+ * Gera um conjunto de opções de configuração Babel otimizadas para ambientes de navegador modernos
+ * dentro do ecossistema Meteor.
+ *
+ * Esta função constrói dinamicamente a configuração Babel, incluindo presets e plugins,
+ * com base nas características e requisitos especificados no objeto `features`.

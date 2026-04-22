@@ -1,0 +1,12 @@
+/**
+ * Uma implementação de gerador de números aleatórios otimizada para ambientes Node.js.
+ * Esta classe estende `RandomGenerator` e fornece métodos para gerar números de ponto flutuante
+ * aleatórios entre 0 e 1, e strings hexadecimais aleatórias.
+ *
+ * Ela prioriza a utilização de aleatoriedade criptograficamente forte através de `crypto.randomBytes`
+ * do Node.js. Em caso de falha (por exemplo, devido a entropia insuficiente), ela faz um fallback
+ * para `crypto.pseudoRandomBytes` para garantir a disponibilidade de aleatoriedade, embora não
+ * criptograficamente forte.
+ *
+ * @extends {RandomGenerator}
+ */
