@@ -1,0 +1,12 @@
+{
+  "name": "tcc1-pipeline",
+  "version": "1.0.0",
+  "description": "Pipeline de avaliação de documentação JSDoc gerada por IA",
+  "scripts": {
+    "lint": "eslint data/lint/**/*.js -f json -o data/lint/eslint_result.json"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "eslint-plugin-jsdoc": "^50.0.0"
+  }
+}
