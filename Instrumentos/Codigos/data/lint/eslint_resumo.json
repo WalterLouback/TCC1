@@ -1,0 +1,272 @@
+[
+  {
+    "provider": "chatgpt",
+    "id_trecho": "dHJla2hsZWIvamF2YXNjcmlwdC1hbGdvcml0aG1zfHNyYy9hbGdvcml0aG1zL2NyeXB0b2dyYXBoeS9yYWlsLWZlbmNlLWNpcGhlci9yYWlsRmVuY2VDaXBoZXIuanN8MTY2fGZ1bmN0aW9ufGRlY29kZUZlbmNl",
+    "arquivo_lint": "0ccbdafabfec79887c44.js",
+    "qtd_erros": 0,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 0,
+    "conforme_jsdoc": 1,
+    "regras_violadas": ""
+  },
+  {
+    "provider": "chatgpt",
+    "id_trecho": "bm9kZWpzL25vZGV8bGliL2ludGVybmFsL21vZHVsZXMvY2pzL2xvYWRlci5qc3wxNDkwfGZ1bmN0aW9ufGZpbmFsaXplRXNtUmVzb2x1dGlvbg",
+    "arquivo_lint": "3c3ff48454bbd994174f.js",
+    "qtd_erros": 0,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 0,
+    "conforme_jsdoc": 1,
+    "regras_violadas": ""
+  },
+  {
+    "provider": "chatgpt",
+    "id_trecho": "bm9kZWpzL25vZGV8bGliL2ludGVybmFsL21vZHVsZXMvaGVscGVycy5qc3w0Mjh8ZnVuY3Rpb258YXNzZXJ0QnVmZmVyU291cmNl",
+    "arquivo_lint": "4d4eaebf57e2cd04e175.js",
+    "qtd_erros": 0,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 0,
+    "conforme_jsdoc": 1,
+    "regras_violadas": ""
+  },
+  {
+    "provider": "chatgpt",
+    "id_trecho": "Q2hhbGFyYW5nZWxvLzMwLXNlY29uZHMtb2YtY29kZXxzcmMvbGliL2NvbnRlbnRVdGlscy9tYXJrZG93blBhcnNlci9wbHVnaW5zL2FzdC9oaWdobGlnaHRDb2RlLmpzfDMxfGZ1bmN0aW9ufGNyZWF0ZU1ldGFkYXRhRXh0cmFjdG9y",
+    "arquivo_lint": "57bb8663e52fbe421a17.js",
+    "qtd_erros": 1,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 1,
+    "conforme_jsdoc": 0,
+    "regras_violadas": "jsdoc/check-indentation:1"
+  },
+  {
+    "provider": "chatgpt",
+    "id_trecho": "ZmFjZWJvb2svcmVhY3R8cGFja2FnZXMvZXNsaW50LXBsdWdpbi1yZWFjdC1ob29rcy9zcmMvY29kZS1wYXRoLWFuYWx5c2lzL2ZvcmstY29udGV4dC5qc3wzN3xmdW5jdGlvbnxtYWtlU2VnbWVudHM",
+    "arquivo_lint": "81b95ce82a4ef9a62add.js",
+    "qtd_erros": 1,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 1,
+    "conforme_jsdoc": 0,
+    "regras_violadas": "jsdoc/require-param-description:1"
+  },
+  {
+    "provider": "chatgpt",
+    "id_trecho": "ZmFjZWJvb2svcmVhY3R8cGFja2FnZXMvZXNsaW50LXBsdWdpbi1yZWFjdC1ob29rcy9zcmMvY29kZS1wYXRoLWFuYWx5c2lzL2ZvcmstY29udGV4dC5qc3w2N3xmdW5jdGlvbnxtZXJnZUV4dHJhU2VnbWVudHM",
+    "arquivo_lint": "ad0b92d4ca3ac377302f.js",
+    "qtd_erros": 0,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 0,
+    "conforme_jsdoc": 1,
+    "regras_violadas": ""
+  },
+  {
+    "provider": "chatgpt",
+    "id_trecho": "bXJkb29iL3RocmVlLmpzfHNyYy9ub2Rlcy9jb3JlL1N1YkJ1aWxkTm9kZS5qc3wxMnxjbGFzc3xTdWJCdWlsZE5vZGU",
+    "arquivo_lint": "b7a6855648442482ef42.js",
+    "qtd_erros": 0,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 0,
+    "conforme_jsdoc": 1,
+    "regras_violadas": ""
+  },
+  {
+    "provider": "chatgpt",
+    "id_trecho": "Q2hhbGFyYW5nZWxvLzMwLXNlY29uZHMtb2YtY29kZXxzcmMvbGliL2NvbnRlbnRVdGlscy9tYXJrZG93blBhcnNlci9wbHVnaW5zL2FzdC9oaWdobGlnaHRDb2RlLmpzfDU5fGZ1bmN0aW9ufGNyZWF0ZUF0dHJpYnV0ZXM",
+    "arquivo_lint": "ca53901346b8968ef2ff.js",
+    "qtd_erros": 1,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 1,
+    "conforme_jsdoc": 0,
+    "regras_violadas": "jsdoc/require-param-description:1"
+  },
+  {
+    "provider": "chatgpt",
+    "id_trecho": "dHJla2hsZWIvamF2YXNjcmlwdC1hbGdvcml0aG1zfHNyYy9hbGdvcml0aG1zL2NyeXB0b2dyYXBoeS9yYWlsLWZlbmNlLWNpcGhlci9yYWlsRmVuY2VDaXBoZXIuanN8Nzl8ZnVuY3Rpb258ZmlsbEVuY29kZUZlbmNl",
+    "arquivo_lint": "d2393a29e0f756acaccd.js",
+    "qtd_erros": 1,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 1,
+    "conforme_jsdoc": 0,
+    "regras_violadas": "jsdoc/require-param-description:1"
+  },
+  {
+    "provider": "chatgpt",
+    "id_trecho": "dmVyY2VsL25leHQuanN8LmdpdGh1Yi9hY3Rpb25zL25leHQtc3RhdHMtYWN0aW9uL3NyYy91dGlsL3N0YXRzLmpzfDEwfGZ1bmN0aW9ufGNhbGNTdGF0cw",
+    "arquivo_lint": "ed90e320ece46512ee50.js",
+    "qtd_erros": 0,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 0,
+    "conforme_jsdoc": 1,
+    "regras_violadas": ""
+  },
+  {
+    "provider": "chatgpt",
+    "id_trecho": "dmVyY2VsL25leHQuanN8LmdpdGh1Yi9hY3Rpb25zL25leHQtcmVwby1hY3Rpb25zL3NyYy9wb3B1bGFyLWZlYXR1cmUtcmVxdWVzdHMubWpzfDMwfGZ1bmN0aW9ufGdlbmVyYXRlQmxvY2tz",
+    "arquivo_lint": "fa69b35c88f90269c5f7.js",
+    "qtd_erros": 0,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 0,
+    "conforme_jsdoc": 1,
+    "regras_violadas": ""
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "dHJla2hsZWIvamF2YXNjcmlwdC1hbGdvcml0aG1zfHNyYy9hbGdvcml0aG1zL2NyeXB0b2dyYXBoeS9yYWlsLWZlbmNlLWNpcGhlci9yYWlsRmVuY2VDaXBoZXIuanN8MTY2fGZ1bmN0aW9ufGRlY29kZUZlbmNl",
+    "arquivo_lint": "31fab3dd35a86ccc2294.js",
+    "qtd_erros": 0,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 0,
+    "conforme_jsdoc": 1,
+    "regras_violadas": ""
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "Q2hhbGFyYW5nZWxvLzMwLXNlY29uZHMtb2YtY29kZXxzcmMvbGliL2NvbnRlbnRVdGlscy9tYXJrZG93blBhcnNlci9wbHVnaW5zL2FzdC9oaWdobGlnaHRDb2RlLmpzfDU5fGZ1bmN0aW9ufGNyZWF0ZUF0dHJpYnV0ZXM",
+    "arquivo_lint": "3b02830b093c8d8d6e25.js",
+    "qtd_erros": 1,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 1,
+    "conforme_jsdoc": 0,
+    "regras_violadas": "jsdoc/require-returns:1"
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "bXJkb29iL3RocmVlLmpzfHNyYy9ub2Rlcy9jb3JlL1N1YkJ1aWxkTm9kZS5qc3wxMnxjbGFzc3xTdWJCdWlsZE5vZGU",
+    "arquivo_lint": "43ee2b3fb1ab1e035c05.js",
+    "qtd_erros": 1,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 1,
+    "conforme_jsdoc": 0,
+    "regras_violadas": "jsdoc/check-tag-names:1"
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "Q2hhbGFyYW5nZWxvLzMwLXNlY29uZHMtb2YtY29kZXxzcmMvbGliL2NvbnRlbnRVdGlscy9tYXJrZG93blBhcnNlci9wbHVnaW5zL2FzdC9oaWdobGlnaHRDb2RlLmpzfDMxfGZ1bmN0aW9ufGNyZWF0ZU1ldGFkYXRhRXh0cmFjdG9y",
+    "arquivo_lint": "4ef728c7f4a95e1f637f.js",
+    "qtd_erros": 2,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 2,
+    "conforme_jsdoc": 0,
+    "regras_violadas": "jsdoc/check-param-names:1; jsdoc/require-returns:1"
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "ZmFjZWJvb2svcmVhY3R8cGFja2FnZXMvZXNsaW50LXBsdWdpbi1yZWFjdC1ob29rcy9zcmMvY29kZS1wYXRoLWFuYWx5c2lzL2ZvcmstY29udGV4dC5qc3wzN3xmdW5jdGlvbnxtYWtlU2VnbWVudHM",
+    "arquivo_lint": "55caf6655f4dad3958b2.js",
+    "qtd_erros": 0,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 0,
+    "conforme_jsdoc": 1,
+    "regras_violadas": ""
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "ZmFjZWJvb2svcmVhY3R8cGFja2FnZXMvZXNsaW50LXBsdWdpbi1yZWFjdC1ob29rcy9zcmMvY29kZS1wYXRoLWFuYWx5c2lzL2ZvcmstY29udGV4dC5qc3w2N3xmdW5jdGlvbnxtZXJnZUV4dHJhU2VnbWVudHM",
+    "arquivo_lint": "7462d7a915d97e3c5af6.js",
+    "qtd_erros": 0,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 0,
+    "conforme_jsdoc": 1,
+    "regras_violadas": ""
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "dmVyY2VsL25leHQuanN8LmdpdGh1Yi9hY3Rpb25zL25leHQtc3RhdHMtYWN0aW9uL3NyYy91dGlsL3N0YXRzLmpzfDEwfGZ1bmN0aW9ufGNhbGNTdGF0cw",
+    "arquivo_lint": "88d34eafc5ca53fbd345.js",
+    "qtd_erros": 0,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 0,
+    "conforme_jsdoc": 1,
+    "regras_violadas": ""
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "",
+    "arquivo_lint": "ZmFjZWJvb2svcmVhY3R8cGFja2FnZXMvZXNsaW50LXBsdWdpbi1yZWFjdC1ob29rcy9zcmMvY29kZS1wYXRoLWFuYWx5c2lzL2ZvcmstY29udGV4dC5qc3wzN3xmdW5jdGlvbnxtYWtlU2VnbWVudHM.js",
+    "qtd_erros": 0,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 0,
+    "conforme_jsdoc": 1,
+    "regras_violadas": ""
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "bm9kZWpzL25vZGV8bGliL2ludGVybmFsL21vZHVsZXMvaGVscGVycy5qc3w0Mjh8ZnVuY3Rpb258YXNzZXJ0QnVmZmVyU291cmNl",
+    "arquivo_lint": "b01cb245546e1c7f1649.js",
+    "qtd_erros": 0,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 0,
+    "conforme_jsdoc": 1,
+    "regras_violadas": ""
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "dmVyY2VsL25leHQuanN8LmdpdGh1Yi9hY3Rpb25zL25leHQtcmVwby1hY3Rpb25zL3NyYy9wb3B1bGFyLWZlYXR1cmUtcmVxdWVzdHMubWpzfDMwfGZ1bmN0aW9ufGdlbmVyYXRlQmxvY2tz",
+    "arquivo_lint": "b428f0fafb13e8b4f6e9.js",
+    "qtd_erros": 0,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 0,
+    "conforme_jsdoc": 1,
+    "regras_violadas": ""
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "dHJla2hsZWIvamF2YXNjcmlwdC1hbGdvcml0aG1zfHNyYy9hbGdvcml0aG1zL2NyeXB0b2dyYXBoeS9yYWlsLWZlbmNlLWNpcGhlci9yYWlsRmVuY2VDaXBoZXIuanN8Nzl8ZnVuY3Rpb258ZmlsbEVuY29kZUZlbmNl",
+    "arquivo_lint": "c23dfcd8ebd6bd849c71.js",
+    "qtd_erros": 1,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 1,
+    "conforme_jsdoc": 0,
+    "regras_violadas": "jsdoc/check-param-names:1"
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "bm9kZWpzL25vZGV8bGliL2ludGVybmFsL21vZHVsZXMvY2pzL2xvYWRlci5qc3wxNDkwfGZ1bmN0aW9ufGZpbmFsaXplRXNtUmVzb2x1dGlvbg",
+    "arquivo_lint": "c824a404b725ef31272e.js",
+    "qtd_erros": 0,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 0,
+    "conforme_jsdoc": 1,
+    "regras_violadas": ""
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "",
+    "arquivo_lint": "dHJla2hsZWIvamF2YXNjcmlwdC1hbGdvcml0aG1zfHNyYy9hbGdvcml0aG1zL2NyeXB0b2dyYXBoeS9yYWlsLWZlbmNlLWNpcGhlci9yYWlsRmVuY2VDaXBoZXIuanN8MTY2fGZ1bmN0aW9ufGRlY29kZUZlbmNl.js",
+    "qtd_erros": 0,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 0,
+    "conforme_jsdoc": 1,
+    "regras_violadas": ""
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "",
+    "arquivo_lint": "dHJla2hsZWIvamF2YXNjcmlwdC1hbGdvcml0aG1zfHNyYy9hbGdvcml0aG1zL2NyeXB0b2dyYXBoeS9yYWlsLWZlbmNlLWNpcGhlci9yYWlsRmVuY2VDaXBoZXIuanN8Nzl8ZnVuY3Rpb258ZmlsbEVuY29kZUZlbmNl.js",
+    "qtd_erros": 1,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 1,
+    "conforme_jsdoc": 0,
+    "regras_violadas": "jsdoc/check-param-names:1"
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "",
+    "arquivo_lint": "dmVyY2VsL25leHQuanN8LmdpdGh1Yi9hY3Rpb25zL25leHQtc3RhdHMtYWN0aW9uL3NyYy91dGlsL3N0YXRzLmpzfDEwfGZ1bmN0aW9ufGNhbGNTdGF0cw.js",
+    "qtd_erros": 0,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 0,
+    "conforme_jsdoc": 1,
+    "regras_violadas": ""
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "",
+    "arquivo_lint": "dmVyY2VsL25leHQuanN8LmdpdGh1Yi9hY3Rpb25zL25leHQtcmVwby1hY3Rpb25zL3NyYy9wb3B1bGFyLWZlYXR1cmUtcmVxdWVzdHMubWpzfDMwfGZ1bmN0aW9ufGdlbmVyYXRlQmxvY2tz.js",
+    "qtd_erros": 0,
+    "qtd_warnings": 0,
+    "qtd_total_problemas": 0,
+    "conforme_jsdoc": 1,
+    "regras_violadas": ""
+  }
+]

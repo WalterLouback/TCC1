@@ -1,0 +1,10 @@
+
+[
+  {
+    "name": "chatgpt",
+    "type": "openai",
+    "base_url": "https://api.openai.com/v1",
+    "model": "gpt-5.4-nano",
+    "api_key_env": "GPT_KEY"
+  }
+]

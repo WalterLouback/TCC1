@@ -1,0 +1,57 @@
+[
+  {
+    "provider": "Gemini",
+    "id_trecho": "ZmFjZWJvb2svcmVhY3R8cGFja2FnZXMvZXNsaW50LXBsdWdpbi1yZWFjdC1ob29rcy9zcmMvY29kZS1wYXRoLWFuYWx5c2lzL2ZvcmstY29udGV4dC5qc3wzN3xmdW5jdGlvbnxtYWtlU2VnbWVudHM",
+    "arquivo_lint": "55caf6655f4dad3958b2.js"
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "dHJla2hsZWIvamF2YXNjcmlwdC1hbGdvcml0aG1zfHNyYy9hbGdvcml0aG1zL2NyeXB0b2dyYXBoeS9yYWlsLWZlbmNlLWNpcGhlci9yYWlsRmVuY2VDaXBoZXIuanN8Nzl8ZnVuY3Rpb258ZmlsbEVuY29kZUZlbmNl",
+    "arquivo_lint": "c23dfcd8ebd6bd849c71.js"
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "dHJla2hsZWIvamF2YXNjcmlwdC1hbGdvcml0aG1zfHNyYy9hbGdvcml0aG1zL2NyeXB0b2dyYXBoeS9yYWlsLWZlbmNlLWNpcGhlci9yYWlsRmVuY2VDaXBoZXIuanN8MTY2fGZ1bmN0aW9ufGRlY29kZUZlbmNl",
+    "arquivo_lint": "31fab3dd35a86ccc2294.js"
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "dmVyY2VsL25leHQuanN8LmdpdGh1Yi9hY3Rpb25zL25leHQtc3RhdHMtYWN0aW9uL3NyYy91dGlsL3N0YXRzLmpzfDEwfGZ1bmN0aW9ufGNhbGNTdGF0cw",
+    "arquivo_lint": "88d34eafc5ca53fbd345.js"
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "dmVyY2VsL25leHQuanN8LmdpdGh1Yi9hY3Rpb25zL25leHQtcmVwby1hY3Rpb25zL3NyYy9wb3B1bGFyLWZlYXR1cmUtcmVxdWVzdHMubWpzfDMwfGZ1bmN0aW9ufGdlbmVyYXRlQmxvY2tz",
+    "arquivo_lint": "b428f0fafb13e8b4f6e9.js"
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "Q2hhbGFyYW5nZWxvLzMwLXNlY29uZHMtb2YtY29kZXxzcmMvbGliL2NvbnRlbnRVdGlscy9tYXJrZG93blBhcnNlci9wbHVnaW5zL2FzdC9oaWdobGlnaHRDb2RlLmpzfDMxfGZ1bmN0aW9ufGNyZWF0ZU1ldGFkYXRhRXh0cmFjdG9y",
+    "arquivo_lint": "4ef728c7f4a95e1f637f.js"
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "Q2hhbGFyYW5nZWxvLzMwLXNlY29uZHMtb2YtY29kZXxzcmMvbGliL2NvbnRlbnRVdGlscy9tYXJrZG93blBhcnNlci9wbHVnaW5zL2FzdC9oaWdobGlnaHRDb2RlLmpzfDU5fGZ1bmN0aW9ufGNyZWF0ZUF0dHJpYnV0ZXM",
+    "arquivo_lint": "3b02830b093c8d8d6e25.js"
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "bm9kZWpzL25vZGV8bGliL2ludGVybmFsL21vZHVsZXMvaGVscGVycy5qc3w0Mjh8ZnVuY3Rpb258YXNzZXJ0QnVmZmVyU291cmNl",
+    "arquivo_lint": "b01cb245546e1c7f1649.js"
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "bm9kZWpzL25vZGV8bGliL2ludGVybmFsL21vZHVsZXMvY2pzL2xvYWRlci5qc3wxNDkwfGZ1bmN0aW9ufGZpbmFsaXplRXNtUmVzb2x1dGlvbg",
+    "arquivo_lint": "c824a404b725ef31272e.js"
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "bXJkb29iL3RocmVlLmpzfHNyYy9ub2Rlcy9jb3JlL1N1YkJ1aWxkTm9kZS5qc3wxMnxjbGFzc3xTdWJCdWlsZE5vZGU",
+    "arquivo_lint": "43ee2b3fb1ab1e035c05.js"
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "ZmFjZWJvb2svcmVhY3R8cGFja2FnZXMvZXNsaW50LXBsdWdpbi1yZWFjdC1ob29rcy9zcmMvY29kZS1wYXRoLWFuYWx5c2lzL2ZvcmstY29udGV4dC5qc3w2N3xmdW5jdGlvbnxtZXJnZUV4dHJhU2VnbWVudHM",
+    "arquivo_lint": "7462d7a915d97e3c5af6.js"
+  }
+]

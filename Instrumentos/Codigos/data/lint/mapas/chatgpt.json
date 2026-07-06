@@ -1,0 +1,57 @@
+[
+  {
+    "provider": "chatgpt",
+    "id_trecho": "ZmFjZWJvb2svcmVhY3R8cGFja2FnZXMvZXNsaW50LXBsdWdpbi1yZWFjdC1ob29rcy9zcmMvY29kZS1wYXRoLWFuYWx5c2lzL2ZvcmstY29udGV4dC5qc3wzN3xmdW5jdGlvbnxtYWtlU2VnbWVudHM",
+    "arquivo_lint": "81b95ce82a4ef9a62add.js"
+  },
+  {
+    "provider": "chatgpt",
+    "id_trecho": "dHJla2hsZWIvamF2YXNjcmlwdC1hbGdvcml0aG1zfHNyYy9hbGdvcml0aG1zL2NyeXB0b2dyYXBoeS9yYWlsLWZlbmNlLWNpcGhlci9yYWlsRmVuY2VDaXBoZXIuanN8Nzl8ZnVuY3Rpb258ZmlsbEVuY29kZUZlbmNl",
+    "arquivo_lint": "d2393a29e0f756acaccd.js"
+  },
+  {
+    "provider": "chatgpt",
+    "id_trecho": "dHJla2hsZWIvamF2YXNjcmlwdC1hbGdvcml0aG1zfHNyYy9hbGdvcml0aG1zL2NyeXB0b2dyYXBoeS9yYWlsLWZlbmNlLWNpcGhlci9yYWlsRmVuY2VDaXBoZXIuanN8MTY2fGZ1bmN0aW9ufGRlY29kZUZlbmNl",
+    "arquivo_lint": "0ccbdafabfec79887c44.js"
+  },
+  {
+    "provider": "chatgpt",
+    "id_trecho": "dmVyY2VsL25leHQuanN8LmdpdGh1Yi9hY3Rpb25zL25leHQtc3RhdHMtYWN0aW9uL3NyYy91dGlsL3N0YXRzLmpzfDEwfGZ1bmN0aW9ufGNhbGNTdGF0cw",
+    "arquivo_lint": "ed90e320ece46512ee50.js"
+  },
+  {
+    "provider": "chatgpt",
+    "id_trecho": "dmVyY2VsL25leHQuanN8LmdpdGh1Yi9hY3Rpb25zL25leHQtcmVwby1hY3Rpb25zL3NyYy9wb3B1bGFyLWZlYXR1cmUtcmVxdWVzdHMubWpzfDMwfGZ1bmN0aW9ufGdlbmVyYXRlQmxvY2tz",
+    "arquivo_lint": "fa69b35c88f90269c5f7.js"
+  },
+  {
+    "provider": "chatgpt",
+    "id_trecho": "Q2hhbGFyYW5nZWxvLzMwLXNlY29uZHMtb2YtY29kZXxzcmMvbGliL2NvbnRlbnRVdGlscy9tYXJrZG93blBhcnNlci9wbHVnaW5zL2FzdC9oaWdobGlnaHRDb2RlLmpzfDMxfGZ1bmN0aW9ufGNyZWF0ZU1ldGFkYXRhRXh0cmFjdG9y",
+    "arquivo_lint": "57bb8663e52fbe421a17.js"
+  },
+  {
+    "provider": "chatgpt",
+    "id_trecho": "Q2hhbGFyYW5nZWxvLzMwLXNlY29uZHMtb2YtY29kZXxzcmMvbGliL2NvbnRlbnRVdGlscy9tYXJrZG93blBhcnNlci9wbHVnaW5zL2FzdC9oaWdobGlnaHRDb2RlLmpzfDU5fGZ1bmN0aW9ufGNyZWF0ZUF0dHJpYnV0ZXM",
+    "arquivo_lint": "ca53901346b8968ef2ff.js"
+  },
+  {
+    "provider": "chatgpt",
+    "id_trecho": "bm9kZWpzL25vZGV8bGliL2ludGVybmFsL21vZHVsZXMvaGVscGVycy5qc3w0Mjh8ZnVuY3Rpb258YXNzZXJ0QnVmZmVyU291cmNl",
+    "arquivo_lint": "4d4eaebf57e2cd04e175.js"
+  },
+  {
+    "provider": "chatgpt",
+    "id_trecho": "bm9kZWpzL25vZGV8bGliL2ludGVybmFsL21vZHVsZXMvY2pzL2xvYWRlci5qc3wxNDkwfGZ1bmN0aW9ufGZpbmFsaXplRXNtUmVzb2x1dGlvbg",
+    "arquivo_lint": "3c3ff48454bbd994174f.js"
+  },
+  {
+    "provider": "chatgpt",
+    "id_trecho": "bXJkb29iL3RocmVlLmpzfHNyYy9ub2Rlcy9jb3JlL1N1YkJ1aWxkTm9kZS5qc3wxMnxjbGFzc3xTdWJCdWlsZE5vZGU",
+    "arquivo_lint": "b7a6855648442482ef42.js"
+  },
+  {
+    "provider": "chatgpt",
+    "id_trecho": "ZmFjZWJvb2svcmVhY3R8cGFja2FnZXMvZXNsaW50LXBsdWdpbi1yZWFjdC1ob29rcy9zcmMvY29kZS1wYXRoLWFuYWx5c2lzL2ZvcmstY29udGV4dC5qc3w2N3xmdW5jdGlvbnxtZXJnZUV4dHJhU2VnbWVudHM",
+    "arquivo_lint": "ad0b92d4ca3ac377302f.js"
+  }
+]

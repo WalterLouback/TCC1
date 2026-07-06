@@ -1,0 +1,112 @@
+[
+  {
+    "provider": "Gemini",
+    "id_trecho": "ZmFjZWJvb2svcmVhY3R8cGFja2FnZXMvZXNsaW50LXBsdWdpbi1yZWFjdC1ob29rcy9zcmMvY29kZS1wYXRoLWFuYWx5c2lzL2ZvcmstY29udGV4dC5qc3wzN3xmdW5jdGlvbnxtYWtlU2VnbWVudHM",
+    "bleu": 0.024873,
+    "meteor": 0.355557,
+    "rouge1_f": 0.440367,
+    "rouge2_f": 0.148148,
+    "rougeL_f": 0.293578,
+    "codebleu": null
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "dHJla2hsZWIvamF2YXNjcmlwdC1hbGdvcml0aG1zfHNyYy9hbGdvcml0aG1zL2NyeXB0b2dyYXBoeS9yYWlsLWZlbmNlLWNpcGhlci9yYWlsRmVuY2VDaXBoZXIuanN8Nzl8ZnVuY3Rpb258ZmlsbEVuY29kZUZlbmNl",
+    "bleu": 0.022893,
+    "meteor": 0.18797,
+    "rouge1_f": 0.413793,
+    "rouge2_f": 0.070588,
+    "rougeL_f": 0.367816,
+    "codebleu": null
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "dHJla2hsZWIvamF2YXNjcmlwdC1hbGdvcml0aG1zfHNyYy9hbGdvcml0aG1zL2NyeXB0b2dyYXBoeS9yYWlsLWZlbmNlLWNpcGhlci9yYWlsRmVuY2VDaXBoZXIuanN8MTY2fGZ1bmN0aW9ufGRlY29kZUZlbmNl",
+    "bleu": 0.032814,
+    "meteor": 0.478617,
+    "rouge1_f": 0.5,
+    "rouge2_f": 0.306122,
+    "rougeL_f": 0.44,
+    "codebleu": null
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "dmVyY2VsL25leHQuanN8LmdpdGh1Yi9hY3Rpb25zL25leHQtc3RhdHMtYWN0aW9uL3NyYy91dGlsL3N0YXRzLmpzfDEwfGZ1bmN0aW9ufGNhbGNTdGF0cw",
+    "bleu": 0.236048,
+    "meteor": 0.641742,
+    "rouge1_f": 0.764706,
+    "rouge2_f": 0.545455,
+    "rougeL_f": 0.764706,
+    "codebleu": null
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "dmVyY2VsL25leHQuanN8LmdpdGh1Yi9hY3Rpb25zL25leHQtcmVwby1hY3Rpb25zL3NyYy9wb3B1bGFyLWZlYXR1cmUtcmVxdWVzdHMubWpzfDMwfGZ1bmN0aW9ufGdlbmVyYXRlQmxvY2tz",
+    "bleu": 0.004549,
+    "meteor": 0.133333,
+    "rouge1_f": 0.074074,
+    "rouge2_f": 0.0,
+    "rougeL_f": 0.074074,
+    "codebleu": null
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "Q2hhbGFyYW5nZWxvLzMwLXNlY29uZHMtb2YtY29kZXxzcmMvbGliL2NvbnRlbnRVdGlscy9tYXJrZG93blBhcnNlci9wbHVnaW5zL2FzdC9oaWdobGlnaHRDb2RlLmpzfDMxfGZ1bmN0aW9ufGNyZWF0ZU1ldGFkYXRhRXh0cmFjdG9y",
+    "bleu": 0.022687,
+    "meteor": 0.309372,
+    "rouge1_f": 0.324607,
+    "rouge2_f": 0.137566,
+    "rougeL_f": 0.209424,
+    "codebleu": null
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "Q2hhbGFyYW5nZWxvLzMwLXNlY29uZHMtb2YtY29kZXxzcmMvbGliL2NvbnRlbnRVdGlscy9tYXJrZG93blBhcnNlci9wbHVnaW5zL2FzdC9oaWdobGlnaHRDb2RlLmpzfDU5fGZ1bmN0aW9ufGNyZWF0ZUF0dHJpYnV0ZXM",
+    "bleu": 0.081845,
+    "meteor": 0.447613,
+    "rouge1_f": 0.390977,
+    "rouge2_f": 0.244275,
+    "rougeL_f": 0.345865,
+    "codebleu": null
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "bm9kZWpzL25vZGV8bGliL2ludGVybmFsL21vZHVsZXMvaGVscGVycy5qc3w0Mjh8ZnVuY3Rpb258YXNzZXJ0QnVmZmVyU291cmNl",
+    "bleu": 0.208619,
+    "meteor": 0.465178,
+    "rouge1_f": 0.671429,
+    "rouge2_f": 0.434783,
+    "rougeL_f": 0.6,
+    "codebleu": null
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "bm9kZWpzL25vZGV8bGliL2ludGVybmFsL21vZHVsZXMvY2pzL2xvYWRlci5qc3wxNDkwfGZ1bmN0aW9ufGZpbmFsaXplRXNtUmVzb2x1dGlvbg",
+    "bleu": 0.291615,
+    "meteor": 0.541258,
+    "rouge1_f": 0.716418,
+    "rouge2_f": 0.545455,
+    "rougeL_f": 0.641791,
+    "codebleu": null
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "bXJkb29iL3RocmVlLmpzfHNyYy9ub2Rlcy9jb3JlL1N1YkJ1aWxkTm9kZS5qc3wxMnxjbGFzc3xTdWJCdWlsZE5vZGU",
+    "bleu": 0.00145,
+    "meteor": 0.07444,
+    "rouge1_f": 0.172414,
+    "rouge2_f": 0.071429,
+    "rougeL_f": 0.172414,
+    "codebleu": null
+  },
+  {
+    "provider": "Gemini",
+    "id_trecho": "ZmFjZWJvb2svcmVhY3R8cGFja2FnZXMvZXNsaW50LXBsdWdpbi1yZWFjdC1ob29rcy9zcmMvY29kZS1wYXRoLWFuYWx5c2lzL2ZvcmstY29udGV4dC5qc3w2N3xmdW5jdGlvbnxtZXJnZUV4dHJhU2VnbWVudHM",
+    "bleu": 0.009109,
+    "meteor": 0.22604,
+    "rouge1_f": 0.353846,
+    "rouge2_f": 0.046875,
+    "rougeL_f": 0.261538,
+    "codebleu": null
+  }
+]

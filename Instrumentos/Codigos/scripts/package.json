@@ -1,16 +1,25 @@
 {
-  "name": "scripts",
+  "name": "tcc1-pipeline",
   "version": "1.0.0",
-  "main": "index.js",
+  "private": true,
+  "description": "Pipeline do TCC para seleção de repositórios, extração de JSDoc de referência, geração de documentação por IA e cálculo de métricas.",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "01:buscar-repos": "py 01_buscar_repos_populares.py",
+    "02:clonar-repos": "py scripts/02_clonar_repos.py",
+    "03:extrair-referencias": "node 03_extrair_trechos_referencia.js",
+    "04:selecionar-amostra": "py scripts/04_selecionar_amostra.py",
+    "05:gerar-documentacoes": "py scripts/05_gerar_documentacoes.py",
+    "06:gerar-arquivos-lint": "py scripts/06_gerar_arquivos_para_lint.py",
+    "07:rodar-eslint": "py scripts/07_rodar_eslint.py",
+    "08:consolidar-eslint": "py scripts/08_consolidar_eslint.py",
+    "09:calcular-metricas": "py scripts/09_calcular_metricas.py",
+    "10:juntar-resultados": "py scripts/10_juntar_resultados.py",
+    "11:avaliacao-humana": "py scripts/11_preparar_avaliacao_humana.py"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
-    "@babel/parser": "^7.29.2",
-    "@babel/traverse": "^7.29.0"
+    "@babel/parser": "^7.27.0",
+    "@babel/traverse": "^7.27.0",
+    "eslint": "^9.25.1",
+    "eslint-plugin-jsdoc": "^50.6.17"
   }
 }

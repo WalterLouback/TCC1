@@ -1,0 +1,101 @@
+[
+  {
+    "id_trecho": "ZmFjZWJvb2svcmVhY3R8cGFja2FnZXMvZXNsaW50LXBsdWdpbi1yZWFjdC1ob29rcy9zcmMvY29kZS1wYXRoLWFuYWx5c2lzL2ZvcmstY29udGV4dC5qc3wzN3xmdW5jdGlvbnxtYWtlU2VnbWVudHM",
+    "provider": "chatgpt",
+    "model": "gpt-5.4-nano",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 6.89,
+    "documentacao_gerada": "/**\n * Builds an array of segment objects by collecting per-index items from a\n * 2D-like structure in `context.segmentsList` across a normalized range,\n * then passing them to a provided factory function.\n *\n * The `begin` and `end` parameters are normalized: if a value is negative,\n * it is treated as an offset from `context.segmentsList.length`.\n *\n * For each index `i` from `0` to `context.count - 1`, it collects\n * `list[j][i]` for all `j` in the inclusive range `[normalizedBegin, normalizedEnd]`,\n * and calls `create(context.idGenerator.next(), allPrevSegments)`.\n *\n * @param {Object} context\n * @param {Array} context.segmentsList A list where each element is indexable by `i` (i.e., `list[j][i]`).\n * @param {number} context.count Number of segments to create (drives the outer loop).\n * @param {Object} context.idGenerator An object with a `next()` method used to generate an id for each created segment.\n * @param {number} begin Start index for the inclusive range; negative values are offsets from `segmentsList.length`.\n * @param {number} end End index for the inclusive range; negative values are offsets from `segmentsList.length`.\n * @param {Function} create Factory function invoked as `create(id, allPrevSegments)`.\n * @returns {Array} An array of created segments, one per `i` in `[0, context.count)`.\n */"
+  },
+  {
+    "id_trecho": "dHJla2hsZWIvamF2YXNjcmlwdC1hbGdvcml0aG1zfHNyYy9hbGdvcml0aG1zL2NyeXB0b2dyYXBoeS9yYWlsLWZlbmNlLWNpcGhlci9yYWlsRmVuY2VDaXBoZXIuanN8Nzl8ZnVuY3Rpb258ZmlsbEVuY29kZUZlbmNl",
+    "provider": "chatgpt",
+    "model": "gpt-5.4-nano",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 2.29,
+    "documentacao_gerada": "/**\n * Recursively fills an encoding \"fence\" by placing characters onto rails.\n * If there are no remaining characters, returns the current fence.\n *\n * @param {Object} params\n * @param {Array<Array<string>>} params.fence - The current fence structure (array of rails).\n * @param {number} params.currentRail - The index of the rail where the next character will be placed.\n * @param {number} params.direction - The current direction used to determine the next rail.\n * @param {Array<string>} params.chars - The remaining characters to place.\n * @returns {Array<Array<string>>} The updated fence after all characters have been placed.\n */"
+  },
+  {
+    "id_trecho": "dHJla2hsZWIvamF2YXNjcmlwdC1hbGdvcml0aG1zfHNyYy9hbGdvcml0aG1zL2NyeXB0b2dyYXBoeS9yYWlsLWZlbmNlLWNpcGhlci9yYWlsRmVuY2VDaXBoZXIuanN8MTY2fGZ1bmN0aW9ufGRlY29kZUZlbmNl",
+    "provider": "chatgpt",
+    "model": "gpt-5.4-nano",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 3.63,
+    "documentacao_gerada": "/**\n * Decodes a string by traversing a set of rails (fence) and accumulating characters\n * until the target length is reached.\n *\n * The function is recursive: at each step it appends the current rail's first character\n * to the output, advances the rail index/direction using `getNextDirection`, updates\n * the current rail by removing the consumed character, and continues until\n * `code.length === strLen`.\n *\n * @param {Object} params - Input parameters for the decoder.\n * @param {number} params.strLen - Target length of the decoded output.\n * @param {Array<Array<string>>} params.fence - Rail fence structure; each rail is an array of characters.\n * @param {number} params.currentRail - Index of the currently active rail.\n * @param {*} params.direction - Current traversal direction (type depends on `getNextDirection`).\n * @param {Array<string>} params.code - Accumulated decoded characters so far.\n * @returns {string} The decoded string once `code` reaches `strLen`.\n */"
+  },
+  {
+    "id_trecho": "dmVyY2VsL25leHQuanN8LmdpdGh1Yi9hY3Rpb25zL25leHQtc3RhdHMtYWN0aW9uL3NyYy91dGlsL3N0YXRzLmpzfDEwfGZ1bmN0aW9ufGNhbGNTdGF0cw",
+    "provider": "chatgpt",
+    "model": "gpt-5.4-nano",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 1.97,
+    "documentacao_gerada": "/**\n * Calculates basic descriptive statistics for a numeric array.\n *\n * For non-empty arrays, it computes the median (using the sorted values),\n * minimum, maximum, mean (rounded), standard deviation (rounded),\n * and coefficient of variation in percent (rounded).\n *\n * @param {number[]} arr - Input array of numbers.\n * @returns {null | {median: number, min: number, max: number, mean: number, stddev: number, cv: number}} \n * Returns null when the input array is empty; otherwise returns an object with the computed statistics.\n */"
+  },
+  {
+    "id_trecho": "dmVyY2VsL25leHQuanN8LmdpdGh1Yi9hY3Rpb25zL25leHQtcmVwby1hY3Rpb25zL3NyYy9wb3B1bGFyLWZlYXR1cmUtcmVxdWVzdHMubWpzfDMwfGZ1bmN0aW9ufGdlbmVyYXRlQmxvY2tz",
+    "provider": "chatgpt",
+    "model": "gpt-5.4-nano",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 2.93,
+    "documentacao_gerada": "/**\n * Builds an array of Slack Block Kit blocks that summarizes the top feature requests.\n * The output includes a header section, a divider, and a final section containing a\n * numbered list derived from the provided items.\n *\n * @param {Array<Object>} items - List of feature request items. Each item is expected to include:\n * @param {string} items[].html_url - URL to the item on GitHub.\n * @param {number} items[].number - Item number used for display.\n * @param {number} items[].upvoteCount - Upvote count used for display.\n * @param {string} items[].created_at - Creation date string passed to `formattedDate`.\n * @returns {Array<Object>} An array of block objects suitable for Slack Block Kit.\n */"
+  },
+  {
+    "id_trecho": "Q2hhbGFyYW5nZWxvLzMwLXNlY29uZHMtb2YtY29kZXxzcmMvbGliL2NvbnRlbnRVdGlscy9tYXJrZG93blBhcnNlci9wbHVnaW5zL2FzdC9oaWdobGlnaHRDb2RlLmpzfDMxfGZ1bmN0aW9ufGNyZWF0ZU1ldGFkYXRhRXh0cmFjdG9y",
+    "provider": "chatgpt",
+    "model": "gpt-5.4-nano",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 3.12,
+    "documentacao_gerada": "/**\n * Creates a metadata extractor function for a given set of languages.\n *\n * The returned function derives language-related metadata from a node by:\n * - Resolving the language name from the node.\n * - Parsing node.meta (or an empty string) into a metadata structure.\n * - Extracting the \"title\" meta value (or returning null if missing).\n * - Looking up a language string literal from the provided languages map.\n * - Collecting meta ranges for highlighted, inserted, and deleted sections.\n * - Collecting foldable section boundaries for collapsed sections.\n *\n * @param {Object<string, string>} languages - Map from language name to a language string literal.\n * @returns {(node: any) => {\n *   languageName: any,\n *   title: (string|null),\n *   languageStringLiteral: string,\n *   highlightedLines: any,\n *   insertedLines: any,\n *   deletedLines: any,\n *   foldedSections: any\n * }} A function that extracts metadata from a node.\n */"
+  },
+  {
+    "id_trecho": "Q2hhbGFyYW5nZWxvLzMwLXNlY29uZHMtb2YtY29kZXxzcmMvbGliL2NvbnRlbnRVdGlscy9tYXJrZG93blBhcnNlci9wbHVnaW5zL2FzdC9oaWdobGlnaHRDb2RlLmpzfDU5fGZ1bmN0aW9ufGNyZWF0ZUF0dHJpYnV0ZXM",
+    "provider": "chatgpt",
+    "model": "gpt-5.4-nano",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 2.66,
+    "documentacao_gerada": "/**\n * Builds attribute objects for a code block based on provided metadata and a code highlighter.\n *\n * Creates:\n * - `codeAttributes` with Prism-compatible language classes and translation disabled.\n * - `preAttributes` optionally containing language string literal, title, and a preview flag for Prism.\n *\n * @param {Object} metadata\n * @param {string} metadata.languageName - Language name used to build the `language-<name>` CSS class.\n * @param {string} [metadata.title] - Optional title to be set as `data-code-title`.\n * @param {string} [metadata.languageStringLiteral] - Optional language string literal to be set as `data-code-language`.\n * @param {Function|Object} codeHighlighter - Highlighter reference; its `name` is used to detect Prism.\n * @returns {{ preAttributes: Object, codeAttributes: Object }} An object containing `preAttributes` and `codeAttributes`.\n */"
+  },
+  {
+    "id_trecho": "bm9kZWpzL25vZGV8bGliL2ludGVybmFsL21vZHVsZXMvaGVscGVycy5qc3w0Mjh8ZnVuY3Rpb258YXNzZXJ0QnVmZmVyU291cmNl",
+    "provider": "chatgpt",
+    "model": "gpt-5.4-nano",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 2.08,
+    "documentacao_gerada": "/**\n * Validates that a return value is a valid buffer-like source.\n * Accepts either a string (only when `allowString` is true) or an ArrayBuffer/typed array.\n * Throws an error when `body` is not a supported type.\n *\n * @param {*} body - The value to validate as the `source` return property.\n * @param {boolean} allowString - Whether a string value is allowed.\n * @param {string} hookName - Name of the hook used to construct the error context.\n * @throws {ERR_INVALID_RETURN_PROPERTY_VALUE} If `body` is not an allowed string (when enabled) and not an ArrayBuffer or typed array.\n */"
+  },
+  {
+    "id_trecho": "bm9kZWpzL25vZGV8bGliL2ludGVybmFsL21vZHVsZXMvY2pzL2xvYWRlci5qc3wxNDkwfGZ1bmN0aW9ufGZpbmFsaXplRXNtUmVzb2x1dGlvbg",
+    "provider": "chatgpt",
+    "model": "gpt-5.4-nano",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 2.75,
+    "documentacao_gerada": "/**\n * Finalizes ESM resolution by validating the resolved specifier, converting it to a\n * filesystem path, attempting to resolve an existing file, and throwing an error\n * when the module cannot be found.\n *\n * @param {string} resolved - The resolved ESM specifier/path to validate and convert.\n * @param {string} parentPath - The parent path used for error context.\n * @param {string} pkgPath - The package path used to create the \"not found\" error.\n * @returns {*} The resolved file path/value returned by {@link tryFile} when found.\n * @throws {ERR_INVALID_MODULE_SPECIFIER} If {@link resolved} contains encoded \"/\" or \"\\\\\" characters.\n * @throws {*} Throws the error created by {@link createEsmNotFoundErr} when the file cannot be resolved.\n */"
+  },
+  {
+    "id_trecho": "bXJkb29iL3RocmVlLmpzfHNyYy9ub2Rlcy9jb3JlL1N1YkJ1aWxkTm9kZS5qc3wxMnxjbGFzc3xTdWJCdWlsZE5vZGU",
+    "provider": "chatgpt",
+    "model": "gpt-5.4-nano",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 4.49,
+    "documentacao_gerada": "/**\n * Represents a node that delegates building to another node within a named sub-build context.\n */"
+  },
+  {
+    "id_trecho": "ZmFjZWJvb2svcmVhY3R8cGFja2FnZXMvZXNsaW50LXBsdWdpbi1yZWFjdC1ob29rcy9zcmMvY29kZS1wYXRoLWFuYWx5c2lzL2ZvcmstY29udGV4dC5qc3w2N3xmdW5jdGlvbnxtZXJnZUV4dHJhU2VnbWVudHM",
+    "provider": "chatgpt",
+    "model": "gpt-5.4-nano",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 3.05,
+    "documentacao_gerada": "/**\n * Merges an array of CodePathSegment objects by repeatedly combining the first half\n * with the second half until the number of segments is reduced to `context.count`.\n *\n * At each iteration, it creates a new array where each element is produced by\n * `CodePathSegment.newNext(nextId, [leftSegment, rightSegment])`, using a fresh id\n * from `context.idGenerator.next()`.\n *\n * @param {Object} context - Execution context containing the target segment count and an id generator.\n * @param {number} context.count - Target number of segments to stop merging at.\n * @param {Object} context.idGenerator - Id generator used to create ids for merged segments.\n * @param {Function} context.idGenerator.next - Returns the next id value.\n * @param {Array<any>} segments - Initial list of segments to be merged.\n * @returns {Array<any>} The merged segments array with length equal to `context.count` (or less if input is not compatible).\n */"
+  }
+]

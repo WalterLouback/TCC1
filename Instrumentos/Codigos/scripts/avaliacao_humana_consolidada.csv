@@ -1,0 +1,601 @@
+﻿id_trecho,repo,arquivo,tipo,nome,codigo,documentacao_referencia,documentacao_gerada_gemini,documentacao_gerada_chatgpt
+Q2hhbGFyYW5nZWxvLzMwLXNlY29uZHMtb2YtY29kZXxzcmMvbGliL2NvbnRlbnRVdGlscy9tYXJrZG93blBhcnNlci9wbHVnaW5zL2FzdC9oaWdobGlnaHRDb2RlLmpzfDMxfGZ1bmN0aW9ufGNyZWF0ZU1ldGFkYXRhRXh0cmFjdG9y,Chalarangelo/30-seconds-of-code,src/lib/contentUtils/markdownParser/plugins/ast/highlightCode.js,function,createMetadataExtractor,"const createMetadataExtractor = languages => node => {
+  const languageName = getLanguageName(node);
+  const meta = parseMeta(node.meta || '');
+  const title = getMetaString(meta, 'title')?.value || null;
+  const languageStringLiteral = languages[languageName] || '';
+  const highlightedLines = getMetaRanges(meta, null);
+  const insertedLines = getMetaRanges(meta, 'ins');
+  const deletedLines = getMetaRanges(meta, 'del');
+  const foldedSections = getMetaRangeBoundaries(meta, 'collapse');
+
+  return {
+    languageName,
+    title,
+    languageStringLiteral,
+    highlightedLines,
+    insertedLines,
+    deletedLines,
+    foldedSections,
+  };
+};","/**
+ * Parses the language and title from the language string. Only supports
+ * space separated language and title, e.g. `language [title]`.
+ * The title must be wrapped in square brackets.
+ * (Curried function)
+ *
+ * @param {Object} languages - The languages object.
+ * @param {ASTNode} node - The AST node to parse.
+ * @returns {Object} - An object containing the extracted metadata.
+ */","/**
+ * Creates a metadata extractor function for a given set of languages.
+ *
+ * @param {object} languages - An object mapping language names to their string literals.
+ * @param {function(object): string} languages.languageName - The name of the language.
+ * @param {function(object): object} node - The node to extract metadata from.
+ * @returns {object} An object containing extracted metadata.
+ * @returns {string} return.languageName - The name of the language of the node.
+ * @returns {string|null} return.title - The title of the node, or null if not found.
+ * @returns {string} return.languageStringLiteral - The string literal for the node's language.
+ * @returns {Array<object>} return.highlightedLines - An array of objects representing highlighted lines.
+ * @returns {Array<object>} return.insertedLines - An array of objects representing inserted lines.
+ * @returns {Array<object>} return.deletedLines - An array of objects representing deleted lines.
+ * @returns {Array<object>} return.foldedSections - An array of objects representing folded sections.
+ */","/**
+ * Creates a metadata extractor function for a given set of languages.
+ *
+ * The returned function derives language-related metadata from a node by:
+ * - Resolving the language name from the node.
+ * - Parsing node.meta (or an empty string) into a metadata structure.
+ * - Extracting the ""title"" meta value (or returning null if missing).
+ * - Looking up a language string literal from the provided languages map.
+ * - Collecting meta ranges for highlighted, inserted, and deleted sections.
+ * - Collecting foldable section boundaries for collapsed sections.
+ *
+ * @param {Object<string, string>} languages - Map from language name to a language string literal.
+ * @returns {(node: any) => {
+ *   languageName: any,
+ *   title: (string|null),
+ *   languageStringLiteral: string,
+ *   highlightedLines: any,
+ *   insertedLines: any,
+ *   deletedLines: any,
+ *   foldedSections: any
+ * }} A function that extracts metadata from a node.
+ */"
+Q2hhbGFyYW5nZWxvLzMwLXNlY29uZHMtb2YtY29kZXxzcmMvbGliL2NvbnRlbnRVdGlscy9tYXJrZG93blBhcnNlci9wbHVnaW5zL2FzdC9oaWdobGlnaHRDb2RlLmpzfDU5fGZ1bmN0aW9ufGNyZWF0ZUF0dHJpYnV0ZXM,Chalarangelo/30-seconds-of-code,src/lib/contentUtils/markdownParser/plugins/ast/highlightCode.js,function,createAttributes,"const createAttributes = (metadata, codeHighlighter) => {
+  const { languageName, title, languageStringLiteral } = metadata;
+
+  // Note: While something classless, such as `[data-code-grammar=languageName]`
+  // would be nicer to look at, Prism uses the same language-X classes to target
+  // nested styles. This is also the HTML5 spec suggestion for higlighting code.
+  // By using a class for this plugin, consistence and compliance are ensured.
+  const codeAttributes = {
+    class: `language-${languageName} notranslate`,
+    translate: `no`,
+  };
+  const preAttributes = {};
+
+  if (languageStringLiteral)
+    preAttributes[`data-code-language`] = languageStringLiteral;
+
+  if (title) preAttributes[`data-code-title`] = title;
+
+  if (codeHighlighter.name === 'prism')
+    preAttributes[`data-code-preview`] = true;
+
+  return { preAttributes, codeAttributes };
+};","/**
+ * Creates attributes for the code block.
+ *
+ * @param {Object} metadata - The metadata object.
+ * @param {Object} codeHighlighter - The code highlighter to use.
+ * @returns {Object} - An object containing the HTML element's attributes.
+ */","/**
+ * Creates attributes for code and pre elements based on metadata and code highlighter.
+ *
+ * @param {object} metadata - An object containing metadata for the code.
+ * @param {string} metadata.languageName - The name of the programming language.
+ * @param {string} [metadata.title] - An optional title for the code block.
+ * @param {string} [metadata.languageStringLiteral] - An optional string literal representing the language.
+ * @param {object} codeHighlighter - An object representing the code highlighter.
+ * @param {string} codeHighlighter.name - The name of the code highlighter.
+ * @returns {object} An object containing attributes for pre and code elements.
+ * @returns {object} return.preAttributes - Attributes for the pre element.
+ * @returns {object} return.codeAttributes - Attributes for the code element.
+ */","/**
+ * Builds attribute objects for a code block based on provided metadata and a code highlighter.
+ *
+ * Creates:
+ * - `codeAttributes` with Prism-compatible language classes and translation disabled.
+ * - `preAttributes` optionally containing language string literal, title, and a preview flag for Prism.
+ *
+ * @param {Object} metadata
+ * @param {string} metadata.languageName - Language name used to build the `language-<name>` CSS class.
+ * @param {string} [metadata.title] - Optional title to be set as `data-code-title`.
+ * @param {string} [metadata.languageStringLiteral] - Optional language string literal to be set as `data-code-language`.
+ * @param {Function|Object} codeHighlighter - Highlighter reference; its `name` is used to detect Prism.
+ * @returns {{ preAttributes: Object, codeAttributes: Object }} An object containing `preAttributes` and `codeAttributes`.
+ */"
+ZmFjZWJvb2svcmVhY3R8cGFja2FnZXMvZXNsaW50LXBsdWdpbi1yZWFjdC1ob29rcy9zcmMvY29kZS1wYXRoLWFuYWx5c2lzL2ZvcmstY29udGV4dC5qc3w2N3xmdW5jdGlvbnxtZXJnZUV4dHJhU2VnbWVudHM,facebook/react,packages/eslint-plugin-react-hooks/src/code-path-analysis/fork-context.js,function,mergeExtraSegments,"function mergeExtraSegments(context, segments) {
+  let currentSegments = segments;
+
+  while (currentSegments.length > context.count) {
+    const merged = [];
+
+    for (
+      let i = 0, length = (currentSegments.length / 2) | 0;
+      i < length;
+      ++i
+    ) {
+      merged.push(
+        CodePathSegment.newNext(context.idGenerator.next(), [
+          currentSegments[i],
+          currentSegments[i + length],
+        ]),
+      );
+    }
+    currentSegments = merged;
+  }
+  return currentSegments;
+}","/**
+ * `segments` becomes doubly in a `finally` block. Then if a code path exits by a
+ * control statement (such as `break`, `continue`) from the `finally` block, the
+ * destination's segments may be half of the source segments. In that case, this
+ * merges segments.
+ * @param {ForkContext} context An instance.
+ * @param {CodePathSegment[]} segments Segments to merge.
+ * @returns {CodePathSegment[]} The merged segments.
+ */","/**
+ * Merges extra segments into a context until the number of segments is less than or equal to the context count.
+ *
+ * @param {object} context - The context object containing idGenerator and count.
+ * @param {object} context.idGenerator - An object with a next() method to generate IDs.
+ * @param {number} context.count - The maximum number of segments allowed.
+ * @param {Array<object>} segments - An array of segments to be merged.
+ * @returns {Array<object>} The array of merged segments.
+ */","/**
+ * Merges an array of CodePathSegment objects by repeatedly combining the first half
+ * with the second half until the number of segments is reduced to `context.count`.
+ *
+ * At each iteration, it creates a new array where each element is produced by
+ * `CodePathSegment.newNext(nextId, [leftSegment, rightSegment])`, using a fresh id
+ * from `context.idGenerator.next()`.
+ *
+ * @param {Object} context - Execution context containing the target segment count and an id generator.
+ * @param {number} context.count - Target number of segments to stop merging at.
+ * @param {Object} context.idGenerator - Id generator used to create ids for merged segments.
+ * @param {Function} context.idGenerator.next - Returns the next id value.
+ * @param {Array<any>} segments - Initial list of segments to be merged.
+ * @returns {Array<any>} The merged segments array with length equal to `context.count` (or less if input is not compatible).
+ */"
+ZmFjZWJvb2svcmVhY3R8cGFja2FnZXMvZXNsaW50LXBsdWdpbi1yZWFjdC1ob29rcy9zcmMvY29kZS1wYXRoLWFuYWx5c2lzL2ZvcmstY29udGV4dC5qc3wzN3xmdW5jdGlvbnxtYWtlU2VnbWVudHM,facebook/react,packages/eslint-plugin-react-hooks/src/code-path-analysis/fork-context.js,function,makeSegments,"function makeSegments(context, begin, end, create) {
+  const list = context.segmentsList;
+
+  const normalizedBegin = begin >= 0 ? begin : list.length + begin;
+  const normalizedEnd = end >= 0 ? end : list.length + end;
+
+  const segments = [];
+
+  for (let i = 0; i < context.count; ++i) {
+    const allPrevSegments = [];
+
+    for (let j = normalizedBegin; j <= normalizedEnd; ++j) {
+      allPrevSegments.push(list[j][i]);
+    }
+
+    segments.push(create(context.idGenerator.next(), allPrevSegments));
+  }
+
+  return segments;
+}","/**
+ * Creates new segments from the specific range of `context.segmentsList`.
+ *
+ * When `context.segmentsList` is `[[a, b], [c, d], [e, f]]`, `begin` is `0`, and
+ * `end` is `-1`, this creates `[g, h]`. This `g` is from `a`, `c`, and `e`.
+ * This `h` is from `b`, `d`, and `f`.
+ * @param {ForkContext} context An instance.
+ * @param {number} begin The first index of the previous segments.
+ * @param {number} end The last index of the previous segments.
+ * @param {Function} create A factory function of new segments.
+ * @returns {CodePathSegment[]} New segments.
+ */","/**
+ * Generates a list of segments based on provided context and range.
+ *
+ * @param {object} context - The context object containing segmentsList, count, idGenerator, and id.
+ * @param {Array<Array<any>>} context.segmentsList - A list of existing segments.
+ * @param {number} context.count - The number of segments to create.
+ * @param {object} context.idGenerator - An object with a next() method to generate IDs.
+ * @param {string} context.id - The ID of the context.
+ * @param {number} begin - The starting index for segment selection. Can be negative to count from the end.
+ * @param {number} end - The ending index for segment selection. Can be negative to count from the end.
+ * @param {function(string, Array<any>): any} create - A function to create new segments. It receives a generated ID and an array of previous segments.
+ * @returns {Array<any>} An array of newly created segments.
+ */","/**
+ * Builds an array of segment objects by collecting per-index items from a
+ * 2D-like structure in `context.segmentsList` across a normalized range,
+ * then passing them to a provided factory function.
+ *
+ * The `begin` and `end` parameters are normalized: if a value is negative,
+ * it is treated as an offset from `context.segmentsList.length`.
+ *
+ * For each index `i` from `0` to `context.count - 1`, it collects
+ * `list[j][i]` for all `j` in the inclusive range `[normalizedBegin, normalizedEnd]`,
+ * and calls `create(context.idGenerator.next(), allPrevSegments)`.
+ *
+ * @param {Object} context
+ * @param {Array} context.segmentsList A list where each element is indexable by `i` (i.e., `list[j][i]`).
+ * @param {number} context.count Number of segments to create (drives the outer loop).
+ * @param {Object} context.idGenerator An object with a `next()` method used to generate an id for each created segment.
+ * @param {number} begin Start index for the inclusive range; negative values are offsets from `segmentsList.length`.
+ * @param {number} end End index for the inclusive range; negative values are offsets from `segmentsList.length`.
+ * @param {Function} create Factory function invoked as `create(id, allPrevSegments)`.
+ * @returns {Array} An array of created segments, one per `i` in `[0, context.count)`.
+ */"
+bXJkb29iL3RocmVlLmpzfHNyYy9ub2Rlcy9jb3JlL1N1YkJ1aWxkTm9kZS5qc3wxMnxjbGFzc3xTdWJCdWlsZE5vZGU,mrdoob/three.js,src/nodes/core/SubBuildNode.js,class,SubBuildNode,"class SubBuildNode extends Node {
+
+	static get type() {
+
+		return 'SubBuild';
+
+	}
+
+	constructor( node, name, nodeType = null ) {
+
+		super( nodeType );
+
+		/**
+		 * The node to be built in the sub-build.
+		 *
+		 * @type {Node}
+		 */
+		this.node = node;
+
+		/**
+		 * The name of the sub-build.
+		 *
+		 * @type {string}
+		 */
+		this.name = name;
+
+		/**
+		 * This flag can be used for type testing.
+		 *
+		 * @type {boolean}
+		 * @readonly
+		 * @default true
+		 */
+		this.isSubBuildNode = true;
+
+	}
+
+	generateNodeType( builder ) {
+
+		if ( this.nodeType !== null ) return this.nodeType;
+
+		builder.addSubBuild( this.name );
+
+		const nodeType = this.node.getNodeType( builder );
+
+		builder.removeSubBuild();
+
+		return nodeType;
+
+	}
+
+	build( builder, ...params ) {
+
+		builder.addSubBuild( this.name );
+
+		const data = this.node.build( builder, ...params );
+
+		builder.removeSubBuild();
+
+		return data;
+
+	}
+
+}","/**
+ * This node is used to build a sub-build in the node system.
+ *
+ * @augments Node
+ * @param {Node} node - The node to be built in the sub-build.
+ * @param {string} name - The name of the sub-build.
+ * @param {?string} [nodeType=null] - The type of the node, if known.
+ */","/**
+ * Represents a node that triggers a sub-build process.
+ *
+ * @extends Node
+ */","/**
+ * Represents a node that delegates building to another node within a named sub-build context.
+ */"
+bm9kZWpzL25vZGV8bGliL2ludGVybmFsL21vZHVsZXMvY2pzL2xvYWRlci5qc3wxNDkwfGZ1bmN0aW9ufGZpbmFsaXplRXNtUmVzb2x1dGlvbg,nodejs/node,lib/internal/modules/cjs/loader.js,function,finalizeEsmResolution,"function finalizeEsmResolution(resolved, parentPath, pkgPath) {
+  const { encodedSepRegEx } = require('internal/modules/esm/resolve');
+  if (RegExpPrototypeExec(encodedSepRegEx, resolved) !== null) {
+    throw new ERR_INVALID_MODULE_SPECIFIER(
+      resolved, 'must not include encoded ""/"" or ""\\"" characters', parentPath);
+  }
+  const filename = fileURLToPath(resolved);
+  const actual = tryFile(filename);
+  if (actual) {
+    return actual;
+  }
+  throw createEsmNotFoundErr(filename, pkgPath);
+}","/**
+ * Finishes resolving an ES module specifier into an absolute file path.
+ * @param {string} resolved The resolved module specifier
+ * @param {string} parentPath The path of the parent module
+ * @param {string} pkgPath The path of the package.json file
+ * @throws {ERR_INVALID_MODULE_SPECIFIER} If the resolved module specifier contains encoded `/` or `\\` characters
+ * @throws {Error} If the module cannot be found
+ * @returns {void|string|undefined}
+ */","/**
+ * Finalizes the ESM resolution process.
+ * Checks for encoded path separators in the resolved path and attempts to resolve the file.
+ *
+ * @param {string} resolved The resolved module specifier.
+ * @param {string} parentPath The parent path of the module.
+ * @param {string} pkgPath The package path.
+ * @returns {string} The resolved file path if found.
+ * @throws {ERR_INVALID_MODULE_SPECIFIER} If the resolved path includes encoded '/' or '\' characters.
+ * @throws {Error} If the module cannot be found.
+ */","/**
+ * Finalizes ESM resolution by validating the resolved specifier, converting it to a
+ * filesystem path, attempting to resolve an existing file, and throwing an error
+ * when the module cannot be found.
+ *
+ * @param {string} resolved - The resolved ESM specifier/path to validate and convert.
+ * @param {string} parentPath - The parent path used for error context.
+ * @param {string} pkgPath - The package path used to create the ""not found"" error.
+ * @returns {*} The resolved file path/value returned by {@link tryFile} when found.
+ * @throws {ERR_INVALID_MODULE_SPECIFIER} If {@link resolved} contains encoded ""/"" or ""\\"" characters.
+ * @throws {*} Throws the error created by {@link createEsmNotFoundErr} when the file cannot be resolved.
+ */"
+bm9kZWpzL25vZGV8bGliL2ludGVybmFsL21vZHVsZXMvaGVscGVycy5qc3w0Mjh8ZnVuY3Rpb258YXNzZXJ0QnVmZmVyU291cmNl,nodejs/node,lib/internal/modules/helpers.js,function,assertBufferSource,"function assertBufferSource(body, allowString, hookName) {
+  if (allowString && typeof body === 'string') {
+    return;
+  }
+  const { isArrayBufferView, isAnyArrayBuffer } = lazyTypes();
+  if (isArrayBufferView(body) || isAnyArrayBuffer(body)) {
+    return;
+  }
+  throw new ERR_INVALID_RETURN_PROPERTY_VALUE(
+    `${allowString ? 'string, ' : ''}array buffer, or typed array`,
+    hookName,
+    'source',
+    body,
+  );
+}","/**
+ * Asserts that the given body is a buffer source (either a string, array buffer, or typed array).
+ * Throws an error if the body is not a buffer source.
+ * @param {string | ArrayBufferView | ArrayBuffer} body - The body to check.
+ * @param {boolean} allowString - Whether or not to allow a string as a valid buffer source.
+ * @param {string} hookName - The name of the hook being called.
+ * @throws {ERR_INVALID_RETURN_PROPERTY_VALUE} If the body is not a buffer source.
+ * @returns {void}
+ */","/**
+ * Asserts that the provided body is a valid BufferSource or a string if allowed.
+ *
+ * @param {any} body The value to assert.
+ * @param {boolean} allowString Whether to allow strings as valid input.
+ * @param {string} hookName The name of the hook where the assertion is performed.
+ * @throws {ERR_INVALID_RETURN_PROPERTY_VALUE} If the body is not a valid BufferSource or string (if allowed).
+ */","/**
+ * Validates that a return value is a valid buffer-like source.
+ * Accepts either a string (only when `allowString` is true) or an ArrayBuffer/typed array.
+ * Throws an error when `body` is not a supported type.
+ *
+ * @param {*} body - The value to validate as the `source` return property.
+ * @param {boolean} allowString - Whether a string value is allowed.
+ * @param {string} hookName - Name of the hook used to construct the error context.
+ * @throws {ERR_INVALID_RETURN_PROPERTY_VALUE} If `body` is not an allowed string (when enabled) and not an ArrayBuffer or typed array.
+ */"
+dHJla2hsZWIvamF2YXNjcmlwdC1hbGdvcml0aG1zfHNyYy9hbGdvcml0aG1zL2NyeXB0b2dyYXBoeS9yYWlsLWZlbmNlLWNpcGhlci9yYWlsRmVuY2VDaXBoZXIuanN8MTY2fGZ1bmN0aW9ufGRlY29kZUZlbmNl,trekhleb/javascript-algorithms,src/algorithms/cryptography/rail-fence-cipher/railFenceCipher.js,function,decodeFence,"const decodeFence = (params) => {
+  const {
+    strLen,
+    fence,
+    currentRail,
+    direction,
+    code,
+  } = params;
+
+  if (code.length === strLen) {
+    return code.join('');
+  }
+
+  const railCount = fence.length;
+
+  const [currentChar, ...nextRail] = fence[currentRail];
+  const nextDirection = getNextDirection(
+    { railCount, currentRail, direction },
+  );
+
+  return decodeFence({
+    railCount,
+    strLen,
+    currentRail: currentRail + nextDirection,
+    direction: nextDirection,
+    code: [...code, currentChar],
+    fence: fence.map((rail, idx) => (idx === currentRail ? nextRail : rail)),
+  });
+};","/**
+ * @param {object} params
+ * @param {number} params.strLen
+ * @param {Fence} params.fence
+ * @param {number} params.currentRail
+ * @param {Direction} params.direction
+ * @param {number[]} params.code
+ * @returns {string}
+ */","/**
+ * Decodes a string encoded using a fence cipher.
+ *
+ * @param {object} params - The parameters for decoding.
+ * @param {number} params.strLen - The original length of the string.
+ * @param {string[][]} params.fence - The current state of the fence.
+ * @param {number} params.currentRail - The current rail being processed.
+ * @param {number} params.direction - The current direction of movement (1 for down, -1 for up).
+ * @param {string[]} params.code - The array of characters decoded so far.
+ * @returns {string} The decoded string.
+ */","/**
+ * Decodes a string by traversing a set of rails (fence) and accumulating characters
+ * until the target length is reached.
+ *
+ * The function is recursive: at each step it appends the current rail's first character
+ * to the output, advances the rail index/direction using `getNextDirection`, updates
+ * the current rail by removing the consumed character, and continues until
+ * `code.length === strLen`.
+ *
+ * @param {Object} params - Input parameters for the decoder.
+ * @param {number} params.strLen - Target length of the decoded output.
+ * @param {Array<Array<string>>} params.fence - Rail fence structure; each rail is an array of characters.
+ * @param {number} params.currentRail - Index of the currently active rail.
+ * @param {*} params.direction - Current traversal direction (type depends on `getNextDirection`).
+ * @param {Array<string>} params.code - Accumulated decoded characters so far.
+ * @returns {string} The decoded string once `code` reaches `strLen`.
+ */"
+dHJla2hsZWIvamF2YXNjcmlwdC1hbGdvcml0aG1zfHNyYy9hbGdvcml0aG1zL2NyeXB0b2dyYXBoeS9yYWlsLWZlbmNlLWNpcGhlci9yYWlsRmVuY2VDaXBoZXIuanN8Nzl8ZnVuY3Rpb258ZmlsbEVuY29kZUZlbmNl,trekhleb/javascript-algorithms,src/algorithms/cryptography/rail-fence-cipher/railFenceCipher.js,function,fillEncodeFence,"const fillEncodeFence = ({
+  fence,
+  currentRail,
+  direction,
+  chars,
+}) => {
+  if (chars.length === 0) {
+    // All chars have been placed on a fence.
+    return fence;
+  }
+
+  const railCount = fence.length;
+
+  // Getting the next character to place on a fence.
+  const [letter, ...nextChars] = chars;
+  const nextDirection = getNextDirection({
+    railCount,
+    currentRail,
+    direction,
+  });
+
+  return fillEncodeFence({
+    fence: fence.map(addCharToRail(currentRail, letter)),
+    currentRail: currentRail + nextDirection,
+    direction: nextDirection,
+    chars: nextChars,
+  });
+};","/**
+ * Hangs the characters on the fence.
+ *
+ * @param {object} params
+ * @param {Fence} params.fence
+ * @param {number} params.currentRail
+ * @param {Direction} params.direction
+ * @param {string[]} params.chars
+ * @returns {Fence}
+ */","/**
+ * Recursively fills the encode fence with characters.
+ *
+ * @param {Array<Array<string>>} fence - The current state of the fence.
+ * @param {number} currentRail - The index of the current rail being filled.
+ * @param {number} direction - The current direction of movement (1 for down, -1 for up).
+ * @param {Array<string>} chars - The remaining characters to be placed.
+ * @returns {Array<Array<string>>} The completed fence.
+ */","/**
+ * Recursively fills an encoding ""fence"" by placing characters onto rails.
+ * If there are no remaining characters, returns the current fence.
+ *
+ * @param {Object} params
+ * @param {Array<Array<string>>} params.fence - The current fence structure (array of rails).
+ * @param {number} params.currentRail - The index of the rail where the next character will be placed.
+ * @param {number} params.direction - The current direction used to determine the next rail.
+ * @param {Array<string>} params.chars - The remaining characters to place.
+ * @returns {Array<Array<string>>} The updated fence after all characters have been placed.
+ */"
+dmVyY2VsL25leHQuanN8LmdpdGh1Yi9hY3Rpb25zL25leHQtc3RhdHMtYWN0aW9uL3NyYy91dGlsL3N0YXRzLmpzfDEwfGZ1bmN0aW9ufGNhbGNTdGF0cw,vercel/next.js,.github/actions/next-stats-action/src/util/stats.js,function,calcStats,"function calcStats(arr) {
+  if (arr.length === 0) return null
+
+  const sorted = [...arr].sort((a, b) => a - b)
+  const mid = Math.floor(sorted.length / 2)
+  const median =
+    sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2
+  const min = sorted[0]
+  const max = sorted[sorted.length - 1]
+  const mean = arr.reduce((a, b) => a + b, 0) / arr.length
+  const variance =
+    arr.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / arr.length
+  const stddev = Math.sqrt(variance)
+  const cv = mean > 0 ? (stddev / mean) * 100 : 0 // coefficient of variation as %
+
+  return {
+    median,
+    min,
+    max,
+    mean: Math.round(mean),
+    stddev: Math.round(stddev),
+    cv: Math.round(cv),
+  }
+}","/**
+ * Calculate statistical summary for an array of numbers
+ * @param {number[]} arr - Array of numeric values
+ * @returns {Object|null} Stats object with median, min, max, mean, stddev, cv or null if empty
+ */","/**
+ * Calculates statistical measures for an array of numbers.
+ *
+ * @param {number[]} arr The input array of numbers.
+ * @returns {object|null} An object containing median, min, max, mean, stddev, and cv, or null if the input array is empty.
+ */","/**
+ * Calculates basic descriptive statistics for a numeric array.
+ *
+ * For non-empty arrays, it computes the median (using the sorted values),
+ * minimum, maximum, mean (rounded), standard deviation (rounded),
+ * and coefficient of variation in percent (rounded).
+ *
+ * @param {number[]} arr - Input array of numbers.
+ * @returns {null | {median: number, min: number, max: number, mean: number, stddev: number, cv: number}} 
+ * Returns null when the input array is empty; otherwise returns an object with the computed statistics.
+ */"
+dmVyY2VsL25leHQuanN8LmdpdGh1Yi9hY3Rpb25zL25leHQtcmVwby1hY3Rpb25zL3NyYy9wb3B1bGFyLWZlYXR1cmUtcmVxdWVzdHMubWpzfDMwfGZ1bmN0aW9ufGdlbmVyYXRlQmxvY2tz,vercel/next.js,.github/actions/next-repo-actions/src/popular-feature-requests.mjs,function,generateBlocks,"function generateBlocks(items) {
+  const blocks = [
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: '*A list of the top 15 feature requests sorted by upvotes over the last 90 days.*\n_Note: This :github2: <https://github.com/vercel/next.js/blob/canary/.github/workflows/popular.yml|workflow> → <https://github.com/vercel/next.js/blob/canary/.github/actions/next-repo-actions/src/popular-feature-requests.mjs|action> will run every Monday at 10AM UTC (6AM EST)._',
+      },
+    },
+    {
+      type: 'divider',
+    },
+  ]
+
+  let text = ''
+
+  items.forEach((item, i) => {
+    text += `${i + 1}. [<${item.html_url}|#${item.number}>, ↑ ${
+      item.upvoteCount
+    }, ${formattedDate(item.created_at)}]: ${item.title}\n`
+  })
+
+  blocks.push({
+    type: 'section',
+    text: {
+      type: 'mrkdwn',
+      text: text,
+    },
+  })
+
+  return blocks
+}",/** @param {Item[]} items */,"/**
+ * Generates a list of blocks for a Slack message, displaying feature requests.
+ *
+ * @param {Array<Object>} items - An array of feature request objects. Each object is expected to have properties like `html_url`, `number`, `upvoteCount`, `created_at`, and `title`.
+ * @returns {Array<Object>} An array of block objects suitable for a Slack message.
+ */","/**
+ * Builds an array of Slack Block Kit blocks that summarizes the top feature requests.
+ * The output includes a header section, a divider, and a final section containing a
+ * numbered list derived from the provided items.
+ *
+ * @param {Array<Object>} items - List of feature request items. Each item is expected to include:
+ * @param {string} items[].html_url - URL to the item on GitHub.
+ * @param {number} items[].number - Item number used for display.
+ * @param {number} items[].upvoteCount - Upvote count used for display.
+ * @param {string} items[].created_at - Creation date string passed to `formattedDate`.
+ * @returns {Array<Object>} An array of block objects suitable for Slack Block Kit.
+ */"

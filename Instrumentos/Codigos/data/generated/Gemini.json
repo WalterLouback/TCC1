@@ -1,0 +1,101 @@
+[
+  {
+    "id_trecho": "ZmFjZWJvb2svcmVhY3R8cGFja2FnZXMvZXNsaW50LXBsdWdpbi1yZWFjdC1ob29rcy9zcmMvY29kZS1wYXRoLWFuYWx5c2lzL2ZvcmstY29udGV4dC5qc3wzN3xmdW5jdGlvbnxtYWtlU2VnbWVudHM",
+    "provider": "Gemini",
+    "model": "gemini-2.5-flash-lite",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 1.59,
+    "documentacao_gerada": "/**\n * Generates a list of segments based on provided context and range.\n *\n * @param {object} context - The context object containing segmentsList, count, idGenerator, and id.\n * @param {Array<Array<any>>} context.segmentsList - A list of existing segments.\n * @param {number} context.count - The number of segments to create.\n * @param {object} context.idGenerator - An object with a next() method to generate IDs.\n * @param {string} context.id - The ID of the context.\n * @param {number} begin - The starting index for segment selection. Can be negative to count from the end.\n * @param {number} end - The ending index for segment selection. Can be negative to count from the end.\n * @param {function(string, Array<any>): any} create - A function to create new segments. It receives a generated ID and an array of previous segments.\n * @returns {Array<any>} An array of newly created segments.\n */"
+  },
+  {
+    "id_trecho": "dHJla2hsZWIvamF2YXNjcmlwdC1hbGdvcml0aG1zfHNyYy9hbGdvcml0aG1zL2NyeXB0b2dyYXBoeS9yYWlsLWZlbmNlLWNpcGhlci9yYWlsRmVuY2VDaXBoZXIuanN8Nzl8ZnVuY3Rpb258ZmlsbEVuY29kZUZlbmNl",
+    "provider": "Gemini",
+    "model": "gemini-2.5-flash-lite",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 1.17,
+    "documentacao_gerada": "/**\n * Recursively fills the encode fence with characters.\n *\n * @param {Array<Array<string>>} fence - The current state of the fence.\n * @param {number} currentRail - The index of the current rail being filled.\n * @param {number} direction - The current direction of movement (1 for down, -1 for up).\n * @param {Array<string>} chars - The remaining characters to be placed.\n * @returns {Array<Array<string>>} The completed fence.\n */"
+  },
+  {
+    "id_trecho": "dHJla2hsZWIvamF2YXNjcmlwdC1hbGdvcml0aG1zfHNyYy9hbGdvcml0aG1zL2NyeXB0b2dyYXBoeS9yYWlsLWZlbmNlLWNpcGhlci9yYWlsRmVuY2VDaXBoZXIuanN8MTY2fGZ1bmN0aW9ufGRlY29kZUZlbmNl",
+    "provider": "Gemini",
+    "model": "gemini-2.5-flash-lite",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 1.24,
+    "documentacao_gerada": "/**\n * Decodes a string encoded using a fence cipher.\n *\n * @param {object} params - The parameters for decoding.\n * @param {number} params.strLen - The original length of the string.\n * @param {string[][]} params.fence - The current state of the fence.\n * @param {number} params.currentRail - The current rail being processed.\n * @param {number} params.direction - The current direction of movement (1 for down, -1 for up).\n * @param {string[]} params.code - The array of characters decoded so far.\n * @returns {string} The decoded string.\n */"
+  },
+  {
+    "id_trecho": "dmVyY2VsL25leHQuanN8LmdpdGh1Yi9hY3Rpb25zL25leHQtc3RhdHMtYWN0aW9uL3NyYy91dGlsL3N0YXRzLmpzfDEwfGZ1bmN0aW9ufGNhbGNTdGF0cw",
+    "provider": "Gemini",
+    "model": "gemini-2.5-flash-lite",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 1.07,
+    "documentacao_gerada": "/**\n * Calculates statistical measures for an array of numbers.\n *\n * @param {number[]} arr The input array of numbers.\n * @returns {object|null} An object containing median, min, max, mean, stddev, and cv, or null if the input array is empty.\n */"
+  },
+  {
+    "id_trecho": "dmVyY2VsL25leHQuanN8LmdpdGh1Yi9hY3Rpb25zL25leHQtcmVwby1hY3Rpb25zL3NyYy9wb3B1bGFyLWZlYXR1cmUtcmVxdWVzdHMubWpzfDMwfGZ1bmN0aW9ufGdlbmVyYXRlQmxvY2tz",
+    "provider": "Gemini",
+    "model": "gemini-2.5-flash-lite",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 1.16,
+    "documentacao_gerada": "/**\n * Generates a list of blocks for a Slack message, displaying feature requests.\n *\n * @param {Array<Object>} items - An array of feature request objects. Each object is expected to have properties like `html_url`, `number`, `upvoteCount`, `created_at`, and `title`.\n * @returns {Array<Object>} An array of block objects suitable for a Slack message.\n */"
+  },
+  {
+    "id_trecho": "Q2hhbGFyYW5nZWxvLzMwLXNlY29uZHMtb2YtY29kZXxzcmMvbGliL2NvbnRlbnRVdGlscy9tYXJrZG93blBhcnNlci9wbHVnaW5zL2FzdC9oaWdobGlnaHRDb2RlLmpzfDMxfGZ1bmN0aW9ufGNyZWF0ZU1ldGFkYXRhRXh0cmFjdG9y",
+    "provider": "Gemini",
+    "model": "gemini-2.5-flash-lite",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 1.47,
+    "documentacao_gerada": "/**\n * Creates a metadata extractor function for a given set of languages.\n *\n * @param {object} languages - An object mapping language names to their string literals.\n * @param {function(object): string} languages.languageName - The name of the language.\n * @param {function(object): object} node - The node to extract metadata from.\n * @returns {object} An object containing extracted metadata.\n * @returns {string} return.languageName - The name of the language of the node.\n * @returns {string|null} return.title - The title of the node, or null if not found.\n * @returns {string} return.languageStringLiteral - The string literal for the node's language.\n * @returns {Array<object>} return.highlightedLines - An array of objects representing highlighted lines.\n * @returns {Array<object>} return.insertedLines - An array of objects representing inserted lines.\n * @returns {Array<object>} return.deletedLines - An array of objects representing deleted lines.\n * @returns {Array<object>} return.foldedSections - An array of objects representing folded sections.\n */"
+  },
+  {
+    "id_trecho": "Q2hhbGFyYW5nZWxvLzMwLXNlY29uZHMtb2YtY29kZXxzcmMvbGliL2NvbnRlbnRVdGlscy9tYXJrZG93blBhcnNlci9wbHVnaW5zL2FzdC9oaWdobGlnaHRDb2RlLmpzfDU5fGZ1bmN0aW9ufGNyZWF0ZUF0dHJpYnV0ZXM",
+    "provider": "Gemini",
+    "model": "gemini-2.5-flash-lite",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 1.38,
+    "documentacao_gerada": "/**\n * Creates attributes for code and pre elements based on metadata and code highlighter.\n *\n * @param {object} metadata - An object containing metadata for the code.\n * @param {string} metadata.languageName - The name of the programming language.\n * @param {string} [metadata.title] - An optional title for the code block.\n * @param {string} [metadata.languageStringLiteral] - An optional string literal representing the language.\n * @param {object} codeHighlighter - An object representing the code highlighter.\n * @param {string} codeHighlighter.name - The name of the code highlighter.\n * @returns {object} An object containing attributes for pre and code elements.\n * @returns {object} return.preAttributes - Attributes for the pre element.\n * @returns {object} return.codeAttributes - Attributes for the code element.\n */"
+  },
+  {
+    "id_trecho": "bm9kZWpzL25vZGV8bGliL2ludGVybmFsL21vZHVsZXMvaGVscGVycy5qc3w0Mjh8ZnVuY3Rpb258YXNzZXJ0QnVmZmVyU291cmNl",
+    "provider": "Gemini",
+    "model": "gemini-2.5-flash-lite",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 1.2,
+    "documentacao_gerada": "/**\n * Asserts that the provided body is a valid BufferSource or a string if allowed.\n *\n * @param {any} body The value to assert.\n * @param {boolean} allowString Whether to allow strings as valid input.\n * @param {string} hookName The name of the hook where the assertion is performed.\n * @throws {ERR_INVALID_RETURN_PROPERTY_VALUE} If the body is not a valid BufferSource or string (if allowed).\n */"
+  },
+  {
+    "id_trecho": "bm9kZWpzL25vZGV8bGliL2ludGVybmFsL21vZHVsZXMvY2pzL2xvYWRlci5qc3wxNDkwfGZ1bmN0aW9ufGZpbmFsaXplRXNtUmVzb2x1dGlvbg",
+    "provider": "Gemini",
+    "model": "gemini-2.5-flash-lite",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 1.22,
+    "documentacao_gerada": "/**\n * Finalizes the ESM resolution process.\n * Checks for encoded path separators in the resolved path and attempts to resolve the file.\n *\n * @param {string} resolved The resolved module specifier.\n * @param {string} parentPath The parent path of the module.\n * @param {string} pkgPath The package path.\n * @returns {string} The resolved file path if found.\n * @throws {ERR_INVALID_MODULE_SPECIFIER} If the resolved path includes encoded '/' or '\\' characters.\n * @throws {Error} If the module cannot be found.\n */"
+  },
+  {
+    "id_trecho": "bXJkb29iL3RocmVlLmpzfHNyYy9ub2Rlcy9jb3JlL1N1YkJ1aWxkTm9kZS5qc3wxMnxjbGFzc3xTdWJCdWlsZE5vZGU",
+    "provider": "Gemini",
+    "model": "gemini-2.5-flash-lite",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 2.14,
+    "documentacao_gerada": "/**\n * Represents a node that triggers a sub-build process.\n *\n * @extends Node\n */"
+  },
+  {
+    "id_trecho": "ZmFjZWJvb2svcmVhY3R8cGFja2FnZXMvZXNsaW50LXBsdWdpbi1yZWFjdC1ob29rcy9zcmMvY29kZS1wYXRoLWFuYWx5c2lzL2ZvcmstY29udGV4dC5qc3w2N3xmdW5jdGlvbnxtZXJnZUV4dHJhU2VnbWVudHM",
+    "provider": "Gemini",
+    "model": "gemini-2.5-flash-lite",
+    "ok": true,
+    "erro": "",
+    "tempo_geracao_segundos": 2.03,
+    "documentacao_gerada": "/**\n * Merges extra segments into a context until the number of segments is less than or equal to the context count.\n *\n * @param {object} context - The context object containing idGenerator and count.\n * @param {object} context.idGenerator - An object with a next() method to generate IDs.\n * @param {number} context.count - The maximum number of segments allowed.\n * @param {Array<object>} segments - An array of segments to be merged.\n * @returns {Array<object>} The array of merged segments.\n */"
+  }
+]

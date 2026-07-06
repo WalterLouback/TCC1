@@ -1,0 +1,369 @@
+id_trecho,repo,repo_dir,stars,arquivo,tipo,nome,linha_inicio,linha_fim,loc,codigo,documentacao_referencia,repo_created_at,repo_pushed_at
+ZmFjZWJvb2svcmVhY3R8cGFja2FnZXMvZXNsaW50LXBsdWdpbi1yZWFjdC1ob29rcy9zcmMvY29kZS1wYXRoLWFuYWx5c2lzL2ZvcmstY29udGV4dC5qc3w2N3xmdW5jdGlvbnxtZXJnZUV4dHJhU2VnbWVudHM,facebook/react,facebook__react,244709,packages/eslint-plugin-react-hooks/src/code-path-analysis/fork-context.js,function,mergeExtraSegments,67,88,20,"function mergeExtraSegments(context, segments) {
+  let currentSegments = segments;
+
+  while (currentSegments.length > context.count) {
+    const merged = [];
+
+    for (
+      let i = 0, length = (currentSegments.length / 2) | 0;
+      i < length;
+      ++i
+    ) {
+      merged.push(
+        CodePathSegment.newNext(context.idGenerator.next(), [
+          currentSegments[i],
+          currentSegments[i + length],
+        ]),
+      );
+    }
+    currentSegments = merged;
+  }
+  return currentSegments;
+}","/**
+ * `segments` becomes doubly in a `finally` block. Then if a code path exits by a
+ * control statement (such as `break`, `continue`) from the `finally` block, the
+ * destination's segments may be half of the source segments. In that case, this
+ * merges segments.
+ * @param {ForkContext} context An instance.
+ * @param {CodePathSegment[]} segments Segments to merge.
+ * @returns {CodePathSegment[]} The merged segments.
+ */",2013-05-24T16:15:54Z,2026-04-24T23:27:40Z
+ZmFjZWJvb2svcmVhY3R8cGFja2FnZXMvZXNsaW50LXBsdWdpbi1yZWFjdC1ob29rcy9zcmMvY29kZS1wYXRoLWFuYWx5c2lzL2ZvcmstY29udGV4dC5qc3wzN3xmdW5jdGlvbnxtYWtlU2VnbWVudHM,facebook/react,facebook__react,244709,packages/eslint-plugin-react-hooks/src/code-path-analysis/fork-context.js,function,makeSegments,37,56,14,"function makeSegments(context, begin, end, create) {
+  const list = context.segmentsList;
+
+  const normalizedBegin = begin >= 0 ? begin : list.length + begin;
+  const normalizedEnd = end >= 0 ? end : list.length + end;
+
+  const segments = [];
+
+  for (let i = 0; i < context.count; ++i) {
+    const allPrevSegments = [];
+
+    for (let j = normalizedBegin; j <= normalizedEnd; ++j) {
+      allPrevSegments.push(list[j][i]);
+    }
+
+    segments.push(create(context.idGenerator.next(), allPrevSegments));
+  }
+
+  return segments;
+}","/**
+ * Creates new segments from the specific range of `context.segmentsList`.
+ *
+ * When `context.segmentsList` is `[[a, b], [c, d], [e, f]]`, `begin` is `0`, and
+ * `end` is `-1`, this creates `[g, h]`. This `g` is from `a`, `c`, and `e`.
+ * This `h` is from `b`, `d`, and `f`.
+ * @param {ForkContext} context An instance.
+ * @param {number} begin The first index of the previous segments.
+ * @param {number} end The last index of the previous segments.
+ * @param {Function} create A factory function of new segments.
+ * @returns {CodePathSegment[]} New segments.
+ */",2013-05-24T16:15:54Z,2026-04-24T23:27:40Z
+dHJla2hsZWIvamF2YXNjcmlwdC1hbGdvcml0aG1zfHNyYy9hbGdvcml0aG1zL2NyeXB0b2dyYXBoeS9yYWlsLWZlbmNlLWNpcGhlci9yYWlsRmVuY2VDaXBoZXIuanN8Nzl8ZnVuY3Rpb258ZmlsbEVuY29kZUZlbmNl,trekhleb/javascript-algorithms,trekhleb__javascript-algorithms,195877,src/algorithms/cryptography/rail-fence-cipher/railFenceCipher.js,function,fillEncodeFence,79,106,25,"const fillEncodeFence = ({
+  fence,
+  currentRail,
+  direction,
+  chars,
+}) => {
+  if (chars.length === 0) {
+    // All chars have been placed on a fence.
+    return fence;
+  }
+
+  const railCount = fence.length;
+
+  // Getting the next character to place on a fence.
+  const [letter, ...nextChars] = chars;
+  const nextDirection = getNextDirection({
+    railCount,
+    currentRail,
+    direction,
+  });
+
+  return fillEncodeFence({
+    fence: fence.map(addCharToRail(currentRail, letter)),
+    currentRail: currentRail + nextDirection,
+    direction: nextDirection,
+    chars: nextChars,
+  });
+};","/**
+ * Hangs the characters on the fence.
+ *
+ * @param {object} params
+ * @param {Fence} params.fence
+ * @param {number} params.currentRail
+ * @param {Direction} params.direction
+ * @param {string[]} params.chars
+ * @returns {Fence}
+ */",2018-03-24T07:47:04Z,2026-02-18T09:20:06Z
+dHJla2hsZWIvamF2YXNjcmlwdC1hbGdvcml0aG1zfHNyYy9hbGdvcml0aG1zL2NyeXB0b2dyYXBoeS9yYWlsLWZlbmNlLWNpcGhlci9yYWlsRmVuY2VDaXBoZXIuanN8MTY2fGZ1bmN0aW9ufGRlY29kZUZlbmNl,trekhleb/javascript-algorithms,trekhleb__javascript-algorithms,195877,src/algorithms/cryptography/rail-fence-cipher/railFenceCipher.js,function,decodeFence,166,194,25,"const decodeFence = (params) => {
+  const {
+    strLen,
+    fence,
+    currentRail,
+    direction,
+    code,
+  } = params;
+
+  if (code.length === strLen) {
+    return code.join('');
+  }
+
+  const railCount = fence.length;
+
+  const [currentChar, ...nextRail] = fence[currentRail];
+  const nextDirection = getNextDirection(
+    { railCount, currentRail, direction },
+  );
+
+  return decodeFence({
+    railCount,
+    strLen,
+    currentRail: currentRail + nextDirection,
+    direction: nextDirection,
+    code: [...code, currentChar],
+    fence: fence.map((rail, idx) => (idx === currentRail ? nextRail : rail)),
+  });
+};","/**
+ * @param {object} params
+ * @param {number} params.strLen
+ * @param {Fence} params.fence
+ * @param {number} params.currentRail
+ * @param {Direction} params.direction
+ * @param {number[]} params.code
+ * @returns {string}
+ */",2018-03-24T07:47:04Z,2026-02-18T09:20:06Z
+dmVyY2VsL25leHQuanN8LmdpdGh1Yi9hY3Rpb25zL25leHQtc3RhdHMtYWN0aW9uL3NyYy91dGlsL3N0YXRzLmpzfDEwfGZ1bmN0aW9ufGNhbGNTdGF0cw,vercel/next.js,vercel__next.js,139181,.github/actions/next-stats-action/src/util/stats.js,function,calcStats,10,33,22,"function calcStats(arr) {
+  if (arr.length === 0) return null
+
+  const sorted = [...arr].sort((a, b) => a - b)
+  const mid = Math.floor(sorted.length / 2)
+  const median =
+    sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2
+  const min = sorted[0]
+  const max = sorted[sorted.length - 1]
+  const mean = arr.reduce((a, b) => a + b, 0) / arr.length
+  const variance =
+    arr.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / arr.length
+  const stddev = Math.sqrt(variance)
+  const cv = mean > 0 ? (stddev / mean) * 100 : 0 // coefficient of variation as %
+
+  return {
+    median,
+    min,
+    max,
+    mean: Math.round(mean),
+    stddev: Math.round(stddev),
+    cv: Math.round(cv),
+  }
+}","/**
+ * Calculate statistical summary for an array of numbers
+ * @param {number[]} arr - Array of numeric values
+ * @returns {Object|null} Stats object with median, min, max, mean, stddev, cv or null if empty
+ */",2016-10-05T23:32:51Z,2026-04-26T18:25:05Z
+dmVyY2VsL25leHQuanN8LmdpdGh1Yi9hY3Rpb25zL25leHQtcmVwby1hY3Rpb25zL3NyYy9wb3B1bGFyLWZlYXR1cmUtcmVxdWVzdHMubWpzfDMwfGZ1bmN0aW9ufGdlbmVyYXRlQmxvY2tz,vercel/next.js,vercel__next.js,139181,.github/actions/next-repo-actions/src/popular-feature-requests.mjs,function,generateBlocks,30,61,28,"function generateBlocks(items) {
+  const blocks = [
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: '*A list of the top 15 feature requests sorted by upvotes over the last 90 days.*\n_Note: This :github2: <https://github.com/vercel/next.js/blob/canary/.github/workflows/popular.yml|workflow> → <https://github.com/vercel/next.js/blob/canary/.github/actions/next-repo-actions/src/popular-feature-requests.mjs|action> will run every Monday at 10AM UTC (6AM EST)._',
+      },
+    },
+    {
+      type: 'divider',
+    },
+  ]
+
+  let text = ''
+
+  items.forEach((item, i) => {
+    text += `${i + 1}. [<${item.html_url}|#${item.number}>, ↑ ${
+      item.upvoteCount
+    }, ${formattedDate(item.created_at)}]: ${item.title}\n`
+  })
+
+  blocks.push({
+    type: 'section',
+    text: {
+      type: 'mrkdwn',
+      text: text,
+    },
+  })
+
+  return blocks
+}",/** @param {Item[]} items */,2016-10-05T23:32:51Z,2026-04-26T18:25:05Z
+Q2hhbGFyYW5nZWxvLzMwLXNlY29uZHMtb2YtY29kZXxzcmMvbGliL2NvbnRlbnRVdGlscy9tYXJrZG93blBhcnNlci9wbHVnaW5zL2FzdC9oaWdobGlnaHRDb2RlLmpzfDMxfGZ1bmN0aW9ufGNyZWF0ZU1ldGFkYXRhRXh0cmFjdG9y,Chalarangelo/30-seconds-of-code,Chalarangelo__30-seconds-of-code,127588,src/lib/contentUtils/markdownParser/plugins/ast/highlightCode.js,function,createMetadataExtractor,31,50,19,"const createMetadataExtractor = languages => node => {
+  const languageName = getLanguageName(node);
+  const meta = parseMeta(node.meta || '');
+  const title = getMetaString(meta, 'title')?.value || null;
+  const languageStringLiteral = languages[languageName] || '';
+  const highlightedLines = getMetaRanges(meta, null);
+  const insertedLines = getMetaRanges(meta, 'ins');
+  const deletedLines = getMetaRanges(meta, 'del');
+  const foldedSections = getMetaRangeBoundaries(meta, 'collapse');
+
+  return {
+    languageName,
+    title,
+    languageStringLiteral,
+    highlightedLines,
+    insertedLines,
+    deletedLines,
+    foldedSections,
+  };
+};","/**
+ * Parses the language and title from the language string. Only supports
+ * space separated language and title, e.g. `language [title]`.
+ * The title must be wrapped in square brackets.
+ * (Curried function)
+ *
+ * @param {Object} languages - The languages object.
+ * @param {ASTNode} node - The AST node to parse.
+ * @returns {Object} - An object containing the extracted metadata.
+ */",2017-11-29T17:35:03Z,2026-04-21T22:12:54Z
+Q2hhbGFyYW5nZWxvLzMwLXNlY29uZHMtb2YtY29kZXxzcmMvbGliL2NvbnRlbnRVdGlscy9tYXJrZG93blBhcnNlci9wbHVnaW5zL2FzdC9oaWdobGlnaHRDb2RlLmpzfDU5fGZ1bmN0aW9ufGNyZWF0ZUF0dHJpYnV0ZXM,Chalarangelo/30-seconds-of-code,Chalarangelo__30-seconds-of-code,127588,src/lib/contentUtils/markdownParser/plugins/ast/highlightCode.js,function,createAttributes,59,81,18,"const createAttributes = (metadata, codeHighlighter) => {
+  const { languageName, title, languageStringLiteral } = metadata;
+
+  // Note: While something classless, such as `[data-code-grammar=languageName]`
+  // would be nicer to look at, Prism uses the same language-X classes to target
+  // nested styles. This is also the HTML5 spec suggestion for higlighting code.
+  // By using a class for this plugin, consistence and compliance are ensured.
+  const codeAttributes = {
+    class: `language-${languageName} notranslate`,
+    translate: `no`,
+  };
+  const preAttributes = {};
+
+  if (languageStringLiteral)
+    preAttributes[`data-code-language`] = languageStringLiteral;
+
+  if (title) preAttributes[`data-code-title`] = title;
+
+  if (codeHighlighter.name === 'prism')
+    preAttributes[`data-code-preview`] = true;
+
+  return { preAttributes, codeAttributes };
+};","/**
+ * Creates attributes for the code block.
+ *
+ * @param {Object} metadata - The metadata object.
+ * @param {Object} codeHighlighter - The code highlighter to use.
+ * @returns {Object} - An object containing the HTML element's attributes.
+ */",2017-11-29T17:35:03Z,2026-04-21T22:12:54Z
+bm9kZWpzL25vZGV8bGliL2ludGVybmFsL21vZHVsZXMvaGVscGVycy5qc3w0Mjh8ZnVuY3Rpb258YXNzZXJ0QnVmZmVyU291cmNl,nodejs/node,nodejs__node,116918,lib/internal/modules/helpers.js,function,assertBufferSource,428,442,15,"function assertBufferSource(body, allowString, hookName) {
+  if (allowString && typeof body === 'string') {
+    return;
+  }
+  const { isArrayBufferView, isAnyArrayBuffer } = lazyTypes();
+  if (isArrayBufferView(body) || isAnyArrayBuffer(body)) {
+    return;
+  }
+  throw new ERR_INVALID_RETURN_PROPERTY_VALUE(
+    `${allowString ? 'string, ' : ''}array buffer, or typed array`,
+    hookName,
+    'source',
+    body,
+  );
+}","/**
+ * Asserts that the given body is a buffer source (either a string, array buffer, or typed array).
+ * Throws an error if the body is not a buffer source.
+ * @param {string | ArrayBufferView | ArrayBuffer} body - The body to check.
+ * @param {boolean} allowString - Whether or not to allow a string as a valid buffer source.
+ * @param {string} hookName - The name of the hook being called.
+ * @throws {ERR_INVALID_RETURN_PROPERTY_VALUE} If the body is not a buffer source.
+ * @returns {void}
+ */",2014-11-26T19:57:11Z,2026-04-26T19:36:36Z
+bm9kZWpzL25vZGV8bGliL2ludGVybmFsL21vZHVsZXMvY2pzL2xvYWRlci5qc3wxNDkwfGZ1bmN0aW9ufGZpbmFsaXplRXNtUmVzb2x1dGlvbg,nodejs/node,nodejs__node,116918,lib/internal/modules/cjs/loader.js,function,finalizeEsmResolution,1490,1502,13,"function finalizeEsmResolution(resolved, parentPath, pkgPath) {
+  const { encodedSepRegEx } = require('internal/modules/esm/resolve');
+  if (RegExpPrototypeExec(encodedSepRegEx, resolved) !== null) {
+    throw new ERR_INVALID_MODULE_SPECIFIER(
+      resolved, 'must not include encoded ""/"" or ""\\"" characters', parentPath);
+  }
+  const filename = fileURLToPath(resolved);
+  const actual = tryFile(filename);
+  if (actual) {
+    return actual;
+  }
+  throw createEsmNotFoundErr(filename, pkgPath);
+}","/**
+ * Finishes resolving an ES module specifier into an absolute file path.
+ * @param {string} resolved The resolved module specifier
+ * @param {string} parentPath The path of the parent module
+ * @param {string} pkgPath The path of the package.json file
+ * @throws {ERR_INVALID_MODULE_SPECIFIER} If the resolved module specifier contains encoded `/` or `\\` characters
+ * @throws {Error} If the module cannot be found
+ * @returns {void|string|undefined}
+ */",2014-11-26T19:57:11Z,2026-04-26T19:36:36Z
+bXJkb29iL3RocmVlLmpzfHNyYy9ub2Rlcy9jb3JlL1N1YkJ1aWxkTm9kZS5qc3wxMnxjbGFzc3xTdWJCdWlsZE5vZGU,mrdoob/three.js,mrdoob__three.js,112193,src/nodes/core/SubBuildNode.js,class,SubBuildNode,12,75,41,"class SubBuildNode extends Node {
+
+	static get type() {
+
+		return 'SubBuild';
+
+	}
+
+	constructor( node, name, nodeType = null ) {
+
+		super( nodeType );
+
+		/**
+		 * The node to be built in the sub-build.
+		 *
+		 * @type {Node}
+		 */
+		this.node = node;
+
+		/**
+		 * The name of the sub-build.
+		 *
+		 * @type {string}
+		 */
+		this.name = name;
+
+		/**
+		 * This flag can be used for type testing.
+		 *
+		 * @type {boolean}
+		 * @readonly
+		 * @default true
+		 */
+		this.isSubBuildNode = true;
+
+	}
+
+	generateNodeType( builder ) {
+
+		if ( this.nodeType !== null ) return this.nodeType;
+
+		builder.addSubBuild( this.name );
+
+		const nodeType = this.node.getNodeType( builder );
+
+		builder.removeSubBuild();
+
+		return nodeType;
+
+	}
+
+	build( builder, ...params ) {
+
+		builder.addSubBuild( this.name );
+
+		const data = this.node.build( builder, ...params );
+
+		builder.removeSubBuild();
+
+		return data;
+
+	}
+
+}","/**
+ * This node is used to build a sub-build in the node system.
+ *
+ * @augments Node
+ * @param {Node} node - The node to be built in the sub-build.
+ * @param {string} name - The name of the sub-build.
+ * @param {?string} [nodeType=null] - The type of the node, if known.
+ */",2010-03-23T18:58:01Z,2026-04-26T21:22:05Z
