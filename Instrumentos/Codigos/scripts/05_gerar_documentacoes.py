@@ -46,7 +46,7 @@ def sanitize_jsdoc(text):
     return m.group(0).strip() if m else text.strip()
 
 def call_openai(provider, prompt):
-    api_key = "REDACTED_API_KEY"
+    api_key = os.getenv(provider["api_key_env"], "").strip()
     if not api_key:
         raise RuntimeError(f"variável ausente: {provider['api_key_env']}")
 
